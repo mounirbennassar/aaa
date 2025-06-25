@@ -5,11 +5,12 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const event = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         creator: {
           select: {
@@ -39,9 +40,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user) {
@@ -69,7 +71,7 @@ export async function PUT(
 
     // Check if event exists
     const existingEvent = await prisma.event.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingEvent) {
@@ -88,7 +90,7 @@ export async function PUT(
     }
 
     const updatedEvent = await prisma.event.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(title && { title }),
         ...(description && { description }),
@@ -127,9 +129,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user) {
@@ -141,7 +144,7 @@ export async function DELETE(
 
     // Check if event exists
     const existingEvent = await prisma.event.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingEvent) {
@@ -160,7 +163,7 @@ export async function DELETE(
     }
 
     await prisma.event.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ message: 'Event deleted successfully' })

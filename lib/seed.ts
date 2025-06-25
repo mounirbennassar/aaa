@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
+import { EventCategory } from '@prisma/client'
 
 export async function seedDatabase() {
   try {
@@ -35,7 +36,7 @@ export async function seedDatabase() {
       {
         title: 'Healthcare Accreditation Certification Program',
         description: 'Comprehensive training program for healthcare professionals seeking accreditation expertise.',
-        category: 'CERTIFICATION',
+        category: EventCategory.CERTIFICATION,
         duration: '5 Days',
         price: 1299,
         date: new Date('2024-03-15T09:00:00Z'),
@@ -47,7 +48,7 @@ export async function seedDatabase() {
       {
         title: 'Quality Management Systems Workshop',
         description: 'Master the fundamentals of ISO 9001 and quality management implementation.',
-        category: 'WORKSHOP',
+        category: EventCategory.WORKSHOP,
         duration: '2 Days',
         price: 599,
         date: new Date('2024-03-22T09:00:00Z'),
@@ -59,7 +60,7 @@ export async function seedDatabase() {
       {
         title: 'Advanced Auditing Techniques Seminar',
         description: 'Learn cutting-edge auditing methodologies and best practices from industry experts.',
-        category: 'SEMINAR',
+        category: EventCategory.SEMINAR,
         duration: '1 Day',
         price: 399,
         date: new Date('2024-04-05T09:00:00Z'),
@@ -71,7 +72,7 @@ export async function seedDatabase() {
       {
         title: 'Global Accreditation Trends Webinar',
         description: 'Explore emerging trends and future directions in international accreditation.',
-        category: 'WEBINAR',
+        category: EventCategory.WEBINAR,
         duration: '2 Hours',
         price: 0,
         date: new Date('2024-04-12T14:00:00Z'),

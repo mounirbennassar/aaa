@@ -1,4 +1,6 @@
 import LearnMoreButton from './components/LearnMoreButton';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -131,7 +133,7 @@ export default function Home() {
                 <p className="text-red-600 font-semibold">Prove Your Expertise</p>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                After completing your selected course or training, you'll receive an <strong>official, internationally
+                After completing your selected course or training, you&apos;ll receive an <strong>official, internationally
                 recognized certificate</strong>. This isn&apos;t just a document — it&apos;s a mark of quality and credibility.
                 Our certificates demonstrate that you&apos;ve met specific learning objectives and gained the
                 skills required to contribute meaningfully to your field, especially in the context of
@@ -202,9 +204,9 @@ export default function Home() {
                 </ul>
                 <div className="flex justify-between items-center">
                   <span className="text-2xl font-bold text-blue-900">$1,299</span>
-                  <a href="/details" className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                  <Link href="/details" className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
                     Enroll Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -236,9 +238,9 @@ export default function Home() {
                 </ul>
                 <div className="flex justify-between items-center">
                   <span className="text-2xl font-bold text-blue-900">$999</span>
-                  <a href="/details" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  <Link href="/details" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                     Enroll Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -270,9 +272,9 @@ export default function Home() {
                 </ul>
                 <div className="flex justify-between items-center">
                   <span className="text-2xl font-bold text-blue-900">$899</span>
-                  <a href="/details" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  <Link href="/details" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
                     Enroll Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -294,9 +296,11 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <img
+              <Image
                 src="https://aaa-accreditation.org/wp-content/uploads/2025/06/WhatsApp-Image-2025-06-20-at-5.50.14-PM.jpeg"
                 alt="Healthcare Accreditation Event"
+                width={400}
+                height={192}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
@@ -321,16 +325,18 @@ export default function Home() {
                     <i className="fas fa-clock mr-1" />
                     9:00 AM - 5:00 PM
                   </div>
-                  <a href="/details" className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm">
                     Register
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <img
+              <Image
                 src="https://aaa-accreditation.org/wp-content/uploads/2025/06/Screenshot-2025-06-10-at-01.05.49.png"
                 alt="World Accreditation Day"
+                width={400}
+                height={192}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
@@ -355,16 +361,18 @@ export default function Home() {
                     <i className="fas fa-clock mr-1" />
                     2:00 PM - 6:00 PM
                   </div>
-                  <a href="/details" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
                     Register
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <img
+              <Image
                 src="https://aaa-accreditation.org/wp-content/uploads/2025/06/survyors.png"
                 alt="Surveyor Training"
+                width={400}
+                height={192}
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
@@ -389,9 +397,9 @@ export default function Home() {
                     <i className="fas fa-clock mr-1" />
                     3-Day Program
                   </div>
-                  <a href="/details" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
                     Register
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -421,9 +429,9 @@ export default function Home() {
                     <i className="fas fa-clock mr-1" />
                     6:00 PM - 8:00 PM
                   </div>
-                  <a href="/details" className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm">
                     Join Us
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -452,9 +460,9 @@ export default function Home() {
                   <div className="text-gray-500 text-sm">
                     <i className="fas fa-clock mr-1" />1 Hour Sessions
                   </div>
-                  <a href="/details" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm">
                     Attend
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -484,9 +492,9 @@ export default function Home() {
                     <i className="fas fa-clock mr-1" />
                     Full Day Event
                   </div>
-                  <a href="/details" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm">
+                  <Link href="/details" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm">
                     Nominate
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -524,10 +532,10 @@ export default function Home() {
               <div className="flex justify-center space-x-3">
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fab fa-linkedin" />
-                </a>
+                </Link>
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fas fa-envelope" />
-                </a>
+                </Link>
               </div>
             </div>
             <div className="text-center">
@@ -545,10 +553,10 @@ export default function Home() {
               <div className="flex justify-center space-x-3">
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fab fa-linkedin" />
-                </a>
+                </Link>
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fas fa-envelope" />
-                </a>
+                </Link>
               </div>
             </div>
             <div className="text-center">
@@ -568,10 +576,10 @@ export default function Home() {
               <div className="flex justify-center space-x-3">
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fab fa-linkedin" />
-                </a>
+                </Link>
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fas fa-envelope" />
-                </a>
+                </Link>
               </div>
             </div>
             <div className="text-center">
@@ -591,10 +599,10 @@ export default function Home() {
               <div className="flex justify-center space-x-3">
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fab fa-linkedin" />
-                </a>
+                </Link>
                 <a href="#" className="text-blue-600 hover:text-blue-800">
                   <i className="fas fa-envelope" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

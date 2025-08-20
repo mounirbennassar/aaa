@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function Footer() {
   return (
     <>
@@ -5,9 +7,11 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <img
+              <Image
                 src="https://aaa-accreditation.org/wp-content/uploads/2020/04/AAA-Logo.png"
                 alt="AAA Logo"
+                width={48}
+                height={48}
                 className="h-12 w-auto mb-4 filter brightness-0 invert"
               />
               <h3 className="text-xl font-bold mb-4">AAA Academy</h3>

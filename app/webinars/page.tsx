@@ -52,14 +52,6 @@ export default function WebinarsPage() {
     showExpired: false
   });
 
-  useEffect(() => {
-    fetchWebinars();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
-
   const fetchWebinars = async () => {
     try {
       console.log('Fetching webinars...');
@@ -150,6 +142,14 @@ export default function WebinarsPage() {
     console.log('Filtered webinars:', filtered.length);
     setFilteredWebinars(filtered);
   }, [allWebinars, filters]);
+
+  useEffect(() => {
+    fetchWebinars();
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

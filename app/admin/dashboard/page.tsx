@@ -7,7 +7,7 @@ import { CldUploadWidget } from 'next-cloudinary'
 import { CldImage } from 'next-cloudinary'
 
 interface CloudinaryUploadResult {
-  info: {
+  info?: string | {
     public_id: string;
     secure_url: string;
   };
@@ -1065,8 +1065,10 @@ export default function AdminDashboard() {
                     )}
                     <CldUploadWidget
                       uploadPreset="ml_default"
-                      onSuccess={(result: CloudinaryUploadResult) => {
-                        setFormData({...formData, imageUrl: result.info.public_id})
+                      onSuccess={(results: CloudinaryUploadResult) => {
+                        if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
+                          setFormData({...formData, imageUrl: results.info.public_id})
+                        }
                       }}
                     >
                       {({ open }) => (
@@ -1111,11 +1113,13 @@ export default function AdminDashboard() {
                   </div>
                   <CldUploadWidget
                     uploadPreset="ml_default"
-                    onSuccess={(result: CloudinaryUploadResult) => {
-                      setFormData({
-                        ...formData,
-                        galleryImages: [...formData.galleryImages, result.info.public_id]
-                      })
+                    onSuccess={(results: CloudinaryUploadResult) => {
+                      if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
+                        setFormData({
+                          ...formData,
+                          galleryImages: [...formData.galleryImages, results.info.public_id]
+                        })
+                      }
                     }}
                   >
                     {({ open }) => (
@@ -1223,8 +1227,10 @@ export default function AdminDashboard() {
                         )}
                         <CldUploadWidget
                           uploadPreset="ml_default"
-                          onSuccess={(result: CloudinaryUploadResult) => {
-                            updateSpeaker(index, 'imageUrl', result.info.public_id)
+                          onSuccess={(results: CloudinaryUploadResult) => {
+                            if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
+                              updateSpeaker(index, 'imageUrl', results.info.public_id)
+                            }
                           }}
                         >
                           {({ open }) => (
@@ -1369,8 +1375,10 @@ export default function AdminDashboard() {
                     )}
                     <CldUploadWidget
                       uploadPreset="ml_default"
-                      onSuccess={(result: CloudinaryUploadResult) => {
-                        setFormData({...formData, certificateImageUrl: result.info.public_id})
+                      onSuccess={(results: CloudinaryUploadResult) => {
+                        if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
+                          setFormData({...formData, certificateImageUrl: results.info.public_id})
+                        }
                       }}
                     >
                       {({ open }) => (

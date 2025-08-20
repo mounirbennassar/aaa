@@ -52,14 +52,6 @@ export default function CoursesPage() {
     showExpired: false
   });
 
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
-
   const fetchCourses = async () => {
     try {
       console.log('Fetching courses...');
@@ -150,6 +142,14 @@ export default function CoursesPage() {
     console.log('Filtered courses:', filtered.length);
     setFilteredCourses(filtered);
   }, [allCourses, filters]);
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

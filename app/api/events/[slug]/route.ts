@@ -5,12 +5,14 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params
-    const event = await prisma.event.findUnique({
-      where: { id },
+    const { slug } = await params
+    
+    // Try to find by slug first
+    let event = await prisma.event.findUnique({
+      where: { slug },
       include: {
         creator: {
           select: {
@@ -20,6 +22,21 @@ export async function GET(
         }
       }
     })
+
+    // If not found by slug, try to find by id (for backward compatibility)
+    if (!event) {
+      event = await prisma.event.findUnique({
+        where: { id: slug },
+        include: {
+          creator: {
+            select: {
+              name: true,
+              email: true
+            }
+          }
+        }
+      })
+    }
 
     if (!event) {
       return NextResponse.json(
@@ -40,10 +57,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user) {
@@ -53,25 +69,35 @@ export async function PUT(
       )
     }
 
+    const { slug } = await params
     const body = await request.json()
+    
     const {
       title,
       description,
       category,
       duration,
       price,
-      currency,
+      currency = 'USD',
       date,
       location,
       maxParticipants,
       imageUrl,
-      isVirtual,
-      isActive
+      isVirtual = false,
+      isActive = true
     } = body
 
-    // Check if event exists
+    // Validate required fields
+    if (!title || !description || !category || !duration || !date || !location) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    // Find the event by id
     const existingEvent = await prisma.event.findUnique({
-      where: { id }
+      where: { id: slug }
     })
 
     if (!existingEvent) {
@@ -81,31 +107,21 @@ export async function PUT(
       )
     }
 
-    // Check if user has permission to edit (creator or admin)
-    if (existingEvent.createdBy !== session.user.id && session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Forbidden' },
-        { status: 403 }
-      )
-    }
-
     const updatedEvent = await prisma.event.update({
-      where: { id },
+      where: { id: existingEvent.id },
       data: {
-        ...(title && { title }),
-        ...(description && { description }),
-        ...(category && { category: category.toUpperCase() }),
-        ...(duration && { duration }),
-        ...(price !== undefined && { price: parseFloat(price) }),
-        ...(currency && { currency }),
-        ...(date && { date: new Date(date) }),
-        ...(location && { location }),
-        ...(maxParticipants !== undefined && { 
-          maxParticipants: maxParticipants ? parseInt(maxParticipants) : null 
-        }),
-        ...(imageUrl !== undefined && { imageUrl }),
-        ...(isVirtual !== undefined && { isVirtual }),
-        ...(isActive !== undefined && { isActive })
+        title,
+        description,
+        category: category.toUpperCase(),
+        duration,
+        price: parseFloat(price),
+        currency,
+        date: new Date(date),
+        location,
+        maxParticipants: maxParticipants ? parseInt(maxParticipants) : null,
+        imageUrl,
+        isVirtual,
+        isActive
       },
       include: {
         creator: {
@@ -129,10 +145,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user) {
@@ -142,9 +157,11 @@ export async function DELETE(
       )
     }
 
-    // Check if event exists
+    const { slug } = await params
+
+    // Find the event by id
     const existingEvent = await prisma.event.findUnique({
-      where: { id }
+      where: { id: slug }
     })
 
     if (!existingEvent) {
@@ -154,16 +171,8 @@ export async function DELETE(
       )
     }
 
-    // Check if user has permission to delete (creator or admin)
-    if (existingEvent.createdBy !== session.user.id && session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Forbidden' },
-        { status: 403 }
-      )
-    }
-
     await prisma.event.delete({
-      where: { id }
+      where: { id: existingEvent.id }
     })
 
     return NextResponse.json({ message: 'Event deleted successfully' })

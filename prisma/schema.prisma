@@ -36,10 +36,21 @@ model Event {
   currency    String      @default("USD")
   date        DateTime
   location    String
+  language    String      @default("English")
   maxParticipants Int?
-  imageUrl    String?
+  imageUrl    String?     // Main event/course image
+  galleryImages Json?     // Array of gallery image URLs
   isVirtual   Boolean     @default(false)
   isActive    Boolean     @default(true)
+  keyLearningOutcomes Json? // Array of strings
+  speakers    Json?       // Array of speaker objects with image URLs
+  courseHighlights Json?   // Array of strings
+  prerequisites Json?      // Array of strings
+  whyChoose   Json?       // Array of strings
+  certificateDescription String? // Certificate text paragraph
+  certificateImageUrl String?    // Certificate image
+  certificateUrl String?         // Certificate link
+  slug        String?     @unique
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   createdBy   String
@@ -59,4 +70,5 @@ enum EventCategory {
   CERTIFICATION
   WEBINAR
   CONFERENCE
+  COURSE
 }

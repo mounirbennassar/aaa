@@ -1,44 +1,45 @@
+import LearnMoreButton from './components/LearnMoreButton';
+
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
       <section
         id="home"
-        className="gradient-bg pt-20 pb-16 relative overflow-hidden"
+        className="gradient-bg pt-28 pb-16 relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
             <div className="text-white">
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Elevate Your Career with
-                <span className="text-yellow-300"> Professional Accreditation</span>
+                <span className="text-yellow-300">Advance with Confidence</span> to get
+                <span className="text-yellow-300"> Certified by Global Experts</span>
               </h1>
               <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Join AAA Academy and advance your expertise through internationally
-                recognized certification programs, professional development courses,
-                and cutting-edge training opportunities.
+                The AAA Accreditation Academy is a premier destination for professionals looking for
+                organized, effective, and globally recognized learning in accreditation. It delivers high-impact
+                training courses, certification sessions, webinars, workshops and more. Our focus
+                is on quality improvement and helping professionals navigate various accreditation and
+                international standards application or assessment principles.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-colors shadow-lg">
                   <i className="fas fa-graduation-cap mr-2" />
                   Explore Programs
                 </button>
-                <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-900 transition-colors">
-                  <i className="fas fa-play mr-2" />
-                  Watch Demo
-                </button>
+                <LearnMoreButton />
               </div>
               <div className="mt-12 grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">500+</div>
-                  <div className="text-blue-100">Certified Professionals</div>
+                  <div className="text-3xl font-bold text-yellow-300">+6000</div>
+                  <div className="text-blue-100">Program Participants</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">50+</div>
+                  <div className="text-3xl font-bold text-yellow-300">+200</div>
                   <div className="text-blue-100">Expert Instructors</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">25+</div>
+                  <div className="text-3xl font-bold text-yellow-300">+55</div>
                   <div className="text-blue-100">Countries Served</div>
                 </div>
               </div>
@@ -78,6 +79,85 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute top-0 right-0 w-1/3 h-full bg-blue-800 opacity-10 transform rotate-12 translate-x-1/2" />
+      </section>
+
+      {/* Academy Overview Section */}
+      <section id="academy-overview" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              Academy Overview
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              From Knowledge to Career Growth: Your Path with AAA Academy
+            </p>
+          </div>
+          
+          <div className="mb-12">
+            <p className="text-lg text-gray-700 max-w-5xl mx-auto text-center leading-relaxed">
+              At the Accreditation Academy, we believe in structured, meaningful progress — not just
+              learning for the sake of learning. That&apos;s why our development model is built around a
+              powerful, three-step pathway: <strong>Knowledge Hub → Official Certificate → Career
+              Development</strong>. Here&apos;s how it works:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1: Knowledge Hub */}
+            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-blue-600">
+              <div className="text-center mb-6">
+                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className="fas fa-book text-2xl text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-blue-900">1. Knowledge Hub</h3>
+                <p className="text-blue-600 font-semibold">Learn from the Best</p>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Your journey begins at our <strong>Knowledge</strong> Hub — a central space offering high-impact training
+                courses, expert-led webinars, hands-on workshops, and more. Each program is carefully
+                crafted by professionals with deep experience in accreditation, international standards,
+                and quality improvement. Whether you&apos;re new to the field or looking to expand your
+                expertise, our content ensures practical, up-to-date learning aligned with global practices.
+              </p>
+            </div>
+
+            {/* Step 2: Official Certificate */}
+            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-red-600">
+              <div className="text-center mb-6">
+                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className="fas fa-certificate text-2xl text-red-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-blue-900">2. Official Certificate</h3>
+                <p className="text-red-600 font-semibold">Prove Your Expertise</p>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                After completing your selected course or training, you'll receive an <strong>official, internationally
+                recognized certificate</strong>. This isn&apos;t just a document — it&apos;s a mark of quality and credibility.
+                Our certificates demonstrate that you&apos;ve met specific learning objectives and gained the
+                skills required to contribute meaningfully to your field, especially in the context of
+                accreditation and standard-based systems.
+              </p>
+            </div>
+
+            {/* Step 3: Career Development */}
+            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-green-600">
+              <div className="text-center mb-6">
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className="fas fa-chart-line text-2xl text-green-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-blue-900">3. Career Development</h3>
+                <p className="text-green-600 font-semibold">Grow with Confidence</p>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                The final step in your journey is where the real transformation happens. With certified
+                expertise in hand, you can take strategic steps in your career — apply for new roles, lead
+                quality initiatives, or strengthen your profile in a competitive market. Our alumni have gone
+                on to secure leadership positions, consultancy opportunities, and specialized roles in both
+                local and international organizations.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Programs Section */}

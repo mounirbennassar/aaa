@@ -11,7 +11,7 @@ interface Speaker {
   imageUrl?: string;
 }
 
-interface Course {
+interface Webinar {
   id: string;
   title: string;
   description: string;
@@ -37,9 +37,9 @@ interface Course {
   isVirtual?: boolean;
 }
 
-export default function CoursesPage() {
-  const [allCourses, setAllCourses] = useState<Course[]>([]);
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+export default function WebinarsPage() {
+  const [allWebinars, setAllWebinars] = useState<Webinar[]>([]);
+  const [filteredWebinars, setFilteredWebinars] = useState<Webinar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -53,73 +53,73 @@ export default function CoursesPage() {
   });
 
   useEffect(() => {
-    fetchCourses();
+    fetchWebinars();
   }, []);
 
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
 
-  const fetchCourses = async () => {
+  const fetchWebinars = async () => {
     try {
-      console.log('Fetching courses...');
-      const response = await fetch('/api/events?category=COURSE');
+      console.log('Fetching webinars...');
+      const response = await fetch('/api/events?category=WEBINAR');
       console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched data:', data);
         console.log('Events array:', data.events);
         console.log('Events length:', data.events?.length);
-        setAllCourses(data.events || []);
+        setAllWebinars(data.events || []);
       } else {
-        console.error('Failed to fetch courses:', response.statusText);
-        setError('Failed to fetch courses');
+        console.error('Failed to fetch webinars:', response.statusText);
+        setError('Failed to fetch webinars');
       }
     } catch (err) {
-      console.error('Error fetching courses:', err);
-      setError('An error occurred while fetching courses');
+      console.error('Error fetching webinars:', err);
+      setError('An error occurred while fetching webinars');
     } finally {
       setLoading(false);
     }
   };
 
   const applyFilters = useCallback(() => {
-    console.log('Applying filters to courses:', allCourses.length);
-    let filtered = [...allCourses];
+    console.log('Applying filters to webinars:', allWebinars.length);
+    let filtered = [...allWebinars];
 
     // Search filter
     if (filters.search) {
-      filtered = filtered.filter(course => 
-        course.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-        course.description.toLowerCase().includes(filters.search.toLowerCase())
+      filtered = filtered.filter(webinar => 
+        webinar.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+        webinar.description.toLowerCase().includes(filters.search.toLowerCase())
       );
     }
 
     // Price filter
     if (filters.priceRange !== 'all') {
-      filtered = filtered.filter(course => {
+      filtered = filtered.filter(webinar => {
         switch (filters.priceRange) {
           case 'free':
-            return course.price === 0;
-          case 'under500':
-            return course.price > 0 && course.price < 500;
-          case 'under1000':
-            return course.price >= 500 && course.price < 1000;
-          case 'over1000':
-            return course.price >= 1000;
+            return webinar.price === 0;
+          case 'under50':
+            return webinar.price > 0 && webinar.price < 50;
+          case 'under100':
+            return webinar.price >= 50 && webinar.price < 100;
+          case 'over100':
+            return webinar.price >= 100;
           default:
             return true;
         }
       });
     }
 
-    // Location filter
+    // Location filter (webinars are typically online)
     if (filters.location !== 'all') {
-      filtered = filtered.filter(course => {
+      filtered = filtered.filter(webinar => {
         if (filters.location === 'online') {
-          return course.isVirtual || course.location.toLowerCase().includes('online');
+          return webinar.isVirtual || webinar.location.toLowerCase().includes('online');
         } else if (filters.location === 'offline') {
-          return !course.isVirtual && !course.location.toLowerCase().includes('online');
+          return !webinar.isVirtual && !webinar.location.toLowerCase().includes('online');
         }
         return true;
       });
@@ -127,15 +127,15 @@ export default function CoursesPage() {
 
     // Duration filter
     if (filters.duration !== 'all') {
-      filtered = filtered.filter(course => {
-        const duration = course.duration.toLowerCase();
+      filtered = filtered.filter(webinar => {
+        const duration = webinar.duration.toLowerCase();
         switch (filters.duration) {
           case 'short':
-            return duration.includes('hour') || duration.includes('1 day');
+            return duration.includes('hour') || duration.includes('1 hour');
           case 'medium':
-            return duration.includes('2 day') || duration.includes('3 day');
+            return duration.includes('1.5 hour') || duration.includes('2 hour');
           case 'long':
-            return duration.includes('4 day') || duration.includes('5 day') || duration.includes('week');
+            return duration.includes('3 hour') || duration.includes('day');
           default:
             return true;
         }
@@ -144,12 +144,12 @@ export default function CoursesPage() {
 
     // Expired filter
     if (!filters.showExpired) {
-      filtered = filtered.filter(course => !isExpired(course.date));
+      filtered = filtered.filter(webinar => !isExpired(webinar.date));
     }
 
-    console.log('Filtered courses:', filtered.length);
-    setFilteredCourses(filtered);
-  }, [allCourses, filters]);
+    console.log('Filtered webinars:', filtered.length);
+    setFilteredWebinars(filtered);
+  }, [allWebinars, filters]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -161,9 +161,17 @@ export default function CoursesPage() {
   };
 
   const isExpired = (dateString: string) => {
-    const courseDate = new Date(dateString);
+    const webinarDate = new Date(dateString);
     const today = new Date();
-    return courseDate < today;
+    return webinarDate < today;
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   if (loading) {
@@ -172,7 +180,7 @@ export default function CoursesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-900 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading courses...</p>
+            <p className="mt-4 text-gray-600">Loading webinars...</p>
           </div>
         </div>
       </div>
@@ -197,33 +205,33 @@ export default function CoursesPage() {
     <div className="min-h-screen bg-gray-50 pt-48 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Banner */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl shadow-lg p-8 mb-8 text-white">
+        <div className="bg-gradient-to-r from-green-600 to-green-800 rounded-xl shadow-lg p-8 mb-8 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Professional Courses</h1>
-              <p className="text-xl text-blue-100 max-w-2xl">
-                Explore our comprehensive range of professional development courses designed
-                to advance your career in accreditation and quality management.
+              <h1 className="text-4xl font-bold mb-4">Professional Webinars</h1>
+              <p className="text-xl text-green-100 max-w-2xl">
+                Join our interactive webinars led by industry experts covering the latest trends 
+                and best practices in accreditation and quality management.
               </p>
               <div className="mt-6 flex items-center space-x-6">
                 <div className="flex items-center">
-                  <i className="fas fa-users text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Expert Instructors</span>
+                  <i className="fas fa-video text-green-200 mr-2"></i>
+                  <span className="text-green-100">Live Sessions</span>
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-certificate text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Verified Certificates</span>
+                  <i className="fas fa-users text-green-200 mr-2"></i>
+                  <span className="text-green-100">Interactive Q&A</span>
                 </div>
                 <div className="flex items-center">
-                  <i className="fas fa-globe text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Global Recognition</span>
+                  <i className="fas fa-download text-green-200 mr-2"></i>
+                  <span className="text-green-100">Resources Included</span>
                 </div>
               </div>
             </div>
             <div className="hidden lg:block">
               <div className="bg-white bg-opacity-20 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold">{allCourses.length}</div>
-                <div className="text-blue-100">Available Courses</div>
+                <div className="text-3xl font-bold">{allWebinars.length}</div>
+                <div className="text-green-100">Available Webinars</div>
               </div>
             </div>
           </div>
@@ -234,7 +242,7 @@ export default function CoursesPage() {
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Courses</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Webinars</h3>
               
               {/* Search */}
               <div className="mb-6">
@@ -243,8 +251,8 @@ export default function CoursesPage() {
                   type="text"
                   value={filters.search}
                   onChange={(e) => setFilters({...filters, search: e.target.value})}
-                  placeholder="Search courses..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Search webinars..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
 
@@ -254,27 +262,13 @@ export default function CoursesPage() {
                 <select
                   value={filters.priceRange}
                   onChange={(e) => setFilters({...filters, priceRange: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value="all">All Prices</option>
                   <option value="free">Free</option>
-                  <option value="under500">Under $500</option>
-                  <option value="under1000">$500 - $1000</option>
-                  <option value="over1000">Over $1000</option>
-                </select>
-              </div>
-
-              {/* Location */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                <select
-                  value={filters.location}
-                  onChange={(e) => setFilters({...filters, location: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Locations</option>
-                  <option value="online">Online</option>
-                  <option value="offline">In-Person</option>
+                  <option value="under50">Under $50</option>
+                  <option value="under100">$50 - $100</option>
+                  <option value="over100">Over $100</option>
                 </select>
               </div>
 
@@ -284,12 +278,12 @@ export default function CoursesPage() {
                 <select
                   value={filters.duration}
                   onChange={(e) => setFilters({...filters, duration: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value="all">All Durations</option>
-                  <option value="short">Short (1 day or less)</option>
-                  <option value="medium">Medium (2-3 days)</option>
-                  <option value="long">Long (4+ days)</option>
+                  <option value="short">Short (1 hour)</option>
+                  <option value="medium">Medium (1.5-2 hours)</option>
+                  <option value="long">Long (3+ hours)</option>
                 </select>
               </div>
 
@@ -302,30 +296,30 @@ export default function CoursesPage() {
                     onChange={(e) => setFilters({...filters, showExpired: e.target.checked})}
                     className="mr-2"
                   />
-                  <span className="text-sm text-gray-700">Show expired courses</span>
+                  <span className="text-sm text-gray-700">Show expired webinars</span>
                 </label>
               </div>
 
               {/* Results Count */}
               <div className="text-sm text-gray-600">
-                Showing {filteredCourses.length} of {allCourses.length} courses
+                Showing {filteredWebinars.length} of {allWebinars.length} webinars
               </div>
             </div>
           </div>
 
-          {/* Course Grid */}
+          {/* Webinar Grid */}
           <div className="lg:col-span-3">
-            {filteredCourses.length === 0 ? (
+            {filteredWebinars.length === 0 ? (
               <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-                <div className="bg-blue-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i className="fas fa-graduation-cap text-3xl text-blue-600" />
+                <div className="bg-green-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i className="fas fa-video text-3xl text-green-600" />
                 </div>
                 <h2 className="text-2xl font-bold text-blue-900 mb-4">
-                  No Courses Available
+                  No Webinars Available
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  We&apos;re currently developing our course catalog. 
-                  Check back soon for exciting new learning opportunities!
+                  We&apos;re currently planning our webinar schedule. 
+                  Check back soon for exciting new learning sessions!
                 </p>
                 <Link
                   href="/"
@@ -336,14 +330,14 @@ export default function CoursesPage() {
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredCourses.map((course) => {
-                  const expired = isExpired(course.date);
+                {filteredWebinars.map((webinar) => {
+                  const expired = isExpired(webinar.date);
                   return (
-                    <div key={course.id} className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${expired ? 'opacity-50' : ''}`}>
-                      {course.imageUrl && (
+                    <div key={webinar.id} className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${expired ? 'opacity-50' : ''}`}>
+                      {webinar.imageUrl && (
                         <CldImage
-                          src={course.imageUrl}
-                          alt={course.title}
+                          src={webinar.imageUrl}
+                          alt={webinar.title}
                           width={400}
                           height={192}
                           className="w-full h-48 object-cover"
@@ -356,58 +350,59 @@ export default function CoursesPage() {
                       
                       <div className="p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}`}>
-                            {expired ? 'Expired' : 'Course'}
+                          <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                            <i className={`fas ${expired ? 'fa-exclamation-triangle' : 'fa-video'} mr-1`} />
+                            {expired ? 'Expired' : 'Webinar'}
                           </div>
                           <div className="text-gray-500 text-sm">
                             <i className="fas fa-calendar mr-1" />
-                            {formatDate(course.date)}
+                            {formatDate(webinar.date)}
                           </div>
                         </div>
+                        
+                        <h3 className="text-md font-bold text-blue-900 mb-3">
+                          {webinar.title}
+                        </h3>
 
                         {expired && (
                           <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
                             <div className="flex items-center">
                               <i className="fas fa-exclamation-triangle text-red-500 mr-2" />
                               <p className="text-red-700 text-sm">
-                                This course has finished. Subscribe to our newsletter for upcoming courses or choose other available options.
+                                This webinar has finished. Subscribe to our newsletter for upcoming webinars or choose other available options.
                               </p>
                             </div>
                           </div>
                         )}
-                      
-                        <h3 className="text-md font-bold text-blue-900 mb-3">
-                          {course.title}
-                        </h3>
                         
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                          {course.description}
+                        <p className="text-gray-600 mb-4 text-sm line-clamp-3">
+                          {webinar.description}
                         </p>
                         
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-globe mr-2" />
-                            {course.language}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-map-marker-alt mr-2" />
-                            {course.location}
+                            {webinar.language}
                           </div>
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-clock mr-2" />
-                            {course.duration}
+                            {formatTime(webinar.date)} ({webinar.duration})
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <i className="fas fa-desktop mr-2" />
+                            {webinar.location}
                           </div>
                         </div>
                         
                         <div className="flex items-center justify-between">
-                          <div className="text-md font-bold text-blue-900">
-                            from ${course.price}
+                          <div className="text-2xl font-bold text-blue-900">
+                            {webinar.price === 0 ? 'Free' : `$${webinar.price}`}
                           </div>
                           <Link
-                            href={`/details/${course.slug}`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold"
+                            href={`/details/${webinar.slug}`}
+                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
                           >
-                            View Details
+                            Join Webinar
                           </Link>
                         </div>
                       </div>
@@ -421,4 +416,4 @@ export default function CoursesPage() {
       </div>
     </div>
   );
-}
+} 

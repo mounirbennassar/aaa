@@ -1,14 +1,8 @@
 import React from 'react';
-import LearnMoreButton from './components/LearnMoreButton';
 import Link from 'next/link';
 import Image from 'next/image';
 
 // Type definitions
-interface StatCardProps {
-  value: string;
-  label: string;
-}
-
 interface CourseCardProps {
   icon: string;
   title: string;
@@ -29,13 +23,6 @@ interface EventCardProps {
 }
 
 // Reusable components for better optimization
-const StatCard = ({ value, label }: StatCardProps) => (
-  <div className="text-center">
-    <div className="text-3xl font-bold text-white">{value}</div>
-    <div className="text-blue-100 text-sm">{label}</div>
-  </div>
-);
-
 const CourseCard = ({ icon, title, description, features, price, color = 'primary' }: CourseCardProps) => {
   const colorStyles: Record<'primary' | 'secondary' | 'tertiary', string> = {
     primary: 'border-[#024985] bg-[#024985]',
@@ -112,12 +99,6 @@ const EventCard = ({ image, category, date, title, description, price, registerL
 
 export default function Home() {
   // Data arrays for cleaner code
-  const stats: StatCardProps[] = [
-    { value: '1000+', label: 'Certified Professionals' },
-    { value: '50+', label: 'Training Programs' },
-    { value: '25+', label: 'Countries Served' }
-  ];
-
   const featuredCourses: CourseCardProps[] = [
     {
       icon: 'fa-hospital',
@@ -251,7 +232,7 @@ export default function Home() {
               to Professional Growth
             </h2>
             <div className="max-w-4xl mx-auto">
-              <p className="text-lg text-gray-600 font-medium">Here's how it works:</p>
+              <p className="text-lg text-gray-600 font-medium">Here&apos;s how it works:</p>
             </div>
           </div>
 

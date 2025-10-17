@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function DetailsPage() {
   return (
     <main>
@@ -7,17 +9,17 @@ export default function DetailsPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-[#024985]">
+                <Link href="/" className="text-gray-500 hover:text-[#024985]">
                   <i className="fas fa-home" /> Home
-                </a>
+                </Link>
               </li>
               <li>
                 <i className="fas fa-chevron-right text-gray-400" />
               </li>
               <li>
-                <a href="/events" className="text-gray-500 hover:text-[#024985]">
+                <Link href="/events" className="text-gray-500 hover:text-[#024985]">
                   Events
-                </a>
+                </Link>
               </li>
               <li>
                 <i className="fas fa-chevron-right text-gray-400" />

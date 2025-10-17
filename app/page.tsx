@@ -89,22 +89,37 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
   );
 };
 
-const EventCard = ({ image, category, date, title, description, price, registerLink }: EventCardProps) => (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-    {image && image !== '/images/default-webinar.jpg' && (
-      <CldImage
-        src={image}
-        alt={title}
-        width={400}
-        height={192}
-        className="w-full h-48 object-cover"
-        crop={{
-          type: 'fill',
-          source: true
-        }}
-      />
-    )}
-    <div className="p-6">
+const EventCard = ({ image, category, date, title, description, price, registerLink }: EventCardProps) => {
+  // Helper function to check if image URL is valid for Cloudinary
+  const isValidCloudinaryImage = (imageUrl: string) => {
+    if (!imageUrl || imageUrl.trim() === '') return false;
+    if (imageUrl === '/images/default-webinar.jpg') return false;
+    
+    // Check if it's a full URL (like Unsplash) - these won't work with CldImage
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl.includes('res.cloudinary.com') || imageUrl.includes('cloudinary.com');
+    }
+    
+    // If it's just a public ID, it should be valid
+    return true;
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+      {image && isValidCloudinaryImage(image) && (
+        <CldImage
+          src={image}
+          alt={title}
+          width={400}
+          height={192}
+          className="w-full h-48 object-cover"
+          crop={{
+            type: 'fill',
+            source: true
+          }}
+        />
+      )}
+      <div className="p-6">
       <div className="flex items-center mb-4">
         <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
           {category}
@@ -127,7 +142,8 @@ const EventCard = ({ image, category, date, title, description, price, registerL
       </div>
     </div>
   </div>
-);
+  );
+};
 
 export default function Home() {
   // State for webinars

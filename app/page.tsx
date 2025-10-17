@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { CldImage } from 'next-cloudinary';
 
 // Type definitions
 interface CourseCardProps {
@@ -91,15 +91,19 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
 
 const EventCard = ({ image, category, date, title, description, price, registerLink }: EventCardProps) => (
   <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-    <div className="relative h-48 w-full">
-      <Image
+    {image && image !== '/images/default-webinar.jpg' && (
+      <CldImage
         src={image}
         alt={title}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        width={400}
+        height={192}
+        className="w-full h-48 object-cover"
+        crop={{
+          type: 'fill',
+          source: true
+        }}
       />
-    </div>
+    )}
     <div className="p-6">
       <div className="flex items-center mb-4">
         <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
@@ -163,7 +167,7 @@ export default function Home() {
 
   // Helper function to convert webinar to event card props
   const webinarToEventCard = (webinar: Webinar): EventCardProps => ({
-    image: webinar.imageUrl || '/images/default-webinar.jpg',
+    image: webinar.imageUrl || '',
     category: 'Webinar',
     date: formatDate(webinar.date),
     title: webinar.title,

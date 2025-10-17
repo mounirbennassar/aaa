@@ -3,15 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { CldUploadWidget } from 'next-cloudinary'
 import { CldImage } from 'next-cloudinary'
 
-interface CloudinaryUploadResult {
-  info?: string | {
-    public_id: string;
-    secure_url: string;
-  };
-}
 
 interface Event {
   id: string
@@ -1101,24 +1094,29 @@ Training Programs
                         className="w-20 h-20 object-cover rounded-lg"
                       />
                     )}
-                    <CldUploadWidget
-                      uploadPreset="academy_preset"
-                      onSuccess={(results: CloudinaryUploadResult) => {
-                        if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
-                          setFormData({...formData, imageUrl: results.info.public_id})
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          const publicId = await uploadToCloudinary(file, 'mainImage')
+                          if (publicId) {
+                            setFormData(prev => ({...prev, imageUrl: publicId}))
+                          }
                         }
                       }}
+                      className="hidden"
+                      id="main-image-upload"
+                    />
+                    <label
+                      htmlFor="main-image-upload"
+                      className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${
+                        uploading.mainImage ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
                     >
-                      {({ open }) => (
-                        <button
-                          type="button"
-                          onClick={() => open()}
-                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                          Upload Main Image
-                        </button>
-                      )}
-                    </CldUploadWidget>
+                      {uploading.mainImage ? 'Uploading...' : 'Upload Main Image'}
+                    </label>
                   </div>
                 </div>
                 
@@ -1149,27 +1147,32 @@ Training Programs
                       </div>
                     ))}
                   </div>
-                  <CldUploadWidget
-                    uploadPreset="academy_preset"
-                    onSuccess={(results: CloudinaryUploadResult) => {
-                      if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
-                        setFormData({
-                          ...formData,
-                          galleryImages: [...formData.galleryImages, results.info.public_id]
-                        })
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        const publicId = await uploadToCloudinary(file, `galleryImage-${formData.galleryImages.length}`)
+                        if (publicId) {
+                          setFormData(prev => ({
+                            ...prev,
+                            galleryImages: [...prev.galleryImages, publicId]
+                          }))
+                        }
                       }
                     }}
+                    className="hidden"
+                    id="gallery-image-upload"
+                  />
+                  <label
+                    htmlFor="gallery-image-upload"
+                    className={`bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer ${
+                      uploading[`galleryImage-${formData.galleryImages.length}`] ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                   >
-                    {({ open }) => (
-                      <button
-                        type="button"
-                        onClick={() => open()}
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-                      >
-                        Add Gallery Image
-                      </button>
-                    )}
-                  </CldUploadWidget>
+                    {uploading[`galleryImage-${formData.galleryImages.length}`] ? 'Uploading...' : 'Add Gallery Image'}
+                  </label>
                 </div>
               </div>
 
@@ -1263,24 +1266,29 @@ Training Programs
                             className="w-12 h-12 object-cover rounded-full"
                           />
                         )}
-                        <CldUploadWidget
-                          uploadPreset="academy_preset"
-                          onSuccess={(results: CloudinaryUploadResult) => {
-                            if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
-                              updateSpeaker(index, 'imageUrl', results.info.public_id)
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0]
+                            if (file) {
+                              const publicId = await uploadToCloudinary(file, `speakerImage-${index}`)
+                              if (publicId) {
+                                updateSpeaker(index, 'imageUrl', publicId)
+                              }
                             }
                           }}
+                          className="hidden"
+                          id={`speaker-image-upload-${index}`}
+                        />
+                        <label
+                          htmlFor={`speaker-image-upload-${index}`}
+                          className={`bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors cursor-pointer ${
+                            uploading[`speakerImage-${index}`] ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
                         >
-                          {({ open }) => (
-                            <button
-                              type="button"
-                              onClick={() => open()}
-                              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors"
-                            >
-                              Upload Image
-                            </button>
-                          )}
-                        </CldUploadWidget>
+                          {uploading[`speakerImage-${index}`] ? 'Uploading...' : 'Upload Image'}
+                        </label>
                       </div>
                     </div>
                   </div>

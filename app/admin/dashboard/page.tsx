@@ -1382,7 +1382,7 @@ Training Programs
                       />
                     )}
                     <CldUploadWidget
-                      uploadPreset="ml_default"
+                      uploadPreset="academy_preset"
                       onSuccess={(results: CloudinaryUploadResult) => {
                         if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
                           setFormData({...formData, certificateImageUrl: results.info.public_id})

@@ -42,7 +42,7 @@ export default function Header() {
             {/* Home */}
             <div>
               <a
-                href="#home"
+                href="https://aaa-accreditation.org"
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
               >
                 Home
@@ -185,6 +185,13 @@ export default function Header() {
           <div className="flex justify-center items-center h-10">
             <div className="flex space-x-6">
               <a
+                href="/"
+                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
+              >
+                <i className="fas fa-graduation-cap mr-2" />
+                Academy
+              </a>
+              <a
                 href="/courses"
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
               >
@@ -204,13 +211,6 @@ export default function Header() {
               >
                 <i className="fas fa-certificate mr-2" />
                 Certificate
-              </a>
-              <a
-                href="/career"
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
-              >
-                <i className="fas fa-briefcase mr-2" />
-                Career
               </a>
             </div>
           </div>
@@ -239,7 +239,7 @@ export default function Header() {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Main Navigation</h3>
               <div className="space-y-2">
                 <a
-                  href="#home"
+                  href="https://aaa-accreditation.org"
                   onClick={closeMobileMenu}
                   className="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 >
@@ -323,6 +323,14 @@ export default function Header() {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Academy</h3>
               <div className="space-y-2">
                 <a
+                  href="/"
+                  onClick={closeMobileMenu}
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <i className="fas fa-graduation-cap mr-3 text-blue-600" />
+                  Academy
+                </a>
+                <a
                   href="/courses"
                   onClick={closeMobileMenu}
                   className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -345,14 +353,6 @@ export default function Header() {
                 >
                   <i className="fas fa-certificate mr-3 text-blue-600" />
                   Certificate
-                </a>
-                <a
-                  href="/career"
-                  onClick={closeMobileMenu}
-                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <i className="fas fa-briefcase mr-3 text-blue-600" />
-                  Career
                 </a>
               </div>
             </div>

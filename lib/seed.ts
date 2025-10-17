@@ -38,7 +38,7 @@ export async function seedDatabase() {
 
     // Create comprehensive sample events with all fields
     const sampleEvents = [
-      // COURSES
+      // TRAINING PROGRAMS
       {
         title: 'Approved Surveyors for Healthcare Accreditation',
         description: 'This comprehensive course is designed for healthcare professionals who want to become approved surveyors for healthcare accreditation. The program covers all aspects of healthcare accreditation processes, survey methodologies, and quality assessment techniques.',

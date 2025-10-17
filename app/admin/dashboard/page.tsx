@@ -65,7 +65,7 @@ interface EventsResponse {
 
 interface Analytics {
   totalEvents: number
-  totalCourses: number
+  totalTrainingPrograms: number
   totalWebinars: number
   totalRevenue: number
   averagePrice: number
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
   const [events, setEvents] = useState<Event[]>([])
   const [analytics, setAnalytics] = useState<Analytics>({
     totalEvents: 0,
-    totalCourses: 0,
+    totalTrainingPrograms: 0,
     totalWebinars: 0,
     totalRevenue: 0,
     averagePrice: 0,
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
     monthlyRevenue: 0
   })
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'webinars' | 'analytics'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'training-programs' | 'webinars' | 'analytics'>('dashboard')
   const [showModal, setShowModal] = useState(false)
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [modalType, setModalType] = useState<'course' | 'webinar'>('course')
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
         const data: EventsResponse = await response.json()
         const events = data.events
         
-        const courses = events.filter(e => e.category === 'COURSE')
+        const trainingPrograms = events.filter(e => e.category === 'COURSE')
         const webinars = events.filter(e => e.category === 'WEBINAR')
         const totalRevenue = events.reduce((sum, e) => sum + e.price, 0)
         const averagePrice = totalRevenue / events.length || 0
@@ -172,7 +172,7 @@ export default function AdminDashboard() {
 
         setAnalytics({
           totalEvents: events.length,
-          totalCourses: courses.length,
+          totalTrainingPrograms: trainingPrograms.length,
           totalWebinars: webinars.length,
           totalRevenue,
           averagePrice,
@@ -385,15 +385,15 @@ export default function AdminDashboard() {
               </button>
               
               <button
-                onClick={() => setActiveTab('courses')}
+                onClick={() => setActiveTab('training-programs'))
                 className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  activeTab === 'courses' 
+                  activeTab === 'training-programs' 
                     ? 'bg-blue-600 text-white' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <i className="fas fa-graduation-cap mr-3"></i>
-                Courses
+Training Programs
               </button>
               
               <button
@@ -451,17 +451,17 @@ export default function AdminDashboard() {
                 {activeTab === 'dashboard' ? 'Overview' : activeTab}
               </h2>
               
-              {(activeTab === 'courses' || activeTab === 'webinars') && (
+              {(activeTab === 'training-programs' || activeTab === 'webinars') && (
                 <button
                   onClick={() => {
-                    setModalType(activeTab === 'courses' ? 'course' : 'webinar')
-                    setFormData(prev => ({ ...prev, category: activeTab === 'courses' ? 'COURSE' : 'WEBINAR' }))
+                    setModalType(activeTab === 'training-programs' ? 'course' : 'webinar')
+                    setFormData(prev => ({ ...prev, category: activeTab === 'training-programs' ? 'COURSE' : 'WEBINAR' }))
                     setShowModal(true)
                   }}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
                 >
                   <i className="fas fa-plus mr-2"></i>
-                  Add New {activeTab === 'courses' ? 'Course' : 'Webinar'}
+                  Add New {activeTab === 'training-programs' ? 'Training Program' : 'Webinar'}
                 </button>
               )}
             </div>
@@ -488,8 +488,8 @@ export default function AdminDashboard() {
                   <div className="bg-white p-6 rounded-xl shadow-sm">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-600">Total Courses</p>
-                        <p className="text-3xl font-bold text-gray-900">{analytics.totalCourses}</p>
+                        <p className="text-sm font-medium text-gray-600">Total Training Programs</p>
+                        <p className="text-3xl font-bold text-gray-900">{analytics.totalTrainingPrograms}</p>
                       </div>
                       <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                         <i className="fas fa-graduation-cap text-green-600 text-xl"></i>
@@ -601,17 +601,17 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* Courses Tab */}
-            {activeTab === 'courses' && (
+            {/* Training Programs Tab */}
+            {activeTab === 'training-programs' && (
               <div className="space-y-6">
                 {/* Search and Filter */}
                 <div className="bg-white p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Manage Courses</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Manage Training Programs</h3>
                     <div className="flex items-center space-x-4">
                       <input
                         type="text"
-                        placeholder="Search courses..."
+                        placeholder="Search training programs..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -622,13 +622,13 @@ export default function AdminDashboard() {
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="all">All Categories</option>
-                        <option value="COURSE">Courses</option>
+                        <option value="COURSE">Training Programs</option>
                         <option value="WEBINAR">Webinars</option>
                       </select>
                     </div>
                   </div>
                   
-                  {/* Courses Table */}
+                  {/* Training Programs Table */}
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>

@@ -177,7 +177,7 @@ export default function CourseDetailPage() {
                 href={item.category === 'COURSE' ? '/courses' : '/webinars'}
                 className="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
               >
-                Back to {item.category === 'COURSE' ? 'Courses' : 'Webinars'}
+                Back to {item.category === 'COURSE' ? 'Training Programs' : 'Webinars'}
               </Link>
             </div>
           </div>

@@ -189,7 +189,7 @@ export default function Header() {
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
               >
                 <i className="fas fa-book mr-2" />
-                Courses
+                Training Programs
               </a>
               <a
                 href="/webinars"
@@ -328,7 +328,7 @@ export default function Header() {
                   className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <i className="fas fa-book mr-3 text-blue-600" />
-                  Courses
+                  Training Programs
                 </a>
                 <a
                   href="/webinars"

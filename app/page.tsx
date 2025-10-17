@@ -99,7 +99,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
 
 export default function Home() {
   // Data arrays for cleaner code
-  const featuredCourses: CourseCardProps[] = [
+  const featuredTrainingPrograms: CourseCardProps[] = [
     {
       icon: 'fa-hospital',
       title: 'Healthcare Accreditation Mastery',
@@ -245,7 +245,7 @@ export default function Home() {
                 icon: 'fa-graduation-cap',
                 content: 'Begin your journey at our Knowledge Hub — your central space for transformation.',
                 features: [
-                  'High-impact training courses',
+                  'High-impact training programs',
                   'Expert-led webinars',
                   'Hands-on workshops',
                   'Industry-specific content'
@@ -323,7 +323,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Courses Section */}
+      {/* Featured Training Programs Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -336,7 +336,7 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {featuredCourses.map((course, index) => (
+            {featuredTrainingPrograms.map((course, index) => (
               <CourseCard key={index} {...course} />
             ))}
           </div>

@@ -38,9 +38,9 @@ interface Course {
   isVirtual?: boolean;
 }
 
-export default function CoursesPage() {
-  const [allCourses, setAllCourses] = useState<Course[]>([]);
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+export default function TrainingProgramsPage() {
+  const [allPrograms, setAllPrograms] = useState<Course[]>([]);
+  const [filteredPrograms, setFilteredPrograms] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -53,9 +53,9 @@ export default function CoursesPage() {
     showExpired: false
   });
 
-  const fetchCourses = async () => {
+  const fetchPrograms = async () => {
     try {
-      console.log('Fetching courses...');
+      console.log('Fetching training programs...');
       const response = await fetch('/api/events?category=COURSE');
       console.log('Response status:', response.status);
       if (response.ok) {
@@ -63,22 +63,22 @@ export default function CoursesPage() {
         console.log('Fetched data:', data);
         console.log('Events array:', data.events);
         console.log('Events length:', data.events?.length);
-        setAllCourses(data.events || []);
+        setAllPrograms(data.events || []);
       } else {
-        console.error('Failed to fetch courses:', response.statusText);
-        setError('Failed to fetch courses');
+        console.error('Failed to fetch training programs:', response.statusText);
+        setError('Failed to fetch training programs');
       }
     } catch (err) {
-      console.error('Error fetching courses:', err);
-      setError('An error occurred while fetching courses');
+      console.error('Error fetching training programs:', err);
+      setError('An error occurred while fetching training programs');
     } finally {
       setLoading(false);
     }
   };
 
   const applyFilters = useCallback(() => {
-    console.log('Applying filters to courses:', allCourses.length);
-    let filtered = [...allCourses];
+    console.log('Applying filters to training programs:', allPrograms.length);
+    let filtered = [...allPrograms];
 
     // Search filter
     if (filters.search) {
@@ -140,12 +140,12 @@ export default function CoursesPage() {
       filtered = filtered.filter(course => !isExpired(course.date));
     }
 
-    console.log('Filtered courses:', filtered.length);
-    setFilteredCourses(filtered);
-  }, [allCourses, filters]);
+    console.log('Filtered training programs:', filtered.length);
+    setFilteredPrograms(filtered);
+  }, [allPrograms, filters]);
 
   useEffect(() => {
-    fetchCourses();
+    fetchPrograms();
   }, []);
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export default function CoursesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-900 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading courses...</p>
+            <p className="mt-4 text-gray-600">Loading training programs...</p>
           </div>
         </div>
       </div>
@@ -201,9 +201,9 @@ export default function CoursesPage() {
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl shadow-lg p-8 mb-8 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Professional Courses</h1>
+              <h1 className="text-4xl font-bold mb-4">Professional Training Programs</h1>
               <p className="text-xl text-blue-100 max-w-2xl">
-                Explore our comprehensive range of professional development courses designed
+                Explore our comprehensive range of professional development training programs designed
                 to advance your career in accreditation and quality management.
               </p>
               <div className="mt-6 flex items-center space-x-6">
@@ -223,8 +223,8 @@ export default function CoursesPage() {
             </div>
             <div className="hidden lg:block">
               <div className="bg-white bg-opacity-20 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold">{allCourses.length}</div>
-                <div className="text-blue-100">Available Courses</div>
+                <div className="text-3xl font-bold">{allPrograms.length}</div>
+                <div className="text-blue-100">Available Programs</div>
               </div>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function CoursesPage() {
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Courses</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Training Programs</h3>
               
               {/* Search */}
               <div className="mb-6">
@@ -244,7 +244,7 @@ export default function CoursesPage() {
                   type="text"
                   value={filters.search}
                   onChange={(e) => setFilters({...filters, search: e.target.value})}
-                  placeholder="Search courses..."
+                  placeholder="Search training programs..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -303,26 +303,26 @@ export default function CoursesPage() {
                     onChange={(e) => setFilters({...filters, showExpired: e.target.checked})}
                     className="mr-2"
                   />
-                  <span className="text-sm text-gray-700">Show expired courses</span>
+                  <span className="text-sm text-gray-700">Show expired programs</span>
                 </label>
               </div>
 
               {/* Results Count */}
               <div className="text-sm text-gray-600">
-                Showing {filteredCourses.length} of {allCourses.length} courses
+                Showing {filteredPrograms.length} of {allPrograms.length} training programs
               </div>
             </div>
           </div>
 
           {/* Course Grid */}
           <div className="lg:col-span-3">
-            {filteredCourses.length === 0 ? (
+            {filteredPrograms.length === 0 ? (
               <div className="bg-white rounded-xl shadow-lg p-8 text-center">
                 <div className="bg-blue-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fas fa-graduation-cap text-3xl text-blue-600" />
                 </div>
                 <h2 className="text-2xl font-bold text-blue-900 mb-4">
-                  No Courses Available
+                  No Training Programs Available
                 </h2>
                 <p className="text-gray-600 mb-6">
                   We&apos;re currently developing our course catalog. 
@@ -337,7 +337,7 @@ export default function CoursesPage() {
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredCourses.map((course) => {
+                {filteredPrograms.map((course) => {
                   const expired = isExpired(course.date);
                   return (
                     <div key={course.id} className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${expired ? 'opacity-50' : ''}`}>
@@ -371,7 +371,7 @@ export default function CoursesPage() {
                             <div className="flex items-center">
                               <i className="fas fa-exclamation-triangle text-red-500 mr-2" />
                               <p className="text-red-700 text-sm">
-                                This course has finished. Subscribe to our newsletter for upcoming courses or choose other available options.
+                                This training program has finished. Subscribe to our newsletter for upcoming programs or choose other available options.
                               </p>
                             </div>
                           </div>

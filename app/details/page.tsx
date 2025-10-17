@@ -773,7 +773,7 @@ export default function DetailsPage() {
                 </li>
                 <li>
                   <a href="#" className="text-gray-400 hover:text-white">
-                    Courses
+                    Training Programs
                   </a>
                 </li>
                 <li>

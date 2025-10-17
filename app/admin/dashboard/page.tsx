@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { CldUploadWidget } from 'next-cloudinary'
@@ -363,6 +363,10 @@ export default function AdminDashboard() {
     )
   }
 
+  if (status === 'unauthenticated') {
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pt-28">
       <div className="flex">
@@ -385,7 +389,7 @@ export default function AdminDashboard() {
               </button>
               
               <button
-                onClick={() => setActiveTab('training-programs'))
+                onClick={() => setActiveTab('training-programs')}
                 className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
                   activeTab === 'training-programs' 
                     ? 'bg-blue-600 text-white' 

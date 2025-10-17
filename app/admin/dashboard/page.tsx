@@ -95,6 +95,36 @@ export default function AdminDashboard() {
   const [modalType, setModalType] = useState<'course' | 'webinar'>('course')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [uploading, setUploading] = useState<{[key: string]: boolean}>({})
+
+  // Stable file upload function
+  const uploadToCloudinary = async (file: File, fieldName: string): Promise<string | null> => {
+    setUploading(prev => ({ ...prev, [fieldName]: true }))
+    
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('upload_preset', 'academy_preset')
+      
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        return data.public_id
+      } else {
+        console.error('Upload failed:', response.statusText)
+        return null
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      return null
+    } finally {
+      setUploading(prev => ({ ...prev, [fieldName]: false }))
+    }
+  }
 
   // Form states
   const [formData, setFormData] = useState({
@@ -1381,24 +1411,31 @@ Training Programs
                         className="w-20 h-20 object-cover rounded-lg"
                       />
                     )}
-                    <CldUploadWidget
-                      uploadPreset="academy_preset"
-                      onSuccess={(results: CloudinaryUploadResult) => {
-                        if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
-                          setFormData({...formData, certificateImageUrl: results.info.public_id})
-                        }
-                      }}
-                    >
-                      {({ open }) => (
-                        <button
-                          type="button"
-                          onClick={() => open()}
-                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                          Upload Certificate Image
-                        </button>
-                      )}
-                    </CldUploadWidget>
+                    <div className="flex items-center space-x-4">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            const publicId = await uploadToCloudinary(file, 'certificateImage')
+                            if (publicId) {
+                              setFormData(prev => ({...prev, certificateImageUrl: publicId}))
+                            }
+                          }
+                        }}
+                        className="hidden"
+                        id="certificate-image-upload"
+                      />
+                      <label
+                        htmlFor="certificate-image-upload"
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${
+                          uploading.certificateImage ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                      >
+                        {uploading.certificateImage ? 'Uploading...' : 'Upload Certificate Image'}
+                      </label>
+                    </div>
                   </div>
                 </div>
                 

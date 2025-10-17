@@ -32,6 +32,7 @@ interface Webinar {
   certificateDescription?: string;
   certificateImageUrl?: string;
   certificateUrl?: string;
+  calendlyUrl?: string;
   slug: string;
   isActive?: boolean;
   isVirtual?: boolean;

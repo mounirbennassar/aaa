@@ -24,3 +24,28 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Force button background colors */
+button[style*="background-color: #024985"] {
+  background-color: #024985 !important;
+}
+
+button[style*="background-color: #024985"]:hover {
+  background-color: #dc2626 !important;
+}
+
+.journey-cta-button {
+  background-color: #024985 !important;
+}
+
+.journey-cta-button:hover {
+  background-color: #dc2626 !important;
+}
+
+.hero-start-button {
+  background-color: #024985 !important;
+}
+
+.hero-start-button:hover {
+  background-color: #dc2626 !important;
+}

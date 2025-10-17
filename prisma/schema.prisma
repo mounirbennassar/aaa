@@ -50,6 +50,7 @@ model Event {
   certificateDescription String? // Certificate text paragraph
   certificateImageUrl String?    // Certificate image
   certificateUrl String?         // Certificate link
+  calendlyUrl String?            // Calendly meeting link for post-payment redirect
   slug        String?     @unique
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

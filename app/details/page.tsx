@@ -1,64 +1,13 @@
 export default function DetailsPage() {
   return (
-    <>
-      {/* Navigation */}
-      <nav className="bg-white shadow-lg sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <img
-                src="https://aaa-accreditation.org/wp-content/uploads/2020/04/AAA-Logo.png"
-                alt="AAA Academy"
-                className="h-10 w-auto"
-              />
-              <div className="ml-4">
-                <span className="text-xl font-bold text-primary">AAA Academy</span>
-                <p className="text-sm text-gray-600">Professional Development</p>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                Home
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                Events
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                Courses
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                About
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                Contact
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-      
+    <main>
       {/* Breadcrumb */}
-      <div className="bg-gray-100 py-4">
+      <div className="bg-gray-100 py-4 pt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="#" className="text-gray-500 hover:text-primary">
+                <a href="/" className="text-gray-500 hover:text-[#024985]">
                   <i className="fas fa-home" /> Home
                 </a>
               </li>
@@ -66,14 +15,14 @@ export default function DetailsPage() {
                 <i className="fas fa-chevron-right text-gray-400" />
               </li>
               <li>
-                <a href="#" className="text-gray-500 hover:text-primary">
+                <a href="/events" className="text-gray-500 hover:text-[#024985]">
                   Events
                 </a>
               </li>
               <li>
                 <i className="fas fa-chevron-right text-gray-400" />
               </li>
-              <li className="text-primary font-medium">
+              <li className="text-[#024985] font-medium">
                 Healthcare Accreditation Mastery Workshop
               </li>
             </ol>
@@ -81,93 +30,16 @@ export default function DetailsPage() {
         </div>
       </div>
       
-      {/* Hero Section */}
-      <div className="gradient-bg text-white py-16 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center mb-4">
-                <span className="bg-accent px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                  <i className="fas fa-star mr-1" />
-                  Featured Workshop
-                </span>
-                <span className="ml-3 bg-green-500 px-3 py-1 rounded-full text-sm font-medium pulse-accent shadow-lg">
-                  <i className="fas fa-clock mr-1" />
-                  Early Bird Available
-                </span>
-              </div>
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-                Healthcare Accreditation Mastery Workshop
-              </h1>
-              <p className="text-xl mb-8 text-blue-100">
-                Master the principles and practices of healthcare accreditation with
-                industry experts. Gain comprehensive knowledge and practical skills
-                to excel in healthcare quality management.
-              </p>
-              <div className="flex flex-wrap gap-4 mb-8">
-                <div className="flex items-center">
-                  <i className="fas fa-calendar-alt mr-2" />
-                  <span>March 15-17, 2024</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-clock mr-2" />
-                  <span>3 Days Intensive</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-map-marker-alt mr-2" />
-                  <span>Hybrid (In-person &amp; Virtual)</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-users mr-2" />
-                  <span>Max 50 Participants</span>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-4">
-                <button className="btn-accent px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
-                  <i className="fas fa-user-plus mr-2" />
-                  Register Now
-                </button>
-                <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all">
-                  <i className="fas fa-download mr-2" />
-                  Download Brochure
-                </button>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white rounded-2xl p-8 shadow-xl">
-                <h3 className="text-2xl font-bold mb-6 text-primary">Quick Registration</h3>
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all"
-                  />
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all">
-                    <option>Select Attendance Mode</option>
-                    <option>In-Person (Chicago)</option>
-                    <option>Virtual Attendance</option>
-                  </select>
-                  <button className="w-full btn-accent py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
-                    <i className="fas fa-user-plus mr-2" />
-                    Reserve Your Spot
-                  </button>
-                </div>
-                <p className="text-sm text-gray-600 mt-4">
-                  <i className="fas fa-shield-alt mr-1" />
-                  Secure registration • No payment required
-                </p>
-              </div>
-            </div>
+      {/* Page Header */}
+      <div className="py-12" style={{ backgroundColor: '#013866' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+              Healthcare Accreditation Mastery Workshop
+            </h1>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Master the principles and practices of healthcare accreditation with industry experts
+            </p>
           </div>
         </div>
       </div>
@@ -970,6 +842,6 @@ export default function DetailsPage() {
           </div>
         </div>
       </footer>
-    </>
+    </main>
   );
 }

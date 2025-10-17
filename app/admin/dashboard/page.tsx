@@ -35,6 +35,7 @@ interface Event {
   certificateDescription?: string
   certificateImageUrl?: string
   certificateUrl?: string
+  calendlyUrl?: string
   slug: string
   isVirtual: boolean
   isActive: boolean
@@ -118,7 +119,8 @@ export default function AdminDashboard() {
     whyChoose: [''],
     certificateDescription: '',
     certificateImageUrl: '',
-    certificateUrl: ''
+    certificateUrl: '',
+    calendlyUrl: ''
   })
 
   useEffect(() => {
@@ -248,7 +250,8 @@ export default function AdminDashboard() {
       whyChoose: [''],
       certificateDescription: '',
       certificateImageUrl: '',
-      certificateUrl: ''
+      certificateUrl: '',
+      calendlyUrl: ''
     })
   }
 
@@ -277,7 +280,8 @@ export default function AdminDashboard() {
       whyChoose: event.whyChoose || [''],
       certificateDescription: event.certificateDescription || '',
       certificateImageUrl: event.certificateImageUrl || '',
-      certificateUrl: event.certificateUrl || ''
+      certificateUrl: event.certificateUrl || '',
+      calendlyUrl: event.calendlyUrl || ''
     })
     setShowModal(true)
   }
@@ -360,7 +364,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-28">
       <div className="flex">
         {/* Sidebar */}
         <div className="w-64 bg-white shadow-lg fixed h-full">
@@ -1064,7 +1068,7 @@ export default function AdminDashboard() {
                       />
                     )}
                     <CldUploadWidget
-                      uploadPreset="ml_default"
+                      uploadPreset="academy_preset"
                       onSuccess={(results: CloudinaryUploadResult) => {
                         if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
                           setFormData({...formData, imageUrl: results.info.public_id})
@@ -1112,7 +1116,7 @@ export default function AdminDashboard() {
                     ))}
                   </div>
                   <CldUploadWidget
-                    uploadPreset="ml_default"
+                    uploadPreset="academy_preset"
                     onSuccess={(results: CloudinaryUploadResult) => {
                       if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
                         setFormData({
@@ -1226,7 +1230,7 @@ export default function AdminDashboard() {
                           />
                         )}
                         <CldUploadWidget
-                          uploadPreset="ml_default"
+                          uploadPreset="academy_preset"
                           onSuccess={(results: CloudinaryUploadResult) => {
                             if (typeof results.info === 'object' && results.info && 'public_id' in results.info) {
                               updateSpeaker(index, 'imageUrl', results.info.public_id)
@@ -1403,6 +1407,24 @@ export default function AdminDashboard() {
                     placeholder="https://www.example.com/certificate"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
+                </div>
+                
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <i className="fas fa-calendar-alt mr-2 text-blue-600"></i>
+                    Calendly Meeting Link
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.calendlyUrl}
+                    onChange={(e) => setFormData({...formData, calendlyUrl: e.target.value})}
+                    placeholder="https://calendly.com/your-link"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    <i className="fas fa-info-circle mr-1"></i>
+                    Users will be redirected to this Calendly link after successful payment
+                  </p>
                 </div>
               </div>
 

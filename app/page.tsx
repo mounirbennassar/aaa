@@ -3,144 +3,340 @@ import LearnMoreButton from './components/LearnMoreButton';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Type definitions
+interface StatCardProps {
+  value: string;
+  label: string;
+}
+
+interface CourseCardProps {
+  icon: string;
+  title: string;
+  description: string;
+  features: string[];
+  price: string;
+  color?: 'primary' | 'secondary' | 'tertiary';
+}
+
+interface EventCardProps {
+  image: string;
+  category: string;
+  date: string;
+  title: string;
+  description: string;
+  price: string;
+  registerLink: string;
+}
+
+// Reusable components for better optimization
+const StatCard = ({ value, label }: StatCardProps) => (
+  <div className="text-center">
+    <div className="text-3xl font-bold text-white">{value}</div>
+    <div className="text-blue-100 text-sm">{label}</div>
+  </div>
+);
+
+const CourseCard = ({ icon, title, description, features, price, color = 'primary' }: CourseCardProps) => {
+  const colorStyles: Record<'primary' | 'secondary' | 'tertiary', string> = {
+    primary: 'border-[#024985] bg-[#024985]',
+    secondary: 'border-[#dc2626] bg-[#dc2626]',
+    tertiary: 'border-[#024985] bg-[#024985]'
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+      <div className={`h-1 ${colorStyles[color].split(' ')[0]}`} />
+      <div className="p-8">
+        <div className="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+          <i className={`fas ${icon} text-2xl text-[#024985]`} />
+        </div>
+        <h3 className="text-xl font-bold text-[#024985] mb-4">{title}</h3>
+        <p className="text-gray-600 mb-6">{description}</p>
+        <ul className="space-y-2 mb-6">
+          {features.map((feature: string, index: number) => (
+            <li key={index} className="flex items-center text-sm text-gray-600">
+              <i className="fas fa-check text-green-500 mr-2" />
+              {feature}
+            </li>
+          ))}
+        </ul>
+        <div className="flex justify-between items-center">
+          <span className="text-2xl font-bold text-[#024985]">{price}</span>
+          <Link 
+            href="/details" 
+            className={`${colorStyles[color].split(' ')[1]} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity`}
+          >
+            Enroll Now
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const EventCard = ({ image, category, date, title, description, price, registerLink }: EventCardProps) => (
+  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="relative h-48 w-full">
+      <Image
+        src={image}
+        alt={title}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      />
+    </div>
+    <div className="p-6">
+      <div className="flex items-center mb-4">
+        <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
+          {category}
+        </div>
+        <span className="ml-auto text-gray-500 text-sm">
+          <i className="fas fa-calendar mr-1" />
+          {date}
+        </span>
+      </div>
+      <h3 className="text-lg font-bold text-[#024985] mb-3">{title}</h3>
+      <p className="text-gray-600 text-sm mb-4">{description}</p>
+      <div className="flex justify-between items-center">
+        <span className="text-lg font-bold text-[#024985]">{price}</span>
+        <Link 
+          href={registerLink} 
+          className="bg-[#024985] text-white px-4 py-2 rounded-lg hover:bg-[#dc2626] transition-colors text-sm"
+        >
+          {price === 'Free' ? 'Register' : 'View Details'}
+        </Link>
+      </div>
+    </div>
+  </div>
+);
+
 export default function Home() {
+  // Data arrays for cleaner code
+  const stats: StatCardProps[] = [
+    { value: '1000+', label: 'Certified Professionals' },
+    { value: '50+', label: 'Training Programs' },
+    { value: '25+', label: 'Countries Served' }
+  ];
+
+  const featuredCourses: CourseCardProps[] = [
+    {
+      icon: 'fa-hospital',
+      title: 'Healthcare Accreditation Mastery',
+      description: 'Comprehensive training in healthcare quality standards and accreditation processes.',
+      features: ['Patient Safety Standards', 'Risk Management', 'Quality Improvement'],
+      price: '$1,299',
+      color: 'primary'
+    },
+    {
+      icon: 'fa-shield-alt',
+      title: 'Quality Management Systems',
+      description: 'Master ISO standards and quality management principles for organizational excellence.',
+      features: ['ISO 9001:2015', 'Process Improvement', 'Audit Techniques'],
+      price: '$999',
+      color: 'secondary'
+    },
+    {
+      icon: 'fa-users',
+      title: 'Leadership in Accreditation',
+      description: 'Develop leadership skills specific to managing accreditation programs and teams.',
+      features: ['Strategic Planning', 'Team Management', 'Change Management'],
+      price: '$1,499',
+      color: 'tertiary'
+    }
+  ];
+
+  const events: EventCardProps[] = [
+    {
+      image: '/images/healthcare-event.jpg',
+      category: 'Healthcare',
+      date: 'March 15, 2024',
+      title: 'Healthcare Accreditation Standards Workshop',
+      description: 'Comprehensive workshop covering the latest healthcare accreditation standards and implementation strategies.',
+      price: 'Free',
+      registerLink: '/events/healthcare-workshop'
+    },
+    {
+      image: '/images/world-accreditation-day.jpg',
+      category: 'Special Event',
+      date: 'June 9, 2024',
+      title: 'World Accreditation Day Celebration',
+      description: 'Join us in celebrating World Accreditation Day with special presentations and networking opportunities.',
+      price: 'Free',
+      registerLink: '/events/world-accreditation-day'
+    },
+    {
+      image: '/images/surveyor-training.jpg',
+      category: 'Training',
+      date: 'Ongoing',
+      title: 'Professional Surveyor Training Program',
+      description: 'Comprehensive training program for aspiring and current surveyors in accreditation processes.',
+      price: '$2,499',
+      registerLink: '/programs/surveyor-training'
+    }
+  ];
+
   return (
     <main>
-      <section
-        id="home"
-        className="gradient-bg pt-28 pb-16 relative overflow-hidden"
-      >
+      {/* Hero Section */}
+      <section id="home" className="pt-36 pb-20 relative overflow-hidden min-h-[calc(100vh-9rem)]">
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <iframe
+            src="https://www.youtube.com/embed/fEef2_WC5JI?si=IWDMz76gbKoApBkL&autoplay=1&mute=1&loop=1&playlist=fEef2_WC5JI&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
+            className="w-full h-full object-cover"
+            style={{ 
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '100%',
+              height: '100%',
+              transform: 'translate(-50%, -50%)',
+              border: 'none'
+            }}
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            title="Background Video"
+          />
+        </div>
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black opacity-40" />
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+          <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-9rem)]">
             <div className="text-white">
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Advance Your{" "}
-                <span className="text-gradient bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
-                  Career
-                </span>
+              <div className="mb-6">
+                <div className="inline-block bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-white mb-4">
+                  🌟 Internationally Recognized Programs
+                </div>
+              </div>
+              
+              <h1 className="text-5xl lg:text-7xl font-extrabold mb-8 leading-tight text-[#024985]">
+                Transform Your{" "}
+                <span className="text-[#dc2626]">
+                  Professional
+                </span>{" "}
+                <span className="text-[#024985]">Future</span>
               </h1>
-              <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Join thousands of professionals who have elevated their careers
-                through our internationally recognized accreditation and training
-                programs.
+              
+              <p className="text-xl lg:text-2xl text-stone-900 mb-10 leading-relaxed font-light">
+                Join <span className="font-semibold text-[#dc2626]">1000+</span> professionals who have elevated their careers through our 
+                <span className="font-semibold"> structured three-step pathway</span> to excellence.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <LearnMoreButton />
-                <button className="bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-                  Explore Courses
+              
+              <div className="flex flex-col sm:flex-row gap-6 mb-12">
+                <button 
+                  className="hero-start-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg border-0 outline-none relative z-20"
+                >
+                  <i className="fas fa-rocket mr-2"></i>
+                  Start Your Journey
                 </button>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-8 mt-12">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">1000+</div>
-                  <div className="text-blue-200 text-sm">Certified Professionals</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">50+</div>
-                  <div className="text-blue-200 text-sm">Training Programs</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">25+</div>
-                  <div className="text-blue-200 text-sm">Countries Served</div>
-                </div>
-              </div>
             </div>
 
-            <div className="relative">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl animate-float">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Start Your Journey</h3>
-                  <p className="text-blue-200">Choose your path to excellence</p>
-                </div>
-                <div className="space-y-4">
-                  <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg">
-                    Professional Certification
-                  </button>
-                  <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg">
-                    Skills Development
-                  </button>
-                  <button className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-lg">
-                    Leadership Training
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Development Model Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
-              Our Development Model
+          <div className="text-center mb-20">
+            <div className="inline-block bg-[#024985] text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+              Our Proven Method
+            </div>
+            <h2 className="text-5xl lg:text-6xl font-black text-[#024985] mb-8 leading-tight">
+              A <span className="text-[#dc2626]">Structured Approach</span><br />
+              to Professional Growth
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              A structured approach to professional growth
-            </p>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-lg text-gray-600 font-medium">Here's how it works:</p>
+            </div>
           </div>
 
-          <div className="mb-12">
-            <p className="text-lg text-gray-700 max-w-5xl mx-auto text-center leading-relaxed">
-              At the Accreditation Academy, we believe in structured, meaningful progress — not just
-              learning for the sake of learning. That&apos;s why our development model is built around a
-              powerful, three-step pathway: <strong>Knowledge Hub → Official Certificate → Career
-              Development</strong>. Here&apos;s how it works:
-            </p>
+          <div className="grid md:grid-cols-3 gap-10">
+            {[
+              {
+                step: '1',
+                title: 'Knowledge Hub',
+                subtitle: 'Learn & Grow',
+                icon: 'fa-graduation-cap',
+                content: 'Begin your journey at our Knowledge Hub — your central space for transformation.',
+                features: [
+                  'High-impact training courses',
+                  'Expert-led webinars',
+                  'Hands-on workshops',
+                  'Industry-specific content'
+                ]
+              },
+              {
+                step: '2',
+                title: 'Official Certificate',
+                subtitle: 'Prove Your Expertise',
+                icon: 'fa-award',
+                content: 'Earn your internationally recognized certificate — your mark of professional excellence.',
+                features: [
+                  'Globally recognized credentials',
+                  'Quality assurance validation',
+                  'Professional credibility boost',
+                  'Career advancement proof'
+                ]
+              },
+              {
+                step: '3',
+                title: 'Career Development',
+                subtitle: 'Transform Your Future',
+                icon: 'fa-rocket',
+                content: 'Leverage your new credentials for maximum career impact and professional growth.',
+                features: [
+                  'Professional network access',
+                  'Career guidance resources',
+                  'Ongoing support system',
+                  'Industry connections'
+                ]
+              }
+            ].map((item, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 border-t-4 border-[#024985] group hover:-translate-y-2">
+                <div className="text-center mb-8">
+                  <div className="bg-gradient-to-br from-[#024985] to-[#dc2626] w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i className={`fas ${item.icon} text-3xl text-white`} />
+                  </div>
+                  <div className="bg-[#dc2626] text-white w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-4 font-black text-lg">
+                    {item.step}
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#024985] mb-2">{item.title}</h3>
+                  <p className="text-[#dc2626] font-medium italic text-lg">{item.subtitle}</p>
+                </div>
+                <p className="text-gray-700 text-center mb-6 leading-relaxed font-medium">{item.content}</p>
+                <ul className="space-y-3">
+                  {item.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center text-sm text-gray-600">
+                      <div className="bg-green-100 w-5 h-5 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                        <i className="fas fa-check text-green-600 text-xs" />
+                      </div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-red-600">
-              <div className="text-center mb-6">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className="fas fa-book text-2xl text-red-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-blue-900">1. Knowledge Hub</h3>
-                <p className="text-red-600 font-semibold">Learn & Grow</p>
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl mx-auto">
+              <h3 className="text-2xl font-bold text-[#024985] mb-4">Ready to Begin Your Journey?</h3>
+              <p className="text-gray-600 mb-6">Start with our Knowledge Hub and transform your professional future today.</p>
+              <div className="flex justify-center">
+                <button 
+                  className="journey-cta-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  style={{ backgroundColor: '#024985' }}
+                >
+                  <i className="fas fa-play mr-2"></i>
+                  Start Your Journey
+                </button>
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                Your journey begins at our <strong>Knowledge</strong> Hub — a central space offering high-impact training
-                courses, expert-led webinars, hands-on workshops, and more. Each program is carefully
-                crafted by professionals with deep experience in accreditation, international standards,
-                and quality improvement. Whether you&apos;re new to the field or looking to expand your
-                expertise, our content ensures practical, up-to-date learning aligned with global practices.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-blue-600">
-              <div className="text-center mb-6">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className="fas fa-certificate text-2xl text-blue-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-blue-900">2. Official Certificate</h3>
-                <p className="text-red-600 font-semibold">Prove Your Expertise</p>
-              </div>
-              <p className="text-gray-600 leading-relaxed">
-                After completing your selected course or training, you&apos;ll receive an <strong>official, internationally
-                recognized certificate</strong>. This isn&apos;t just a document — it&apos;s a mark of quality and credibility.
-                Our certificates demonstrate that you&apos;ve met specific learning objectives and gained the
-                skills required to contribute meaningfully to your field, especially in the context of
-                accreditation and standard-based systems.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-8 card-hover border-t-4 border-green-600">
-              <div className="text-center mb-6">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className="fas fa-rocket text-2xl text-green-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-blue-900">3. Career Development</h3>
-                <p className="text-red-600 font-semibold">Transform Your Future</p>
-              </div>
-              <p className="text-gray-600 leading-relaxed">
-                With your new credentials in hand, you&apos;ll have access to our professional network,
-                career guidance resources, and ongoing support to help you leverage your certification
-                for maximum career impact. This isn&apos;t where your journey ends — it&apos;s where your
-                professional transformation truly begins.
-              </p>
             </div>
           </div>
         </div>
@@ -150,7 +346,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
+            <h2 className="text-4xl font-bold text-[#024985] mb-6">
               Featured Training Programs
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -159,105 +355,9 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <div className="p-8">
-                <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                  <i className="fas fa-hospital text-2xl text-red-600" />
-                </div>
-                <h3 className="text-xl font-bold text-blue-900 mb-4">
-                  Healthcare Accreditation Mastery
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Comprehensive training in healthcare quality standards and accreditation processes.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Patient Safety Standards
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Risk Management
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Quality Improvement
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-blue-900">$1,299</span>
-                  <Link href="/details" className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
-                    Enroll Now
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover border-t-4 border-blue-600">
-              <div className="p-8">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                  <i className="fas fa-shield-alt text-2xl text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-blue-900 mb-4">
-                  Quality Management Systems
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Master ISO standards and quality management principles for organizational excellence.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    ISO 9001:2015
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Process Improvement
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Audit Techniques
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-blue-900">$999</span>
-                  <Link href="/details" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    Enroll Now
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover border-t-4 border-green-600">
-              <div className="p-8">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                  <i className="fas fa-users text-2xl text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold text-blue-900 mb-4">
-                  Leadership in Accreditation
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Develop leadership skills specific to managing accreditation programs and teams.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Strategic Planning
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Team Management
-                  </li>
-                  <li className="flex items-center text-sm text-gray-600">
-                    <i className="fas fa-check text-green-500 mr-2" />
-                    Change Management
-                  </li>
-                </ul>
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-blue-900">$1,499</span>
-                  <Link href="/details" className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                    Enroll Now
-                  </Link>
-                </div>
-              </div>
-            </div>
+            {featuredCourses.map((course, index) => (
+              <CourseCard key={index} {...course} />
+            ))}
           </div>
         </div>
       </section>
@@ -266,271 +366,83 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
+            <h2 className="text-4xl font-bold text-[#024985] mb-6">
               Upcoming Events & Workshops
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Join our expert-led sessions and connect with professionals from around the world
-              to enhance your professional development.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <Image
-                src="https://aaa-accreditation.org/wp-content/uploads/2025/06/WhatsApp-Image-2025-06-20-at-5.50.14-PM.jpeg"
-                alt="Healthcare Accreditation Event"
-                width={400}
-                height={192}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-                    Healthcare
-                  </div>
-                  <span className="ml-auto text-gray-500 text-sm">
-                    <i className="fas fa-calendar mr-1" />
-                    March 15, 2024
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">
-                  Healthcare Accreditation Standards Workshop
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Comprehensive workshop covering the latest healthcare accreditation standards and implementation strategies.
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold text-blue-900">Free</span>
-                  <Link href="/details" className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm">
-                    Register
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <Image
-                src="https://aaa-accreditation.org/wp-content/uploads/2025/06/Screenshot-2025-06-10-at-01.05.49.png"
-                alt="World Accreditation Day"
-                width={400}
-                height={192}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">
-                    Special Event
-                  </div>
-                  <span className="ml-auto text-gray-500 text-sm">
-                    <i className="fas fa-calendar mr-1" />
-                    June 9, 2024
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">
-                  World Accreditation Day Celebration
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Join us in celebrating World Accreditation Day with special presentations and networking opportunities.
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold text-blue-900">Free</span>
-                  <Link href="/details" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                    Register
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-              <Image
-                src="https://aaa-accreditation.org/wp-content/uploads/2025/06/survyors.png"
-                alt="Surveyor Training"
-                width={400}
-                height={192}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">
-                    Training
-                  </div>
-                  <span className="ml-auto text-gray-500 text-sm">
-                    <i className="fas fa-calendar mr-1" />
-                    Ongoing
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">
-                  Professional Surveyor Training Program
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Comprehensive training program for aspiring and current surveyors in accreditation processes.
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold text-blue-900">$2,499</span>
-                  <Link href="/details" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            </div>
+            {events.map((event, index) => (
+              <EventCard key={index} {...event} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Additional Training Programs */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
-              Specialized Training Programs
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Expand your expertise with our specialized certification programs
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 card-hover border border-gray-200">
-              <div className="bg-purple-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <i className="fas fa-microscope text-purple-600" />
-              </div>
-              <h3 className="text-lg font-bold text-blue-900 mb-3">Laboratory Accreditation</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Master ISO/IEC 17025 and laboratory quality management systems.
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-blue-900">$899</span>
-                <Link href="/details" className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm">
-                  View Details
-                </Link>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 card-hover border border-gray-200">
-              <div className="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <i className="fas fa-industry text-orange-600" />
-              </div>
-              <h3 className="text-lg font-bold text-blue-900 mb-3">Manufacturing Excellence</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Learn lean manufacturing principles and continuous improvement methodologies.
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-blue-900">$1,199</span>
-                <Link href="/details" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm">
-                  View Details
-                </Link>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 card-hover border border-gray-200">
-              <div className="bg-teal-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <i className="fas fa-leaf text-teal-600" />
-              </div>
-              <h3 className="text-lg font-bold text-blue-900 mb-3">Environmental Management</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                ISO 14001 environmental management systems and sustainability practices.
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-blue-900">$799</span>
-                <Link href="/details" className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm">
-                  View Details
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="gradient-bg py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Transform Your Career?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Join thousands of professionals who have advanced their careers through our
-            internationally recognized programs. Start your journey today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-              Browse All Programs
-            </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors">
-              Schedule Consultation
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-4xl font-bold text-blue-900 mb-6">Get in Touch</h2>
+              <h2 className="text-4xl font-bold text-[#024985] mb-6">Get in Touch</h2>
               <p className="text-xl text-gray-600 mb-8">
                 Have questions about our programs? Our team is here to help you choose
                 the right path for your professional development.
               </p>
               <div className="space-y-6">
-                <div className="flex items-center">
-                  <div className="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
-                    <i className="fas fa-envelope text-blue-600" />
+                {[
+                  { icon: 'fa-envelope', title: 'Email Us', info: 'info@aaaacademy.com' },
+                  { icon: 'fa-phone', title: 'Call Us', info: '+1 (555) 123-4567' },
+                  { icon: 'fa-map-marker-alt', title: 'Visit Us', info: '123 Professional Drive\nExcellence City, EX 12345' }
+                ].map((contact, index) => (
+                  <div key={index} className="flex items-center">
+                    <div className="bg-gray-50 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                      <i className={`fas ${contact.icon} text-[#024985]`} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-[#024985]">{contact.title}</h3>
+                      <p className="text-gray-600 whitespace-pre-line">{contact.info}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-900">Email Us</h3>
-                    <p className="text-gray-600">info@aaaacademy.com</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
-                    <i className="fas fa-phone text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-900">Call Us</h3>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
-                    <i className="fas fa-map-marker-alt text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-900">Visit Us</h3>
-                    <p className="text-gray-600">123 Professional Drive<br />Excellence City, EX 12345</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h3 className="text-2xl font-bold text-blue-900 mb-6">Send us a Message</h3>
+            <div className="bg-gray-50 rounded-xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold text-[#024985] mb-6">Send us a Message</h3>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <input
                     type="text"
                     placeholder="First Name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
                   />
                   <input
                     type="text"
                     placeholder="Last Name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
                   />
                 </div>
                 <input
                   type="email"
                   placeholder="Email Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
                 />
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
                 />
                 <textarea
                   rows={4}
                   placeholder="Your Message"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  defaultValue={""}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent resize-none"
                 />
                 <button
                   type="submit"
-                  className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+                  className="w-full bg-[#024985] text-white py-3 rounded-lg font-semibold hover:bg-[#dc2626] transition-colors"
                 >
                   Send Message
                 </button>

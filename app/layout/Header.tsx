@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -184,13 +185,13 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center items-center h-10">
             <div className="flex space-x-6">
-              <a
+              <Link
                 href="/"
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
               >
                 <i className="fas fa-graduation-cap mr-2" />
                 Academy
-              </a>
+              </Link>
               <a
                 href="/courses"
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
@@ -322,14 +323,14 @@ export default function Header() {
             <div className="p-4 border-t border-gray-200" style={{ backgroundColor: '#f8f9fa' }}>
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Academy</h3>
               <div className="space-y-2">
-                <a
+                <Link
                   href="/"
                   onClick={closeMobileMenu}
                   className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <i className="fas fa-graduation-cap mr-3 text-blue-600" />
                   Academy
-                </a>
+                </Link>
                 <a
                   href="/courses"
                   onClick={closeMobileMenu}

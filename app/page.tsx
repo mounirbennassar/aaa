@@ -12,6 +12,7 @@ interface CourseCardProps {
   features: string[];
   price: string;
   color?: 'primary' | 'secondary' | 'tertiary';
+  enrollLink?: string;
 }
 
 interface EventCardProps {
@@ -77,7 +78,7 @@ interface TrainingProgramsResponse {
 }
 
 // Reusable components for better optimization
-const CourseCard = ({ icon, title, description, features, price, color = 'primary' }: CourseCardProps) => {
+const CourseCard = ({ icon, title, description, features, price, color = 'primary', enrollLink = '/details' }: CourseCardProps) => {
   const colorStyles: Record<'primary' | 'secondary' | 'tertiary', string> = {
     primary: 'border-[#024985] bg-[#024985]',
     secondary: 'border-[#dc2626] bg-[#dc2626]',
@@ -104,7 +105,7 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
         <div className="flex justify-between items-center">
           <span className="text-2xl font-bold text-[#024985]">{price}</span>
           <Link 
-            href="/details" 
+            href={enrollLink} 
             className={`${colorStyles[color].split(' ')[1]} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity`}
           >
             Enroll Now
@@ -256,7 +257,8 @@ export default function Home() {
         program.isVirtual ? 'Virtual Training' : 'In-Person Training'
       ],
       price: program.price === 0 ? 'Free' : `$${program.price}`,
-      color: colors[index % colors.length]
+      color: colors[index % colors.length],
+      enrollLink: `/details/${program.slug || program.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
     };
   };
 
@@ -270,9 +272,10 @@ export default function Home() {
       <section id="home" className="pt-36 pb-20 relative overflow-hidden min-h-[calc(100vh-9rem)]">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
+          {/* Desktop Video */}
           <iframe
             src="https://www.youtube.com/embed/fEef2_WC5JI?si=IWDMz76gbKoApBkL&autoplay=1&mute=1&loop=1&playlist=fEef2_WC5JI&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
-            className="w-full h-full object-cover"
+            className="hidden md:block w-full h-full object-cover"
             style={{ 
               position: 'absolute',
               top: '50%',
@@ -286,6 +289,9 @@ export default function Home() {
             allowFullScreen
             title="Background Video"
           />
+          
+          {/* Mobile Background - Static gradient instead of video for better performance */}
+          <div className="md:hidden absolute inset-0 bg-gradient-to-br from-[#024985] via-[#013866] to-[#dc2626]"></div>
         </div>
         
         {/* Overlay */}

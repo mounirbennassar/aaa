@@ -1,4 +1,6 @@
-import React from 'react';
+'use client'
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,6 +22,32 @@ interface EventCardProps {
   description: string;
   price: string;
   registerLink: string;
+}
+
+interface Webinar {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  duration: string;
+  price: number;
+  currency: string;
+  date: string;
+  location: string;
+  imageUrl?: string;
+  slug: string;
+  isActive: boolean;
+  isVirtual: boolean;
+}
+
+interface EventsResponse {
+  events: Webinar[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 }
 
 // Reusable components for better optimization
@@ -98,6 +126,54 @@ const EventCard = ({ image, category, date, title, description, price, registerL
 );
 
 export default function Home() {
+  // State for webinars
+  const [webinars, setWebinars] = useState<Webinar[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch recent webinars
+  useEffect(() => {
+    const fetchWebinars = async () => {
+      try {
+        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=date&order=desc');
+        if (response.ok) {
+          const data: EventsResponse = await response.json();
+          setWebinars(data.events);
+        } else {
+          console.error('Failed to fetch webinars');
+        }
+      } catch (error) {
+        console.error('Error fetching webinars:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWebinars();
+  }, []);
+
+  // Helper function to format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Helper function to convert webinar to event card props
+  const webinarToEventCard = (webinar: Webinar): EventCardProps => ({
+    image: webinar.imageUrl || '/images/default-webinar.jpg',
+    category: 'Webinar',
+    date: formatDate(webinar.date),
+    title: webinar.title,
+    description: webinar.description.length > 120 
+      ? webinar.description.substring(0, 120) + '...' 
+      : webinar.description,
+    price: webinar.price === 0 ? 'Free' : `$${webinar.price}`,
+    registerLink: `/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
+  });
+
   // Data arrays for cleaner code
   const featuredTrainingPrograms: CourseCardProps[] = [
     {
@@ -126,35 +202,8 @@ export default function Home() {
     }
   ];
 
-  const events: EventCardProps[] = [
-    {
-      image: '/images/healthcare-event.jpg',
-      category: 'Healthcare',
-      date: 'March 15, 2024',
-      title: 'Healthcare Accreditation Standards Workshop',
-      description: 'Comprehensive workshop covering the latest healthcare accreditation standards and implementation strategies.',
-      price: 'Free',
-      registerLink: '/events/healthcare-workshop'
-    },
-    {
-      image: '/images/world-accreditation-day.jpg',
-      category: 'Special Event',
-      date: 'June 9, 2024',
-      title: 'World Accreditation Day Celebration',
-      description: 'Join us in celebrating World Accreditation Day with special presentations and networking opportunities.',
-      price: 'Free',
-      registerLink: '/events/world-accreditation-day'
-    },
-    {
-      image: '/images/surveyor-training.jpg',
-      category: 'Training',
-      date: 'Ongoing',
-      title: 'Professional Surveyor Training Program',
-      description: 'Comprehensive training program for aspiring and current surveyors in accreditation processes.',
-      price: '$2,499',
-      registerLink: '/programs/surveyor-training'
-    }
-  ];
+  // Convert webinars to event cards for display
+  const eventCards = webinars.map(webinarToEventCard);
 
   return (
     <main>
@@ -351,14 +400,49 @@ export default function Home() {
               Upcoming Events & Workshops
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join our expert-led sessions and connect with professionals from around the world
+              Join our expert-led webinars and connect with professionals from around the world
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {events.map((event, index) => (
-              <EventCard key={index} {...event} />
-            ))}
-          </div>
+          
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
+              <span className="ml-3 text-gray-600">Loading upcoming webinars...</span>
+            </div>
+          ) : eventCards.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {eventCards.map((event, index) => (
+                <EventCard key={index} {...event} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
+                <i className="fas fa-calendar-alt text-4xl text-gray-400 mb-4"></i>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">No Upcoming Webinars</h3>
+                <p className="text-gray-500 mb-6">Check back soon for new webinar announcements!</p>
+                <Link 
+                  href="/webinars" 
+                  className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
+                >
+                  View All Webinars
+                </Link>
+              </div>
+            </div>
+          )}
+          
+          {/* View All Link */}
+          {eventCards.length > 0 && (
+            <div className="text-center mt-12">
+              <Link 
+                href="/webinars" 
+                className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
+              >
+                <i className="fas fa-arrow-right mr-2"></i>
+                View All Webinars
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

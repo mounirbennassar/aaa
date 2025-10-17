@@ -50,7 +50,7 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 25,
         isVirtual: false,
-        imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+        imageUrl: null,
         galleryImages: [],
         // galleryImages: [],
         keyLearningOutcomes: [
@@ -65,13 +65,13 @@ export async function seedDatabase() {
             name: 'Wendy Danicourt',
             title: 'Manager, Healthcare Accreditation Department',
             description: 'With over 30 years of experience in Healthcare Accreditation, Wendy has been instrumental in developing accreditation standards and training programs for healthcare facilities across the globe.',
-            imageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200'
+            imageUrl: null
           },
           {
             name: 'Shakti Derbar',
             title: 'Member, Accreditation Committee',
             description: 'Shakti is a member of AAA Accreditation committee and has extensive experience in healthcare quality assurance and accreditation processes.',
-            imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -95,7 +95,7 @@ export async function seedDatabase() {
           'Career advancement opportunities in healthcare accreditation'
         ],
         certificateDescription: 'Upon successful completion, participants will receive an AAA Certified Healthcare Surveyor certificate, internationally recognized and valid for 3 years. This certificate demonstrates your expertise in healthcare accreditation and survey processes.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/healthcare-surveyor',
         slug: 'approved-surveyors-healthcare-accreditation',
         createdBy: adminUser!.id
@@ -111,7 +111,7 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 40,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        imageUrl: null,
         galleryImages: [],
         // galleryImages: [],
         keyLearningOutcomes: [
@@ -126,7 +126,7 @@ export async function seedDatabase() {
             name: 'Dr. Sarah Johnson',
             title: 'ISO 9001 Lead Auditor',
             description: 'Dr. Johnson is a certified ISO 9001 Lead Auditor with 15 years of experience in quality management systems across various industries.',
-            imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -150,7 +150,7 @@ export async function seedDatabase() {
           'Immediate application to your organization'
         ],
         certificateDescription: 'Participants will receive an ISO 9001:2015 Foundation Certificate, demonstrating competency in quality management systems principles and implementation.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/iso-9001',
         slug: 'quality-management-systems-iso-9001-2015',
         createdBy: adminUser!.id
@@ -166,9 +166,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 30,
         isVirtual: false,
-        imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400', 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand HACCP principles and implementation',
           'Conduct hazard analysis and risk assessment',
@@ -181,7 +181,7 @@ export async function seedDatabase() {
             name: 'Ahmed Al-Rashid',
             title: 'Food Safety Consultant',
             description: 'Ahmed is a certified food safety professional with expertise in HACCP implementation across the Middle East region.',
-            imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -205,7 +205,7 @@ export async function seedDatabase() {
           'Immediate application to your workplace'
         ],
         certificateDescription: 'Graduates receive a HACCP Implementation Certificate, recognized by food safety authorities and demonstrating competency in food safety management systems.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/haccp',
         slug: 'advanced-food-safety-management-haccp',
         createdBy: adminUser!.id
@@ -223,9 +223,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 100,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400', 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand digital transformation trends in healthcare',
           'Learn about electronic health records and accreditation',
@@ -238,7 +238,7 @@ export async function seedDatabase() {
             name: 'Dr. Maria Rodriguez',
             title: 'Digital Health Innovation Director',
             description: 'Dr. Rodriguez leads digital transformation initiatives in healthcare accreditation with focus on emerging technologies and innovation.',
-            imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -262,7 +262,7 @@ export async function seedDatabase() {
           'Connect with industry leaders'
         ],
         certificateDescription: 'Participants will receive a Certificate of Attendance for this webinar, demonstrating engagement with current trends in healthcare digital transformation.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/digital-healthcare',
         slug: 'digital-transformation-healthcare-accreditation',
         createdBy: adminUser!.id
@@ -278,9 +278,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 75,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400', 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand risk management principles',
           'Learn risk identification techniques',
@@ -293,7 +293,7 @@ export async function seedDatabase() {
             name: 'John Smith',
             title: 'Risk Management Consultant',
             description: 'John has 20 years of experience in risk management and quality systems across multiple industries.',
-            imageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -317,7 +317,7 @@ export async function seedDatabase() {
           'Immediate application to your work'
         ],
         certificateDescription: 'Attendees will receive a Risk Management Webinar Certificate, demonstrating knowledge of risk management principles in quality systems.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/risk-management',
         slug: 'risk-management-quality-systems',
         createdBy: adminUser!.id
@@ -333,9 +333,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 60,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400', 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand sustainability frameworks',
           'Learn environmental management principles',
@@ -348,7 +348,7 @@ export async function seedDatabase() {
             name: 'Dr. Emma Green',
             title: 'Sustainability Excellence Expert',
             description: 'Dr. Green specializes in sustainable business practices and has helped numerous organizations integrate sustainability into their excellence frameworks.',
-            imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -372,7 +372,7 @@ export async function seedDatabase() {
           'Connect with like-minded professionals'
         ],
         certificateDescription: 'Participants will receive a Sustainability in Business Excellence Certificate, demonstrating understanding of sustainable business practices and their integration with excellence models.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/sustainability-excellence',
         slug: 'sustainability-business-excellence',
         createdBy: adminUser!.id
@@ -389,9 +389,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 20,
         isVirtual: false,
-        imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400', 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400', 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400'],
+        // galleryImages: ['', '', ''],
         keyLearningOutcomes: [
           'Understand business excellence frameworks and models',
           'Learn implementation strategies for excellence models',
@@ -404,13 +404,13 @@ export async function seedDatabase() {
             name: 'Dr. Michael Excellence',
             title: 'Business Excellence Consultant',
             description: 'Dr. Excellence has over 25 years of experience in implementing business excellence models across various industries globally.',
-            imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'
+            imageUrl: null
           },
           {
             name: 'Sarah Leadership',
             title: 'Organizational Development Expert',
             description: 'Sarah specializes in organizational transformation and has helped numerous companies achieve excellence recognition.',
-            imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -434,7 +434,7 @@ export async function seedDatabase() {
           'Pathway to organizational transformation'
         ],
         certificateDescription: 'Participants receive a Business Excellence Implementation Certificate, demonstrating competency in excellence model implementation and organizational transformation.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/business-excellence',
         slug: 'business-excellence-model-implementation',
         createdBy: adminUser!.id
@@ -450,7 +450,7 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 35,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        imageUrl: null,
         galleryImages: [],
         // galleryImages: [],
         keyLearningOutcomes: [
@@ -465,7 +465,7 @@ export async function seedDatabase() {
             name: 'Dr. Green Environment',
             title: 'Environmental Management Consultant',
             description: 'Dr. Environment is a certified ISO 14001 Lead Auditor with extensive experience in environmental management systems.',
-            imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -489,7 +489,7 @@ export async function seedDatabase() {
           'Immediate workplace application'
         ],
         certificateDescription: 'Participants receive an ISO 14001:2015 Foundation Certificate, demonstrating knowledge of environmental management systems and sustainable practices.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/iso-14001',
         slug: 'environmental-management-systems-iso-14001-2015',
         createdBy: adminUser!.id
@@ -505,9 +505,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 25,
         isVirtual: false,
-        imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400', 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400'],
+        // galleryImages: ['', '', ''],
         keyLearningOutcomes: [
           'Understand ISO 45001:2018 requirements',
           'Learn hazard identification and risk assessment',
@@ -520,7 +520,7 @@ export async function seedDatabase() {
             name: 'John Safety',
             title: 'Occupational Health and Safety Consultant',
             description: 'John is a certified safety professional with 20 years of experience in implementing OHS management systems across various industries.',
-            imageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=200'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -544,7 +544,7 @@ export async function seedDatabase() {
           'Immediate safety improvement implementation'
         ],
         certificateDescription: 'Participants receive an ISO 45001:2018 Foundation Certificate, demonstrating competency in occupational health and safety management systems.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/iso-45001',
         slug: 'occupational-health-safety-management-iso-45001-2018',
         createdBy: adminUser!.id
@@ -560,9 +560,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 150,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400', 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand AI applications in quality management',
           'Learn about automated quality control systems',
@@ -575,7 +575,7 @@ export async function seedDatabase() {
             name: 'Dr. Tech Innovation',
             title: 'AI & Quality Systems Expert',
             description: 'Dr. Innovation is a leading expert in AI applications for quality management with extensive experience in digital transformation.',
-            imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -599,7 +599,7 @@ export async function seedDatabase() {
           'Network with innovation leaders'
         ],
         certificateDescription: 'Participants receive a Future of Quality Management Certificate, demonstrating awareness of AI and automation trends in quality systems.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/ai-quality-management',
         slug: 'future-quality-management-ai-automation',
         createdBy: adminUser!.id
@@ -615,9 +615,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 100,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400', 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand crisis management principles',
           'Learn business continuity planning strategies',
@@ -630,7 +630,7 @@ export async function seedDatabase() {
             name: 'Crisis Management Expert',
             title: 'Business Continuity Consultant',
             description: 'A seasoned professional with 25 years of experience in crisis management and business continuity planning across various industries.',
-            imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -654,7 +654,7 @@ export async function seedDatabase() {
           'Network with resilience professionals'
         ],
         certificateDescription: 'Participants receive a Crisis Management and Business Continuity Certificate, demonstrating competency in organizational crisis preparedness and response.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/crisis-management',
         slug: 'crisis-management-business-continuity-planning',
         createdBy: adminUser!.id
@@ -670,9 +670,9 @@ export async function seedDatabase() {
         language: 'English',
         maxParticipants: 120,
         isVirtual: true,
-        imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        imageUrl: null,
         galleryImages: [],
-        // galleryImages: ['https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400', 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400'],
+        // galleryImages: ['', ''],
         keyLearningOutcomes: [
           'Understand customer experience principles',
           'Learn digital customer journey mapping',
@@ -685,7 +685,7 @@ export async function seedDatabase() {
             name: 'Customer Experience Guru',
             title: 'Digital CX Strategist',
             description: 'A leading expert in customer experience design with extensive experience in digital transformation and customer journey optimization.',
-            imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200'
+            imageUrl: null
           }
         ],
         courseHighlights: [
@@ -709,7 +709,7 @@ export async function seedDatabase() {
           'Network with customer experience leaders'
         ],
         certificateDescription: 'Participants receive a Customer Experience Excellence Certificate, demonstrating knowledge of digital customer experience strategies and best practices.',
-        certificateImageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+        certificateImageUrl: '',
         certificateUrl: 'https://www.aaa.org/certificates/customer-experience',
         slug: 'customer-experience-excellence-digital-age',
         createdBy: adminUser!.id

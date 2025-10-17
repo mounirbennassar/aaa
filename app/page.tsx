@@ -40,8 +40,34 @@ interface Webinar {
   isVirtual: boolean;
 }
 
+interface TrainingProgram {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  duration: string;
+  price: number;
+  currency: string;
+  date: string;
+  location: string;
+  imageUrl?: string;
+  slug: string;
+  isActive: boolean;
+  isVirtual: boolean;
+}
+
 interface EventsResponse {
   events: Webinar[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
+interface TrainingProgramsResponse {
+  events: TrainingProgram[];
   pagination: {
     page: number;
     limit: number;
@@ -146,11 +172,13 @@ const EventCard = ({ image, category, date, title, description, price, registerL
 };
 
 export default function Home() {
-  // State for webinars
+  // State for webinars and training programs
   const [webinars, setWebinars] = useState<Webinar[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
+  const [loadingWebinars, setLoadingWebinars] = useState(true);
+  const [loadingTrainingPrograms, setLoadingTrainingPrograms] = useState(true);
 
-  // Fetch recent webinars
+  // Fetch recent webinars and training programs
   useEffect(() => {
     const fetchWebinars = async () => {
       try {
@@ -164,11 +192,28 @@ export default function Home() {
       } catch (error) {
         console.error('Error fetching webinars:', error);
       } finally {
-        setLoading(false);
+        setLoadingWebinars(false);
+      }
+    };
+
+    const fetchTrainingPrograms = async () => {
+      try {
+        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=date&order=desc');
+        if (response.ok) {
+          const data: TrainingProgramsResponse = await response.json();
+          setTrainingPrograms(data.events);
+        } else {
+          console.error('Failed to fetch training programs');
+        }
+      } catch (error) {
+        console.error('Error fetching training programs:', error);
+      } finally {
+        setLoadingTrainingPrograms(false);
       }
     };
 
     fetchWebinars();
+    fetchTrainingPrograms();
   }, []);
 
   // Helper function to format date
@@ -194,35 +239,29 @@ export default function Home() {
     registerLink: `/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
   });
 
-  // Data arrays for cleaner code
-  const featuredTrainingPrograms: CourseCardProps[] = [
-    {
-      icon: 'fa-hospital',
-      title: 'Healthcare Accreditation Mastery',
-      description: 'Comprehensive training in healthcare quality standards and accreditation processes.',
-      features: ['Patient Safety Standards', 'Risk Management', 'Quality Improvement'],
-      price: '$1,299',
-      color: 'primary'
-    },
-    {
-      icon: 'fa-shield-alt',
-      title: 'Quality Management Systems',
-      description: 'Master ISO standards and quality management principles for organizational excellence.',
-      features: ['ISO 9001:2015', 'Process Improvement', 'Audit Techniques'],
-      price: '$999',
-      color: 'secondary'
-    },
-    {
-      icon: 'fa-users',
-      title: 'Leadership in Accreditation',
-      description: 'Develop leadership skills specific to managing accreditation programs and teams.',
-      features: ['Strategic Planning', 'Team Management', 'Change Management'],
-      price: '$1,499',
-      color: 'tertiary'
-    }
-  ];
+  // Helper function to convert training program to course card props
+  const trainingProgramToCourseCard = (program: TrainingProgram, index: number): CourseCardProps => {
+    const icons = ['fa-hospital', 'fa-shield-alt', 'fa-users', 'fa-graduation-cap', 'fa-award', 'fa-rocket'];
+    const colors: ('primary' | 'secondary' | 'tertiary')[] = ['primary', 'secondary', 'tertiary'];
+    
+    return {
+      icon: icons[index % icons.length],
+      title: program.title,
+      description: program.description.length > 100 
+        ? program.description.substring(0, 100) + '...' 
+        : program.description,
+      features: [
+        `Duration: ${program.duration}`,
+        `Location: ${program.location}`,
+        program.isVirtual ? 'Virtual Training' : 'In-Person Training'
+      ],
+      price: program.price === 0 ? 'Free' : `$${program.price}`,
+      color: colors[index % colors.length]
+    };
+  };
 
-  // Convert webinars to event cards for display
+  // Convert training programs and webinars to display cards
+  const featuredTrainingPrograms = trainingPrograms.map(trainingProgramToCourseCard);
   const eventCards = webinars.map(webinarToEventCard);
 
   return (
@@ -404,11 +443,46 @@ export default function Home() {
               to enhance your professional development.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredTrainingPrograms.map((course, index) => (
-              <CourseCard key={index} {...course} />
-            ))}
-          </div>
+          
+          {loadingTrainingPrograms ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
+              <span className="ml-3 text-gray-600">Loading training programs...</span>
+            </div>
+          ) : featuredTrainingPrograms.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {featuredTrainingPrograms.map((course, index) => (
+                <CourseCard key={index} {...course} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 rounded-xl shadow-lg p-8 max-w-md mx-auto">
+                <i className="fas fa-graduation-cap text-4xl text-gray-400 mb-4"></i>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">No Training Programs Available</h3>
+                <p className="text-gray-500 mb-6">Check back soon for new training program announcements!</p>
+                <Link 
+                  href="/courses" 
+                  className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
+                >
+                  View All Training Programs
+                </Link>
+              </div>
+            </div>
+          )}
+          
+          {/* View All Link */}
+          {featuredTrainingPrograms.length > 0 && (
+            <div className="text-center mt-12">
+              <Link 
+                href="/courses" 
+                className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
+              >
+                <i className="fas fa-arrow-right mr-2"></i>
+                View All Training Programs
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -424,7 +498,7 @@ export default function Home() {
             </p>
           </div>
           
-          {loading ? (
+          {loadingWebinars ? (
             <div className="flex justify-center items-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
               <span className="ml-3 text-gray-600">Loading upcoming webinars...</span>

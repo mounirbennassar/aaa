@@ -400,7 +400,7 @@ export default function WebinarsPage() {
                             {webinar.price === 0 ? 'Free' : `$${webinar.price}`}
                           </div>
                           <Link
-                            href={`/details/${webinar.slug}`}
+                            href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
                           >
                             Join Webinar

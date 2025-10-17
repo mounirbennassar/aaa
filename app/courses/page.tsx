@@ -405,7 +405,7 @@ export default function CoursesPage() {
                             from ${course.price}
                           </div>
                           <Link
-                            href={`/details/${course.slug}`}
+                            href={`/details/${course.slug || course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold"
                           >
                             View Details

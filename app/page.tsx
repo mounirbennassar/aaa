@@ -132,11 +132,11 @@ const EventCard = ({ image, category, date, title, description, price, registerL
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
       {image && isValidCloudinaryImage(image) && (
         <CldImage
-          src={image}
-          alt={title}
+        src={image}
+        alt={title}
           width={400}
           height={192}
           className="w-full h-48 object-cover"
@@ -146,7 +146,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
           }}
         />
       )}
-      <div className="p-6">
+    <div className="p-6">
       <div className="flex items-center mb-4">
         <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
           {category}
@@ -169,7 +169,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
       </div>
     </div>
   </div>
-  );
+);
 };
 
 export default function Home() {
@@ -355,40 +355,40 @@ export default function Home() {
               {
                 step: '1',
                 title: 'Knowledge Hub',
-                subtitle: 'Learn & Grow',
+                subtitle: 'Build Expertise That Meets Global Standards',
                 icon: 'fa-graduation-cap',
-                content: 'Begin your journey at our Knowledge Hub — your central space for transformation.',
+                content: 'Access specialized programs designed to equip professionals with the skills and frameworks required to implement and lead accreditation systems effectively.',
                 features: [
-                  'High-impact training programs',
-                  'Expert-led webinars',
-                  'Hands-on workshops',
-                  'Industry-specific content'
+                  'Intensive, standards-based training',
+                  'Expert-led technical sessions and case studies',
+                  'Practical tools for system improvement',
+                  'Continuous learning through accredited resources'
                 ]
               },
               {
                 step: '2',
-                title: 'Official Certificate',
-                subtitle: 'Prove Your Expertise',
+                title: 'Official Certification',
+                subtitle: 'Gain Recognition That Strengthens Your Authority',
                 icon: 'fa-award',
-                content: 'Earn your internationally recognized certificate — your mark of professional excellence.',
+                content: 'Earn an internationally accredited certificate that verifies your technical competence and professional integrity in line with global accreditation requirements.',
                 features: [
-                  'Globally recognized credentials',
-                  'Quality assurance validation',
-                  'Professional credibility boost',
-                  'Career advancement proof'
+                  'Official AAA certification with international recognition',
+                  'Verified compliance with ISO and accreditation frameworks',
+                  'Qualification for professional assessor and consultant roles',
+                  'Trusted proof of expertise for employers and institutions'
                 ]
               },
               {
                 step: '3',
                 title: 'Career Development',
-                subtitle: 'Transform Your Future',
+                subtitle: 'Turn Accreditation Knowledge Into Professional Growth',
                 icon: 'fa-rocket',
-                content: 'Leverage your new credentials for maximum career impact and professional growth.',
+                content: 'Advance your career through continuous engagement with the global accreditation community and leadership pathways offered by AAA.',
                 features: [
-                  'Professional network access',
-                  'Career guidance resources',
-                  'Ongoing support system',
-                  'Industry connections'
+                  'Access to professional opportunities and global projects',
+                  'Mentorship from senior assessors and experts',
+                  'Inclusion in AAA\'s professional network and consultant roster',
+                  'Pathways to advanced credentials and leadership roles'
                 ]
               }
             ].map((item, index) => (
@@ -456,11 +456,11 @@ export default function Home() {
               <span className="ml-3 text-gray-600">Loading training programs...</span>
             </div>
           ) : featuredTrainingPrograms.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
               {featuredTrainingPrograms.map((course, index) => (
-                <CourseCard key={index} {...course} />
-              ))}
-            </div>
+              <CourseCard key={index} {...course} />
+            ))}
+          </div>
           ) : (
             <div className="text-center py-12">
               <div className="bg-gray-50 rounded-xl shadow-lg p-8 max-w-md mx-auto">
@@ -510,11 +510,11 @@ export default function Home() {
               <span className="ml-3 text-gray-600">Loading upcoming webinars...</span>
             </div>
           ) : eventCards.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {eventCards.map((event, index) => (
-                <EventCard key={index} {...event} />
-              ))}
-            </div>
+              <EventCard key={index} {...event} />
+            ))}
+          </div>
           ) : (
             <div className="text-center py-12">
               <div className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">

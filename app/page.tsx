@@ -274,7 +274,7 @@ export default function Home() {
         <div className="absolute inset-0 w-full h-full">
           {/* Desktop Video */}
           <iframe
-            src="https://www.youtube.com/embed/fEef2_WC5JI?si=IWDMz76gbKoApBkL&autoplay=1&mute=1&loop=1&playlist=fEef2_WC5JI&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
+            src="https://www.youtube.com/embed/C193YkDYYVU?si=h21Mvu120CE4NiHJ&autoplay=1&mute=1&loop=1&playlist=C193YkDYYVU&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
             className="hidden md:block w-full h-full object-cover"
             style={{ 
               position: 'absolute',

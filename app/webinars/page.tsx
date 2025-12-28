@@ -347,9 +347,14 @@ export default function WebinarsPage() {
                           </div>
                         </div>
 
-                        <h3 className="text-md font-bold text-blue-900 mb-3">
-                          {webinar.title}
-                        </h3>
+                        <Link
+                          href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                          className="block"
+                        >
+                          <h3 className="text-md font-bold text-blue-900 mb-3 hover:text-green-600 transition-colors cursor-pointer">
+                            {webinar.title}
+                          </h3>
+                        </Link>
 
                         {expired && (
                           <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">

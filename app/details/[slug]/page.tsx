@@ -33,6 +33,7 @@ interface CourseWebinar {
   certificateDescription?: string;
   certificateImageUrl?: string;
   certificateUrl?: string;
+  calendlyUrl?: string;
   slug: string;
 }
 
@@ -131,25 +132,24 @@ export default function CourseDetailPage() {
           )}
           <div className="p-8">
             <div className="flex items-center justify-between mb-6">
-              <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                item.category === 'COURSE' 
-                  ? 'bg-blue-100 text-blue-600' 
+              <div className={`px-4 py-2 rounded-full text-sm font-semibold ${item.category === 'COURSE'
+                  ? 'bg-blue-100 text-blue-600'
                   : 'bg-green-100 text-green-600'
-              }`}>
+                }`}>
                 {item.category === 'COURSE' ? 'Course' : 'Webinar'}
               </div>
               <div className="text-right">
                 <div className="text-3xl font-bold text-blue-900">
-                  {item.price === 0 ? 'Free' : `from $${item.price}`}
+                  {item.category === 'WEBINAR' ? 'Free' : (item.price === 0 ? 'Free' : `from $${item.price}`)}
                 </div>
-                <div className="text-gray-600">Price Starting</div>
+                {item.category !== 'WEBINAR' && <div className="text-gray-600">Price Starting</div>}
               </div>
             </div>
-            
+
             <h1 className="text-4xl font-bold text-blue-900 mb-4">
               {item.title}
             </h1>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Language:</h3>
@@ -161,18 +161,29 @@ export default function CourseDetailPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Location:</h3>
-                <p className="text-gray-600">{item.location}</p>
+                <p className="text-gray-600">{item.category === 'WEBINAR' ? 'Online' : item.location}</p>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Duration:</h3>
-                <p className="text-gray-600">{item.duration}</p>
+                <p className="text-gray-600">{item.category === 'WEBINAR' ? '1 Hour' : item.duration}</p>
               </div>
             </div>
 
             <div className="border-t pt-6">
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mr-4">
-                Inquire Now
-              </button>
+              {item.category === 'WEBINAR' && item.calendlyUrl ? (
+                <a
+                  href={item.calendlyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors mr-4"
+                >
+                  Join Webinar
+                </a>
+              ) : (
+                <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mr-4">
+                  Inquire Now
+                </button>
+              )}
               <Link
                 href={item.category === 'COURSE' ? '/courses' : '/webinars'}
                 className="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
@@ -233,8 +244,8 @@ export default function CourseDetailPage() {
               </div>
             )}
 
-            {/* Speakers */}
-            {item.speakers && item.speakers.length > 0 && (
+            {/* Speakers - Only show for courses, not webinars */}
+            {item.category !== 'WEBINAR' && item.speakers && item.speakers.length > 0 && (
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-blue-900 mb-6">Speakers and Trainers</h2>
                 <p className="text-gray-700 mb-6">
@@ -332,7 +343,7 @@ export default function CourseDetailPage() {
               <p className="text-gray-700 mb-4">
                 {item.certificateDescription || 'Upon successfully completing the program, participants will receive a Certificate of Completion. These certificates have a unique URL code and can be verified through the dedicated verification feature available on the AAA Platform.'}
               </p>
-              
+
               {item.certificateImageUrl && (
                 <div className="mb-4">
                   <p className="text-sm text-gray-600 mb-2">Certificate Example:</p>
@@ -349,10 +360,10 @@ export default function CourseDetailPage() {
                   />
                 </div>
               )}
-              
+
               {item.certificateUrl && (
                 <div className="mt-4">
-                  <a 
+                  <a
                     href={item.certificateUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -371,7 +382,7 @@ export default function CourseDetailPage() {
               <p className="mb-6">
                 Join this {item.category.toLowerCase()} and advance your career with internationally recognized training.
               </p>
-              <Link 
+              <Link
                 href={`/enroll/${item.slug}`}
                 className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
               >

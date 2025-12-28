@@ -43,7 +43,7 @@ export default function WebinarsPage() {
   const [filteredWebinars, setFilteredWebinars] = useState<Webinar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     search: '',
@@ -82,7 +82,7 @@ export default function WebinarsPage() {
 
     // Search filter
     if (filters.search) {
-      filtered = filtered.filter(webinar => 
+      filtered = filtered.filter(webinar =>
         webinar.title.toLowerCase().includes(filters.search.toLowerCase()) ||
         webinar.description.toLowerCase().includes(filters.search.toLowerCase())
       );
@@ -211,7 +211,7 @@ export default function WebinarsPage() {
             <div>
               <h1 className="text-4xl font-bold mb-4">Professional Webinars</h1>
               <p className="text-xl text-green-100 max-w-2xl">
-                Join our interactive webinars led by industry experts covering the latest trends 
+                Join our interactive webinars led by industry experts covering the latest trends
                 and best practices in accreditation and quality management.
               </p>
               <div className="mt-6 flex items-center space-x-6">
@@ -244,41 +244,27 @@ export default function WebinarsPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Webinars</h3>
-              
+
               {/* Search */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
                 <input
                   type="text"
                   value={filters.search}
-                  onChange={(e) => setFilters({...filters, search: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   placeholder="Search webinars..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
 
-              {/* Price Range */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
-                <select
-                  value={filters.priceRange}
-                  onChange={(e) => setFilters({...filters, priceRange: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  <option value="all">All Prices</option>
-                  <option value="free">Free</option>
-                  <option value="under50">Under $50</option>
-                  <option value="under100">$50 - $100</option>
-                  <option value="over100">Over $100</option>
-                </select>
-              </div>
+
 
               {/* Duration */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
                 <select
                   value={filters.duration}
-                  onChange={(e) => setFilters({...filters, duration: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value="all">All Durations</option>
@@ -294,7 +280,7 @@ export default function WebinarsPage() {
                   <input
                     type="checkbox"
                     checked={filters.showExpired}
-                    onChange={(e) => setFilters({...filters, showExpired: e.target.checked})}
+                    onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
                     className="mr-2"
                   />
                   <span className="text-sm text-gray-700">Show expired webinars</span>
@@ -319,7 +305,7 @@ export default function WebinarsPage() {
                   No Webinars Available
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  We&apos;re currently planning our webinar schedule. 
+                  We&apos;re currently planning our webinar schedule.
                   Check back soon for exciting new learning sessions!
                 </p>
                 <Link
@@ -348,7 +334,7 @@ export default function WebinarsPage() {
                           }}
                         />
                       )}
-                      
+
                       <div className="p-6">
                         <div className="flex items-center justify-between mb-4">
                           <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
@@ -360,7 +346,7 @@ export default function WebinarsPage() {
                             {formatDate(webinar.date)}
                           </div>
                         </div>
-                        
+
                         <h3 className="text-md font-bold text-blue-900 mb-3">
                           {webinar.title}
                         </h3>
@@ -375,11 +361,11 @@ export default function WebinarsPage() {
                             </div>
                           </div>
                         )}
-                        
+
                         <p className="text-gray-600 mb-4 text-sm line-clamp-3">
                           {webinar.description}
                         </p>
-                        
+
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-globe mr-2" />
@@ -387,24 +373,35 @@ export default function WebinarsPage() {
                           </div>
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-clock mr-2" />
-                            {formatTime(webinar.date)} ({webinar.duration})
+                            {formatTime(webinar.date)} (1 Hour)
                           </div>
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-desktop mr-2" />
-                            {webinar.location}
+                            Online
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center justify-between">
-                          <div className="text-2xl font-bold text-blue-900">
-                            {webinar.price === 0 ? 'Free' : `$${webinar.price}`}
+                          <div className="text-2xl font-bold text-green-600">
+                            Free
                           </div>
-                          <Link
-                            href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
-                          >
-                            Join Webinar
-                          </Link>
+                          {webinar.calendlyUrl ? (
+                            <a
+                              href={webinar.calendlyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
+                            >
+                              Join Webinar
+                            </a>
+                          ) : (
+                            <Link
+                              href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
+                            >
+                              View Details
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>

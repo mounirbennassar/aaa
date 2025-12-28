@@ -104,8 +104,8 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
         </ul>
         <div className="flex justify-between items-center">
           <span className="text-2xl font-bold text-[#024985]">{price}</span>
-          <Link 
-            href={enrollLink} 
+          <Link
+            href={enrollLink}
             className={`${colorStyles[color].split(' ')[1]} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity`}
           >
             Enroll Now
@@ -121,22 +121,22 @@ const EventCard = ({ image, category, date, title, description, price, registerL
   const isValidCloudinaryImage = (imageUrl: string) => {
     if (!imageUrl || imageUrl.trim() === '') return false;
     if (imageUrl === '/images/default-webinar.jpg') return false;
-    
+
     // Check if it's a full URL (like Unsplash) - these won't work with CldImage
     if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
       return imageUrl.includes('res.cloudinary.com') || imageUrl.includes('cloudinary.com');
     }
-    
+
     // If it's just a public ID, it should be valid
     return true;
   };
 
   return (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
       {image && isValidCloudinaryImage(image) && (
         <CldImage
-        src={image}
-        alt={title}
+          src={image}
+          alt={title}
           width={400}
           height={192}
           className="w-full h-48 object-cover"
@@ -146,30 +146,30 @@ const EventCard = ({ image, category, date, title, description, price, registerL
           }}
         />
       )}
-    <div className="p-6">
-      <div className="flex items-center mb-4">
-        <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
-          {category}
+      <div className="p-6">
+        <div className="flex items-center mb-4">
+          <div className="bg-gray-50 text-[#024985] px-3 py-1 rounded-full text-sm font-semibold">
+            {category}
+          </div>
+          <span className="ml-auto text-gray-500 text-sm">
+            <i className="fas fa-calendar mr-1" />
+            {date}
+          </span>
         </div>
-        <span className="ml-auto text-gray-500 text-sm">
-          <i className="fas fa-calendar mr-1" />
-          {date}
-        </span>
-      </div>
-      <h3 className="text-lg font-bold text-[#024985] mb-3">{title}</h3>
-      <p className="text-gray-600 text-sm mb-4">{description}</p>
-      <div className="flex justify-between items-center">
-        <span className="text-lg font-bold text-[#024985]">{price}</span>
-        <Link 
-          href={registerLink} 
-          className="bg-[#024985] text-white px-4 py-2 rounded-lg hover:bg-[#dc2626] transition-colors text-sm"
-        >
-          {price === 'Free' ? 'Register' : 'View Details'}
-        </Link>
+        <h3 className="text-lg font-bold text-[#024985] mb-3">{title}</h3>
+        <p className="text-gray-600 text-sm mb-4">{description}</p>
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-bold text-[#024985]">{price}</span>
+          <Link
+            href={registerLink}
+            className="bg-[#024985] text-white px-4 py-2 rounded-lg hover:bg-[#dc2626] transition-colors text-sm"
+          >
+            {price === 'Free' ? 'Register' : 'View Details'}
+          </Link>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default function Home() {
@@ -220,10 +220,10 @@ export default function Home() {
   // Helper function to format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
   };
 
@@ -233,8 +233,8 @@ export default function Home() {
     category: 'Webinar',
     date: formatDate(webinar.date),
     title: webinar.title,
-    description: webinar.description.length > 120 
-      ? webinar.description.substring(0, 120) + '...' 
+    description: webinar.description.length > 120
+      ? webinar.description.substring(0, 120) + '...'
       : webinar.description,
     price: webinar.price === 0 ? 'Free' : `$${webinar.price}`,
     registerLink: `/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
@@ -244,12 +244,12 @@ export default function Home() {
   const trainingProgramToCourseCard = (program: TrainingProgram, index: number): CourseCardProps => {
     const icons = ['fa-hospital', 'fa-shield-alt', 'fa-users', 'fa-graduation-cap', 'fa-award', 'fa-rocket'];
     const colors: ('primary' | 'secondary' | 'tertiary')[] = ['primary', 'secondary', 'tertiary'];
-    
+
     return {
       icon: icons[index % icons.length],
       title: program.title,
-      description: program.description.length > 100 
-        ? program.description.substring(0, 100) + '...' 
+      description: program.description.length > 100
+        ? program.description.substring(0, 100) + '...'
         : program.description,
       features: [
         `Duration: ${program.duration}`,
@@ -276,7 +276,7 @@ export default function Home() {
           <iframe
             src="https://www.youtube.com/embed/C193YkDYYVU?si=h21Mvu120CE4NiHJ&autoplay=1&mute=1&loop=1&playlist=C193YkDYYVU&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
             className="hidden md:block w-full h-full object-cover"
-            style={{ 
+            style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
@@ -289,14 +289,14 @@ export default function Home() {
             allowFullScreen
             title="Background Video"
           />
-          
+
           {/* Mobile Background - Static gradient instead of video for better performance */}
           <div className="md:hidden absolute inset-0 bg-gradient-to-br from-[#024985] via-[#013866] to-[#dc2626]"></div>
         </div>
-        
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-black opacity-40" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-9rem)]">
             <div className="text-white">
@@ -305,7 +305,7 @@ export default function Home() {
                   🌟 Internationally Recognized Programs
                 </div>
               </div>
-              
+
               <h1 className="text-5xl lg:text-7xl font-extrabold mb-8 leading-tight text-[#024985]">
                 Transform Your{" "}
                 <span className="text-[#dc2626]">
@@ -313,14 +313,14 @@ export default function Home() {
                 </span>{" "}
                 <span className="text-[#024985]">Future</span>
               </h1>
-              
-              <p className="text-xl lg:text-2xl text-stone-900 mb-10 leading-relaxed font-light">
-                Join <span className="font-semibold text-[#dc2626]">1000+</span> professionals who have elevated their careers through our 
+
+              <p className="text-xl lg:text-2xl text-white mb-10 leading-relaxed font-light">
+                Join <span className="font-semibold text-[#dc2626]">1000+</span> professionals who have elevated their careers through our
                 <span className="font-semibold"> structured three-step pathway</span> to excellence.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-6 mb-12">
-                <button 
+                <button
                   className="hero-start-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg border-0 outline-none relative z-20"
                 >
                   <i className="fas fa-rocket mr-2"></i>
@@ -424,7 +424,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold text-[#024985] mb-4">Ready to Begin Your Journey?</h3>
               <p className="text-gray-600 mb-6">Start with our Knowledge Hub and transform your professional future today.</p>
               <div className="flex justify-center">
-                <button 
+                <button
                   className="journey-cta-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   style={{ backgroundColor: '#024985' }}
                 >
@@ -449,26 +449,26 @@ export default function Home() {
               to enhance your professional development.
             </p>
           </div>
-          
+
           {loadingTrainingPrograms ? (
             <div className="flex justify-center items-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
               <span className="ml-3 text-gray-600">Loading training programs...</span>
             </div>
           ) : featuredTrainingPrograms.length > 0 ? (
-          <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
               {featuredTrainingPrograms.map((course, index) => (
-              <CourseCard key={index} {...course} />
-            ))}
-          </div>
+                <CourseCard key={index} {...course} />
+              ))}
+            </div>
           ) : (
             <div className="text-center py-12">
               <div className="bg-gray-50 rounded-xl shadow-lg p-8 max-w-md mx-auto">
                 <i className="fas fa-graduation-cap text-4xl text-gray-400 mb-4"></i>
                 <h3 className="text-xl font-semibold text-gray-700 mb-2">No Training Programs Available</h3>
                 <p className="text-gray-500 mb-6">Check back soon for new training program announcements!</p>
-                <Link 
-                  href="/courses" 
+                <Link
+                  href="/courses"
                   className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
                 >
                   View All Training Programs
@@ -476,12 +476,12 @@ export default function Home() {
               </div>
             </div>
           )}
-          
+
           {/* View All Link */}
           {featuredTrainingPrograms.length > 0 && (
             <div className="text-center mt-12">
-              <Link 
-                href="/courses" 
+              <Link
+                href="/courses"
                 className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
               >
                 <i className="fas fa-arrow-right mr-2"></i>
@@ -503,26 +503,26 @@ export default function Home() {
               Join our expert-led webinars and connect with professionals from around the world
             </p>
           </div>
-          
+
           {loadingWebinars ? (
             <div className="flex justify-center items-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
               <span className="ml-3 text-gray-600">Loading upcoming webinars...</span>
             </div>
           ) : eventCards.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {eventCards.map((event, index) => (
-              <EventCard key={index} {...event} />
-            ))}
-          </div>
+                <EventCard key={index} {...event} />
+              ))}
+            </div>
           ) : (
             <div className="text-center py-12">
               <div className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
                 <i className="fas fa-calendar-alt text-4xl text-gray-400 mb-4"></i>
                 <h3 className="text-xl font-semibold text-gray-700 mb-2">No Upcoming Webinars</h3>
                 <p className="text-gray-500 mb-6">Check back soon for new webinar announcements!</p>
-                <Link 
-                  href="/webinars" 
+                <Link
+                  href="/webinars"
                   className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
                 >
                   View All Webinars
@@ -530,12 +530,12 @@ export default function Home() {
               </div>
             </div>
           )}
-          
+
           {/* View All Link */}
           {eventCards.length > 0 && (
             <div className="text-center mt-12">
-              <Link 
-                href="/webinars" 
+              <Link
+                href="/webinars"
                 className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
               >
                 <i className="fas fa-arrow-right mr-2"></i>

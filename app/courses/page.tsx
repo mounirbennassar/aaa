@@ -197,65 +197,47 @@ export default function TrainingProgramsPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-48 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl shadow-lg p-8 mb-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-4">Professional Training Programs</h1>
-              <p className="text-xl text-blue-100 max-w-2xl">
-                Explore our comprehensive range of professional development training programs designed
-                to advance your career in accreditation and quality management.
-              </p>
-              <div className="mt-6 flex items-center space-x-6">
-                <div className="flex items-center">
-                  <i className="fas fa-users text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Expert Instructors</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-certificate text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Verified Certificates</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-globe text-blue-200 mr-2"></i>
-                  <span className="text-blue-100">Global Recognition</span>
-                </div>
-              </div>
-            </div>
-            <div className="hidden lg:block">
-              <div className="bg-white bg-opacity-20 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold">{allPrograms.length}</div>
-                <div className="text-blue-100">Available Programs</div>
-              </div>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-16 max-w-4xl mx-auto">
+          <h1 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
+            Professional Training Programs
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed font-light">
+            Explore our comprehensive range of professional development training programs designed
+            to advance your career in accreditation and quality management.
+          </p>
         </div>
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Training Programs</h3>
+            <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 sticky top-24 border border-gray-100">
+              <h3 className="text-xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">Filter Programs</h3>
 
               {/* Search */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                <input
-                  type="text"
-                  value={filters.search}
-                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  placeholder="Search training programs..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Search</label>
+                <div className="relative">
+                  <i className="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                  <input
+                    type="text"
+                    value={filters.search}
+                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    placeholder="Search courses..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm"
+                  />
+                </div>
               </div>
 
               {/* Price Range */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Price Range</label>
                 <select
                   value={filters.priceRange}
                   onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm appearance-none"
+                  style={{ backgroundImage: 'none' }}
                 >
                   <option value="all">All Prices</option>
                   <option value="free">Free</option>
@@ -267,11 +249,11 @@ export default function TrainingProgramsPage() {
 
               {/* Location */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Location</label>
                 <select
                   value={filters.location}
                   onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm"
                 >
                   <option value="all">All Locations</option>
                   <option value="online">Online</option>
@@ -281,11 +263,11 @@ export default function TrainingProgramsPage() {
 
               {/* Duration */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Duration</label>
                 <select
                   value={filters.duration}
                   onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm"
                 >
                   <option value="all">All Durations</option>
                   <option value="short">Short (1 day or less)</option>
@@ -295,21 +277,21 @@ export default function TrainingProgramsPage() {
               </div>
 
               {/* Show Expired */}
-              <div className="mb-6">
-                <label className="flex items-center">
+              <div className="mb-6 pt-4 border-t border-gray-100">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={filters.showExpired}
                     onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
-                    className="mr-2"
+                    className="mr-3 text-[#13558D] focus:ring-[#13558D] rounded"
                   />
-                  <span className="text-sm text-gray-700">Show expired programs</span>
+                  <span className="text-sm text-gray-600">Show expired programs</span>
                 </label>
               </div>
 
               {/* Results Count */}
-              <div className="text-sm text-gray-600">
-                Showing {filteredPrograms.length} of {allPrograms.length} training programs
+              <div className="text-xs text-gray-400 text-center uppercase tracking-widest">
+                Showing {filteredPrograms.length} of {allPrograms.length} programs
               </div>
             </div>
           </div>
@@ -340,75 +322,67 @@ export default function TrainingProgramsPage() {
                 {filteredPrograms.map((course) => {
                   const expired = isExpired(course.date);
                   return (
-                    <div key={course.id} className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${expired ? 'opacity-50' : ''}`}>
+                    <div key={course.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
                       {course.imageUrl && (
-                        <CldImage
-                          src={course.imageUrl}
-                          alt={course.title}
-                          width={400}
-                          height={192}
-                          className="w-full h-48 object-cover"
-                          crop={{
-                            type: 'fill',
-                            source: true
-                          }}
-                        />
-                      )}
-
-                      <div className="p-6">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}`}>
-                            {expired ? 'Expired' : 'Course'}
-                          </div>
-                          <div className="text-gray-500 text-sm">
-                            <i className="fas fa-calendar mr-1" />
-                            {formatDate(course.date)}
+                        <div className="relative overflow-hidden h-48">
+                          <CldImage
+                            src={course.imageUrl}
+                            alt={course.title}
+                            width={400}
+                            height={192}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            crop={{
+                              type: 'fill',
+                              source: true
+                            }}
+                          />
+                          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
+                            {course.isVirtual ? 'Virtual' : 'In-Person'}
                           </div>
                         </div>
+                      )}
 
-                        {expired && (
-                          <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
-                            <div className="flex items-center">
-                              <i className="fas fa-exclamation-triangle text-red-500 mr-2" />
-                              <p className="text-red-700 text-sm">
-                                This training program has finished. Subscribe to our newsletter for upcoming programs or choose other available options.
-                              </p>
-                            </div>
+                      <div className="p-6 flex flex-col flex-grow">
+                        <div className="flex items-center justify-between mb-3 text-xs uppercase tracking-wider text-gray-500">
+                          <div className="flex items-center">
+                            <i className="fas fa-calendar mr-2" />
+                            {formatDate(course.date)}
                           </div>
-                        )}
+                          {expired && <span className="text-red-500 font-bold">Expired</span>}
+                        </div>
 
-                        <h3 className="text-md font-bold text-blue-900 mb-3">
+                        <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
                           {course.title}
                         </h3>
 
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                        <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
                           {course.description}
                         </p>
 
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-globe mr-2" />
+                        <div className="space-y-2 mb-6 pt-4 border-t border-gray-50">
+                          <div className="flex items-center text-xs text-gray-500 font-medium">
+                            <i className="fas fa-globe w-5 text-[#13558D]" />
                             {course.language}
                           </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-map-marker-alt mr-2" />
+                          <div className="flex items-center text-xs text-gray-500 font-medium">
+                            <i className="fas fa-map-marker-alt w-5 text-[#13558D]" />
                             {course.location}
                           </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-clock mr-2" />
+                          <div className="flex items-center text-xs text-gray-500 font-medium">
+                            <i className="fas fa-clock w-5 text-[#13558D]" />
                             {course.duration}
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                          <div className="text-md font-bold text-blue-900">
-                            from ${course.price}
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="text-lg font-extrabold text-[#13558D] tracking-tight">
+                            {course.price === 0 ? 'Free' : `$${course.price}`}
                           </div>
                           <Link
                             href={`/details/${course.slug || course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold"
+                            className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
                           >
-                            View Details
+                            View Details <i className="fas fa-arrow-right ml-1 text-xs"></i>
                           </Link>
                         </div>
                       </div>

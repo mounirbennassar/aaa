@@ -205,67 +205,47 @@ export default function WebinarsPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-48 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-green-600 to-green-800 rounded-xl shadow-lg p-8 mb-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-4">Professional Webinars</h1>
-              <p className="text-xl text-green-100 max-w-2xl">
-                Join our interactive webinars led by industry experts covering the latest trends
-                and best practices in accreditation and quality management.
-              </p>
-              <div className="mt-6 flex items-center space-x-6">
-                <div className="flex items-center">
-                  <i className="fas fa-video text-green-200 mr-2"></i>
-                  <span className="text-green-100">Live Sessions</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-users text-green-200 mr-2"></i>
-                  <span className="text-green-100">Interactive Q&A</span>
-                </div>
-                <div className="flex items-center">
-                  <i className="fas fa-download text-green-200 mr-2"></i>
-                  <span className="text-green-100">Resources Included</span>
-                </div>
-              </div>
-            </div>
-            <div className="hidden lg:block">
-              <div className="bg-white bg-opacity-20 rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold">{allWebinars.length}</div>
-                <div className="text-green-100">Available Webinars</div>
-              </div>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-16 max-w-4xl mx-auto">
+          <h1 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
+            Professional Webinars
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed font-light">
+            Join our interactive webinars led by industry experts covering the latest trends
+            and best practices in accreditation and quality management.
+          </p>
         </div>
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Webinars</h3>
+            <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 sticky top-24 border border-gray-100">
+              <h3 className="text-xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">Filter Webinars</h3>
 
               {/* Search */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                <input
-                  type="text"
-                  value={filters.search}
-                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  placeholder="Search webinars..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Search</label>
+                <div className="relative">
+                  <i className="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                  <input
+                    type="text"
+                    value={filters.search}
+                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    placeholder="Search webinars..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm"
+                  />
+                </div>
               </div>
-
-
 
               {/* Duration */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Duration</label>
                 <select
                   value={filters.duration}
                   onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] text-sm appearance-none"
+                  style={{ backgroundImage: 'none' }}
                 >
                   <option value="all">All Durations</option>
                   <option value="short">Short (1 hour)</option>
@@ -275,20 +255,20 @@ export default function WebinarsPage() {
               </div>
 
               {/* Show Expired */}
-              <div className="mb-6">
-                <label className="flex items-center">
+              <div className="mb-6 pt-4 border-t border-gray-100">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={filters.showExpired}
                     onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
-                    className="mr-2"
+                    className="mr-3 text-[#13558D] focus:ring-[#13558D] rounded"
                   />
-                  <span className="text-sm text-gray-700">Show expired webinars</span>
+                  <span className="text-sm text-gray-600">Show expired webinars</span>
                 </label>
               </div>
 
               {/* Results Count */}
-              <div className="text-sm text-gray-600">
+              <div className="text-xs text-gray-400 text-center uppercase tracking-widest">
                 Showing {filteredWebinars.length} of {allWebinars.length} webinars
               </div>
             </div>
@@ -320,74 +300,61 @@ export default function WebinarsPage() {
                 {filteredWebinars.map((webinar) => {
                   const expired = isExpired(webinar.date);
                   return (
-                    <div key={webinar.id} className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ${expired ? 'opacity-50' : ''}`}>
+                    <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
                       {webinar.imageUrl && (
-                        <CldImage
-                          src={webinar.imageUrl}
-                          alt={webinar.title}
-                          width={400}
-                          height={192}
-                          className="w-full h-48 object-cover"
-                          crop={{
-                            type: 'fill',
-                            source: true
-                          }}
-                        />
+                        <div className="relative overflow-hidden h-48">
+                          <CldImage
+                            src={webinar.imageUrl}
+                            alt={webinar.title}
+                            width={400}
+                            height={192}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            crop={{
+                              type: 'fill',
+                              source: true
+                            }}
+                          />
+                          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
+                            {webinar.isVirtual ? 'Online' : 'In-Person'}
+                          </div>
+                        </div>
                       )}
 
-                      <div className="p-6">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
-                            <i className={`fas ${expired ? 'fa-exclamation-triangle' : 'fa-video'} mr-1`} />
-                            {expired ? 'Expired' : 'Webinar'}
-                          </div>
-                          <div className="text-gray-500 text-sm">
-                            <i className="fas fa-calendar mr-1" />
+                      <div className="p-6 flex flex-col flex-grow">
+                        <div className="flex items-center justify-between mb-3 text-xs uppercase tracking-wider text-gray-500">
+                          <div className="flex items-center">
+                            <i className="fas fa-calendar mr-2" />
                             {formatDate(webinar.date)}
                           </div>
+                          {expired && <span className="text-red-500 font-bold">Expired</span>}
                         </div>
 
                         <Link
                           href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                          className="block"
+                          className="block group"
                         >
-                          <h3 className="text-md font-bold text-blue-900 mb-3 hover:text-green-600 transition-colors cursor-pointer">
+                          <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
                             {webinar.title}
                           </h3>
                         </Link>
 
-                        {expired && (
-                          <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
-                            <div className="flex items-center">
-                              <i className="fas fa-exclamation-triangle text-red-500 mr-2" />
-                              <p className="text-red-700 text-sm">
-                                This webinar has finished. Subscribe to our newsletter for upcoming webinars or choose other available options.
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        <p className="text-gray-600 mb-4 text-sm line-clamp-3">
+                        <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
                           {webinar.description}
                         </p>
 
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-globe mr-2" />
+                        <div className="space-y-2 mb-6 pt-4 border-t border-gray-50">
+                          <div className="flex items-center text-xs text-gray-500 font-medium">
+                            <i className="fas fa-globe w-5 text-[#13558D]" />
                             {webinar.language}
                           </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-clock mr-2" />
+                          <div className="flex items-center text-xs text-gray-500 font-medium">
+                            <i className="fas fa-clock w-5 text-[#13558D]" />
                             {formatTime(webinar.date)} (1 Hour)
-                          </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <i className="fas fa-desktop mr-2" />
-                            Online
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                          <div className="text-2xl font-bold text-green-600">
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="text-lg font-extrabold text-[#13558D] tracking-tight">
                             Free
                           </div>
                           {webinar.calendlyUrl ? (
@@ -395,16 +362,16 @@ export default function WebinarsPage() {
                               href={webinar.calendlyUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
+                              className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
                             >
-                              Join Webinar
+                              Join Webinar <i className="fas fa-arrow-right ml-1 text-xs"></i>
                             </a>
                           ) : (
                             <Link
                               href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"
+                              className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
                             >
-                              View Details
+                              View Details <i className="fas fa-arrow-right ml-1 text-xs"></i>
                             </Link>
                           )}
                         </div>

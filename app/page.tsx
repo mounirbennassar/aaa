@@ -97,7 +97,7 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
           ))}
         </ul>
         <div className="mt-auto pt-6 border-t border-gray-50 w-full flex flex-col items-center">
-          <span className="text-2xl font-bold text-[#13558D] mb-4 font-['Playfair_Display']">{price}</span>
+          <span className="text-2xl font-extrabold text-[#13558D] mb-4 tracking-tight">{price}</span>
           <Link
             href={enrollLink}
             className="text-[#13558D] border border-[#13558D] px-8 py-2.5 rounded-full hover:bg-[#13558D] hover:text-white transition-all duration-300 text-sm font-semibold tracking-wide uppercase"
@@ -153,7 +153,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
         <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">{title}</h3>
         <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">{description}</p>
         <div className="flex justify-between items-center pt-4 border-t border-gray-50">
-          <span className="text-lg font-bold text-[#13558D] font-['Playfair_Display']">{price}</span>
+          <span className="text-lg font-extrabold text-[#13558D] tracking-tight">{price}</span>
           <Link
             href={registerLink}
             className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"

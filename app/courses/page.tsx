@@ -380,9 +380,9 @@ export default function TrainingProgramsPage() {
                           </div>
                           <Link
                             href={`/details/${course.slug || course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                            className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
+                            className="bg-[#13558D] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors"
                           >
-                            View Details <i className="fas fa-arrow-right ml-1 text-xs"></i>
+                            View Details
                           </Link>
                         </div>
                       </div>

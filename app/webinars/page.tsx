@@ -362,16 +362,16 @@ export default function WebinarsPage() {
                               href={webinar.calendlyUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
+                              className="bg-[#13558D] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors"
                             >
-                              Join Webinar <i className="fas fa-arrow-right ml-1 text-xs"></i>
+                              Join Webinar
                             </a>
                           ) : (
                             <Link
                               href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                              className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
+                              className="bg-[#13558D] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors"
                             >
-                              View Details <i className="fas fa-arrow-right ml-1 text-xs"></i>
+                              View Details
                             </Link>
                           )}
                         </div>

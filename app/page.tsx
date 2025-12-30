@@ -100,7 +100,7 @@ const CourseCard = ({ icon, title, description, features, price, color = 'primar
           <span className="text-2xl font-extrabold text-[#13558D] mb-4 tracking-tight">{price}</span>
           <Link
             href={enrollLink}
-            className="text-[#13558D] border border-[#13558D] px-8 py-2.5 rounded-full hover:bg-[#13558D] hover:text-white transition-all duration-300 text-sm font-semibold tracking-wide uppercase"
+            className="bg-[#13558D] text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors tracking-wide uppercase"
           >
             Enroll Now
           </Link>
@@ -156,9 +156,9 @@ const EventCard = ({ image, category, date, title, description, price, registerL
           <span className="text-lg font-extrabold text-[#13558D] tracking-tight">{price}</span>
           <Link
             href={registerLink}
-            className="text-[#13558D] text-sm font-semibold hover:underline decoration-2 underline-offset-4"
+            className="bg-[#13558D] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors"
           >
-            {price === 'Free' ? 'Register Now' : 'View Details'} <i className="fas fa-arrow-right ml-1 text-xs"></i>
+            {price === 'Free' ? 'Register Now' : 'View Details'}
           </Link>
         </div>
       </div>

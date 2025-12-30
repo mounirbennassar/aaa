@@ -183,7 +183,7 @@ export default function Home() {
   useEffect(() => {
     const fetchWebinars = async () => {
       try {
-        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=date&order=desc');
+        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=date&order=asc&upcoming=true');
         if (response.ok) {
           const data: EventsResponse = await response.json();
           setWebinars(data.events);
@@ -199,7 +199,7 @@ export default function Home() {
 
     const fetchTrainingPrograms = async () => {
       try {
-        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=date&order=desc');
+        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=date&order=asc&upcoming=true');
         if (response.ok) {
           const data: TrainingProgramsResponse = await response.json();
           setTrainingPrograms(data.events);

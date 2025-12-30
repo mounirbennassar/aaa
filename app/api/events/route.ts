@@ -10,15 +10,18 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10')
     const category = searchParams.get('category')
     const search = searchParams.get('search')
+    const sortBy = searchParams.get('sortBy') || 'createdAt'
+    const order = searchParams.get('order') || 'desc'
+    const upcoming = searchParams.get('upcoming') === 'true'
 
     const skip = (page - 1) * limit
 
     const where: Record<string, unknown> = {}
-    
+
     if (category && category !== 'all') {
       where.category = category.toUpperCase()
     }
-    
+
     if (search) {
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
@@ -27,12 +30,22 @@ export async function GET(request: NextRequest) {
       ]
     }
 
+    // Filter for upcoming events only (date >= today)
+    if (upcoming) {
+      where.date = { gte: new Date() }
+    }
+
+    // Determine sort field and order
+    const validSortFields = ['date', 'createdAt', 'title', 'price']
+    const sortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt'
+    const sortOrder = order === 'asc' ? 'asc' : 'desc'
+
     const [events, total] = await Promise.all([
       prisma.event.findMany({
         where,
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { [sortField]: sortOrder },
         include: {
           creator: {
             select: {
@@ -66,7 +79,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },

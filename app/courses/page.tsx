@@ -56,7 +56,7 @@ export default function TrainingProgramsPage() {
   const fetchPrograms = async () => {
     try {
       console.log('Fetching training programs...');
-      const response = await fetch('/api/events?category=COURSE&sortBy=date&order=asc');
+      const response = await fetch('/api/events?category=COURSE&sortBy=date&order=asc&limit=100');
       console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();

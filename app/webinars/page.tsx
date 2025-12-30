@@ -56,7 +56,7 @@ export default function WebinarsPage() {
   const fetchWebinars = async () => {
     try {
       console.log('Fetching webinars...');
-      const response = await fetch('/api/events?category=WEBINAR');
+      const response = await fetch('/api/events?category=WEBINAR&sortBy=date&order=asc');
       console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();

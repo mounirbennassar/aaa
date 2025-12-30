@@ -43,7 +43,7 @@ export default function TrainingProgramsPage() {
   const [filteredPrograms, setFilteredPrograms] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     search: '',
@@ -56,7 +56,7 @@ export default function TrainingProgramsPage() {
   const fetchPrograms = async () => {
     try {
       console.log('Fetching training programs...');
-      const response = await fetch('/api/events?category=COURSE');
+      const response = await fetch('/api/events?category=COURSE&sortBy=date&order=asc');
       console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();
@@ -82,7 +82,7 @@ export default function TrainingProgramsPage() {
 
     // Search filter
     if (filters.search) {
-      filtered = filtered.filter(course => 
+      filtered = filtered.filter(course =>
         course.title.toLowerCase().includes(filters.search.toLowerCase()) ||
         course.description.toLowerCase().includes(filters.search.toLowerCase())
       );
@@ -236,14 +236,14 @@ export default function TrainingProgramsPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter Training Programs</h3>
-              
+
               {/* Search */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
                 <input
                   type="text"
                   value={filters.search}
-                  onChange={(e) => setFilters({...filters, search: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   placeholder="Search training programs..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -254,7 +254,7 @@ export default function TrainingProgramsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
                 <select
                   value={filters.priceRange}
-                  onChange={(e) => setFilters({...filters, priceRange: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Prices</option>
@@ -270,7 +270,7 @@ export default function TrainingProgramsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
                 <select
                   value={filters.location}
-                  onChange={(e) => setFilters({...filters, location: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, location: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Locations</option>
@@ -284,7 +284,7 @@ export default function TrainingProgramsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
                 <select
                   value={filters.duration}
-                  onChange={(e) => setFilters({...filters, duration: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Durations</option>
@@ -300,7 +300,7 @@ export default function TrainingProgramsPage() {
                   <input
                     type="checkbox"
                     checked={filters.showExpired}
-                    onChange={(e) => setFilters({...filters, showExpired: e.target.checked})}
+                    onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
                     className="mr-2"
                   />
                   <span className="text-sm text-gray-700">Show expired programs</span>
@@ -325,7 +325,7 @@ export default function TrainingProgramsPage() {
                   No Training Programs Available
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  We&apos;re currently developing our course catalog. 
+                  We&apos;re currently developing our course catalog.
                   Check back soon for exciting new learning opportunities!
                 </p>
                 <Link
@@ -354,7 +354,7 @@ export default function TrainingProgramsPage() {
                           }}
                         />
                       )}
-                      
+
                       <div className="p-6">
                         <div className="flex items-center justify-between mb-4">
                           <div className={`px-3 py-1 rounded-full text-sm font-semibold ${expired ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}`}>
@@ -376,15 +376,15 @@ export default function TrainingProgramsPage() {
                             </div>
                           </div>
                         )}
-                      
+
                         <h3 className="text-md font-bold text-blue-900 mb-3">
                           {course.title}
                         </h3>
-                        
+
                         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                           {course.description}
                         </p>
-                        
+
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center text-sm text-gray-500">
                             <i className="fas fa-globe mr-2" />
@@ -399,7 +399,7 @@ export default function TrainingProgramsPage() {
                             {course.duration}
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="text-md font-bold text-blue-900">
                             from ${course.price}

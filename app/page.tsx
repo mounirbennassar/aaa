@@ -327,7 +327,7 @@ export default function Home() {
         </div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-40" />
+        <div className="absolute inset-0 bg-black opacity-60" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-9rem)]">
@@ -338,12 +338,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <h1 className="text-5xl lg:text-7xl font-extrabold mb-8 leading-tight text-[#024985]">
+              <h1 className="text-5xl lg:text-7xl font-extrabold mb-8 leading-tight text-white">
                 Transform Your{" "}
                 <span className="text-[#dc2626]">
                   Professional
                 </span>{" "}
-                <span className="text-[#024985]">Future</span>
+                <span className="text-white">Future</span>
               </h1>
 
               <p className="text-xl lg:text-2xl text-white mb-10 leading-relaxed font-light">

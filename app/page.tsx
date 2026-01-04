@@ -6,7 +6,8 @@ import { CldImage } from 'next-cloudinary';
 
 // Type definitions
 interface CourseCardProps {
-  icon: string;
+  image?: string;
+  icon?: string;
   title: string;
   description: string;
   features: string[];
@@ -78,13 +79,46 @@ interface TrainingProgramsResponse {
 }
 
 // Reusable components for better optimization
-const CourseCard = ({ icon, title, description, features, price, color = 'primary', enrollLink = '/details' }: CourseCardProps) => {
+const CourseCard = ({ image, icon, title, description, features, price, color = 'primary', enrollLink = '/details' }: CourseCardProps) => {
+  // Helper function to check if image URL is valid for Cloudinary
+  const isValidCloudinaryImage = (imageUrl: string) => {
+    if (!imageUrl || imageUrl.trim() === '') return false;
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return false;
+    return true;
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full">
+    <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group">
+      {/* Course Image */}
+      <div className="relative overflow-hidden h-48 bg-gray-100 w-full">
+        {image ? (
+          isValidCloudinaryImage(image) ? (
+            <CldImage
+              src={image}
+              alt={title}
+              width={400}
+              height={192}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              crop={{
+                type: 'fill',
+                source: true
+              }}
+            />
+          ) : (
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          )
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
+            <i className={`fas ${icon || 'fa-graduation-cap'} text-5xl text-[#13558D]/30`} />
+          </div>
+        )}
+      </div>
+
       <div className="p-8 flex flex-col flex-grow items-center text-center">
-        <div className="mb-6">
-          <i className={`fas ${icon} text-4xl text-[#13558D]`} />
-        </div>
         <h3 className="text-xl font-bold text-[#13558D] mb-4 font-['Playfair_Display'] tracking-wide">{title}</h3>
         <p className="text-gray-600 mb-6 text-sm leading-relaxed">{description}</p>
         <div className="w-12 h-0.5 bg-gray-200 mb-6"></div>
@@ -114,37 +148,42 @@ const EventCard = ({ image, category, date, title, description, price, registerL
   // Helper function to check if image URL is valid for Cloudinary
   const isValidCloudinaryImage = (imageUrl: string) => {
     if (!imageUrl || imageUrl.trim() === '') return false;
-    if (imageUrl === '/images/default-webinar.jpg') return false;
-
-    // Check if it's a full URL (like Unsplash) - these won't work with CldImage
-    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
-      return imageUrl.includes('res.cloudinary.com') || imageUrl.includes('cloudinary.com');
-    }
-
-    // If it's just a public ID, it should be valid
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return false;
     return true;
   };
 
   return (
     <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group">
-      {image && isValidCloudinaryImage(image) && (
-        <div className="relative overflow-hidden h-48">
-          <CldImage
-            src={image}
-            alt={title}
-            width={400}
-            height={192}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            crop={{
-              type: 'fill',
-              source: true
-            }}
-          />
-          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
-            {category}
+      <div className="relative overflow-hidden h-48 bg-gray-100">
+        {image ? (
+          isValidCloudinaryImage(image) ? (
+            <CldImage
+              src={image}
+              alt={title}
+              width={400}
+              height={192}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              crop={{
+                type: 'fill',
+                source: true
+              }}
+            />
+          ) : (
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          )
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
+            <i className="fas fa-calendar-alt text-5xl text-[#13558D]/30" />
           </div>
+        )}
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
+          {category}
         </div>
-      )}
+      </div>
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-center text-gray-500 text-xs uppercase tracking-wider mb-3">
           <i className="fas fa-calendar mr-2" />
@@ -239,6 +278,7 @@ export default function Home() {
     const icons = ['fa-hospital', 'fa-shield-alt', 'fa-users', 'fa-graduation-cap', 'fa-award', 'fa-rocket'];
 
     return {
+      image: program.imageUrl,
       icon: icons[index % icons.length],
       title: program.title,
       description: program.description.length > 100

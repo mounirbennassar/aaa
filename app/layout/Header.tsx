@@ -38,7 +38,7 @@ export default function Header() {
               className="h-14 w-auto"
             />
           </div>
-          
+
           <div className="hidden md:flex space-x-1">
             {/* Home */}
             <div>
@@ -158,7 +158,7 @@ export default function Header() {
             <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors">
               Apply Now
             </button>
-            
+
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
@@ -171,7 +171,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      
+
       {/* Backdrop to close dropdown when clicking outside */}
       {activeDropdown && (
         <div
@@ -179,7 +179,7 @@ export default function Header() {
           onClick={closeDropdown}
         />
       )}
-      
+
       {/* Academy Secondary Navigation */}
       <div className="hidden md:block shadow-sm" style={{ marginTop: '14px', backgroundColor: '#013866' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -213,6 +213,13 @@ export default function Header() {
                 <i className="fas fa-certificate mr-2" />
                 Certificate
               </a>
+              <a
+                href="/speakers"
+                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
+              >
+                <i className="fas fa-chalkboard-teacher mr-2" />
+                Speakers
+              </a>
             </div>
           </div>
         </div>
@@ -234,7 +241,7 @@ export default function Header() {
                 </svg>
               </button>
             </div>
-            
+
             {/* Main Navigation */}
             <div className="p-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Main Navigation</h3>
@@ -246,7 +253,7 @@ export default function Header() {
                 >
                   Home
                 </a>
-                
+
                 <div className="space-y-1">
                   <button
                     onClick={() => toggleDropdown('about')}
@@ -265,7 +272,7 @@ export default function Header() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="space-y-1">
                   <button
                     onClick={() => toggleDropdown('programs')}
@@ -282,7 +289,7 @@ export default function Header() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="space-y-1">
                   <button
                     onClick={() => toggleDropdown('membership')}
@@ -298,7 +305,7 @@ export default function Header() {
                     </div>
                   )}
                 </div>
-                
+
                 <a
                   href="https://aaa-accreditation.org/accredited-organizations/"
                   onClick={closeMobileMenu}
@@ -306,7 +313,7 @@ export default function Header() {
                 >
                   Accredited Organizations
                 </a>
-                
+
                 <a
                   href="/adcp"
                   target="_blank"
@@ -318,7 +325,7 @@ export default function Header() {
                 </a>
               </div>
             </div>
-            
+
             {/* Academy Secondary Navigation */}
             <div className="p-4 border-t border-gray-200" style={{ backgroundColor: '#f8f9fa' }}>
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Academy</h3>
@@ -354,6 +361,14 @@ export default function Header() {
                 >
                   <i className="fas fa-certificate mr-3 text-blue-600" />
                   Certificate
+                </a>
+                <a
+                  href="/speakers"
+                  onClick={closeMobileMenu}
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <i className="fas fa-chalkboard-teacher mr-3 text-blue-600" />
+                  Speakers
                 </a>
               </div>
             </div>

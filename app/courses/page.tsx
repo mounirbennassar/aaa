@@ -331,18 +331,26 @@ export default function TrainingProgramsPage() {
                     <div key={course.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
                       {/* Course Image */}
                       <div className="relative overflow-hidden h-48 bg-gray-100">
-                        {course.imageUrl && isValidCloudinaryImage(course.imageUrl) ? (
-                          <CldImage
-                            src={course.imageUrl}
-                            alt={course.title}
-                            width={400}
-                            height={192}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            crop={{
-                              type: 'fill',
-                              source: true
-                            }}
-                          />
+                        {course.imageUrl ? (
+                          isValidCloudinaryImage(course.imageUrl) ? (
+                            <CldImage
+                              src={course.imageUrl}
+                              alt={course.title}
+                              width={400}
+                              height={192}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              crop={{
+                                type: 'fill',
+                                source: true
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={course.imageUrl}
+                              alt={course.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
                             <i className="fas fa-book text-5xl text-[#13558D]/30" />

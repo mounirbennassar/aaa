@@ -175,6 +175,12 @@ export default function WebinarsPage() {
     });
   };
 
+  const isValidCloudinaryImage = (imageUrl: string) => {
+    if (!imageUrl || imageUrl.trim() === '') return false;
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return false;
+    return true;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-20">
@@ -301,24 +307,37 @@ export default function WebinarsPage() {
                   const expired = isExpired(webinar.date);
                   return (
                     <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
-                      {webinar.imageUrl && (
-                        <div className="relative overflow-hidden h-48">
-                          <CldImage
-                            src={webinar.imageUrl}
-                            alt={webinar.title}
-                            width={400}
-                            height={192}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            crop={{
-                              type: 'fill',
-                              source: true
-                            }}
-                          />
-                          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
-                            {webinar.isVirtual ? 'Online' : 'In-Person'}
+                      {/* Webinar Image */}
+                      <div className="relative overflow-hidden h-48 bg-gray-100">
+                        {webinar.imageUrl ? (
+                          isValidCloudinaryImage(webinar.imageUrl) ? (
+                            <CldImage
+                              src={webinar.imageUrl}
+                              alt={webinar.title}
+                              width={400}
+                              height={192}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              crop={{
+                                type: 'fill',
+                                source: true
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={webinar.imageUrl}
+                              alt={webinar.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
+                            <i className="fas fa-video text-5xl text-[#13558D]/30" />
                           </div>
+                        )}
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
+                          {webinar.isVirtual ? 'Online' : 'In-Person'}
                         </div>
-                      )}
+                      </div>
 
                       <div className="p-6 flex flex-col flex-grow">
                         <div className="flex items-center justify-between mb-3 text-xs uppercase tracking-wider text-gray-500">

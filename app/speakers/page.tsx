@@ -79,7 +79,7 @@ export default function SpeakersPage() {
                 {/* Header */}
                 <div className="text-center mb-16 max-w-4xl mx-auto">
                     <h1 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
-                        Our Expert Instructors
+                        Meet Our Global Team of Experts
                     </h1>
                     <p className="text-lg text-gray-600 leading-relaxed font-light">
                         Meet our distinguished faculty of industry experts and certified professionals who bring real-world experience to every training program.

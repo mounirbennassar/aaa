@@ -380,35 +380,63 @@ export default function Header() {
       <div className="bg-white text-[#013866] py-1.5 overflow-hidden border-b border-gray-200">
         <div className="marquee-container">
           <div className="marquee-content">
-            <span className="mx-6">100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
-            <span className="mx-6">Over 90% rated clarity of content presentation as Excellent</span>
-            <span className="mx-6">More than 90% rated participant engagement as Excellent</span>
-            <span className="mx-6">100% confirmed training met or exceeded expectations</span>
-            <span className="mx-6">Over 90% reported significant improvement in ISO 15189 understanding</span>
-            <span className="mx-6">~90% reported high confidence in applying knowledge at workplace</span>
-            <span className="mx-6">More than 85% rated theory-practice balance as Excellent</span>
-            <span className="mx-6">85-90% rated pre-course communication as Very Good to Excellent</span>
-            <span className="mx-6">100% rated registration process as smooth</span>
-            <span className="mx-6">100% rated online platform as easy to use and accessible</span>
-            <span className="mx-6">Over 90% rated course as well organized and on time</span>
-            <span className="mx-6">100% rated technical support as Very Good to Excellent</span>
-            <span className="mx-6">More than 90% expressed overall satisfaction</span>
-            <span className="mx-6">Over 95% would recommend the course to colleagues</span>
+            <span className="mx-4">100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% rated clarity of content presentation as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 90% rated participant engagement as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% confirmed training met or exceeded expectations</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% reported significant improvement in ISO 15189 understanding</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">~90% reported high confidence in applying knowledge at workplace</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 85% rated theory-practice balance as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">85-90% rated pre-course communication as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated registration process as smooth</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated online platform as easy to use and accessible</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% rated course as well organized and on time</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated technical support as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 90% expressed overall satisfaction</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 95% would recommend the course to colleagues</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
             {/* Duplicate for seamless loop */}
-            <span className="mx-6">100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
-            <span className="mx-6">Over 90% rated clarity of content presentation as Excellent</span>
-            <span className="mx-6">More than 90% rated participant engagement as Excellent</span>
-            <span className="mx-6">100% confirmed training met or exceeded expectations</span>
-            <span className="mx-6">Over 90% reported significant improvement in ISO 15189 understanding</span>
-            <span className="mx-6">~90% reported high confidence in applying knowledge at workplace</span>
-            <span className="mx-6">More than 85% rated theory-practice balance as Excellent</span>
-            <span className="mx-6">85-90% rated pre-course communication as Very Good to Excellent</span>
-            <span className="mx-6">100% rated registration process as smooth</span>
-            <span className="mx-6">100% rated online platform as easy to use and accessible</span>
-            <span className="mx-6">Over 90% rated course as well organized and on time</span>
-            <span className="mx-6">100% rated technical support as Very Good to Excellent</span>
-            <span className="mx-6">More than 90% expressed overall satisfaction</span>
-            <span className="mx-6">Over 95% would recommend the course to colleagues</span>
+            <span className="mx-4">100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% rated clarity of content presentation as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 90% rated participant engagement as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% confirmed training met or exceeded expectations</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% reported significant improvement in ISO 15189 understanding</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">~90% reported high confidence in applying knowledge at workplace</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 85% rated theory-practice balance as Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">85-90% rated pre-course communication as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated registration process as smooth</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated online platform as easy to use and accessible</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 90% rated course as well organized and on time</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">100% rated technical support as Very Good to Excellent</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">More than 90% expressed overall satisfaction</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
+            <span className="mx-4">Over 95% would recommend the course to colleagues</span>
+            <img src="/aaaico.png" alt="" className="h-4 w-4 mx-2 inline-block" />
           </div>
         </div>
       </div>

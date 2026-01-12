@@ -377,7 +377,7 @@ export default function Header() {
       )}
 
       {/* Marquee News Bar */}
-      <div className="bg-[#dc2626] text-white py-1.5 overflow-hidden">
+      <div className="bg-white text-[#013866] py-1.5 overflow-hidden border-b border-gray-200">
         <div className="marquee-container">
           <div className="marquee-content">
             <span className="mx-6">100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>

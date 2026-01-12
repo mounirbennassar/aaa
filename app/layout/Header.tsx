@@ -375,6 +375,70 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      {/* Marquee News Bar */}
+      <div className="bg-[#dc2626] text-white py-2 overflow-hidden">
+        <div className="marquee-container">
+          <div className="marquee-content">
+            <span className="mx-8">✨ 100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
+            <span className="mx-8">📊 Over 90% rated clarity of content presentation as Excellent</span>
+            <span className="mx-8">🎯 More than 90% rated participant engagement as Excellent</span>
+            <span className="mx-8">⭐ 100% confirmed training met or exceeded expectations</span>
+            <span className="mx-8">📈 Over 90% reported significant improvement in ISO 15189 understanding</span>
+            <span className="mx-8">💼 ~90% reported high confidence in applying knowledge at workplace</span>
+            <span className="mx-8">⚖️ More than 85% rated theory-practice balance as Excellent</span>
+            <span className="mx-8">📧 85-90% rated pre-course communication as Very Good to Excellent</span>
+            <span className="mx-8">✅ 100% rated registration process as smooth</span>
+            <span className="mx-8">💻 100% rated online platform as easy to use and accessible</span>
+            <span className="mx-8">📋 Over 90% rated course as well organized and on time</span>
+            <span className="mx-8">🛠️ 100% rated technical support as Very Good to Excellent</span>
+            <span className="mx-8">🌟 More than 90% expressed overall satisfaction</span>
+            <span className="mx-8">👍 Over 95% would recommend the course to colleagues</span>
+            {/* Duplicate for seamless loop */}
+            <span className="mx-8">✨ 100% of participants rated trainers' subject-matter knowledge as Very Good to Excellent</span>
+            <span className="mx-8">📊 Over 90% rated clarity of content presentation as Excellent</span>
+            <span className="mx-8">🎯 More than 90% rated participant engagement as Excellent</span>
+            <span className="mx-8">⭐ 100% confirmed training met or exceeded expectations</span>
+            <span className="mx-8">📈 Over 90% reported significant improvement in ISO 15189 understanding</span>
+            <span className="mx-8">💼 ~90% reported high confidence in applying knowledge at workplace</span>
+            <span className="mx-8">⚖️ More than 85% rated theory-practice balance as Excellent</span>
+            <span className="mx-8">📧 85-90% rated pre-course communication as Very Good to Excellent</span>
+            <span className="mx-8">✅ 100% rated registration process as smooth</span>
+            <span className="mx-8">💻 100% rated online platform as easy to use and accessible</span>
+            <span className="mx-8">📋 Over 90% rated course as well organized and on time</span>
+            <span className="mx-8">🛠️ 100% rated technical support as Very Good to Excellent</span>
+            <span className="mx-8">🌟 More than 90% expressed overall satisfaction</span>
+            <span className="mx-8">👍 Over 95% would recommend the course to colleagues</span>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .marquee-container {
+          width: 100%;
+          overflow: hidden;
+        }
+        .marquee-content {
+          display: inline-flex;
+          white-space: nowrap;
+          animation: marquee 120s linear infinite;
+        }
+        .marquee-content span {
+          font-size: 0.875rem;
+          font-weight: 500;
+        }
+        @keyframes marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .marquee-container:hover .marquee-content {
+          animation-play-state: paused;
+        }
+      `}</style>
     </nav>
   );
 } 

@@ -134,7 +134,7 @@ const CourseCard = ({ image, icon, title, description, features, price, color = 
           <span className="text-2xl font-extrabold text-[#13558D] mb-4 tracking-tight">{price}</span>
           <Link
             href={enrollLink}
-            className="bg-[#13558D] text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors tracking-wide uppercase"
+            className="bg-[#dc2626] text-white px-8 py-2.5 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors tracking-wide uppercase shadow-lg"
           >
             Enroll Now
           </Link>
@@ -195,7 +195,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
           <span className="text-lg font-extrabold text-[#13558D] tracking-tight">{price}</span>
           <Link
             href={registerLink}
-            className="bg-[#13558D] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#0e406b] transition-colors"
+            className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
           >
             {price === 'Free' ? 'Register Now' : 'View Details'}
           </Link>
@@ -446,7 +446,7 @@ export default function Home() {
           <div className="text-center mt-20">
             <Link
               href="/courses"
-              className="inline-flex items-center text-[#13558D] border border-[#13558D] px-8 py-3 rounded-full hover:bg-[#13558D] hover:text-white transition-all duration-300 font-semibold tracking-wide uppercase text-sm"
+              className="inline-flex items-center bg-[#dc2626] text-white px-8 py-3 rounded-full hover:bg-[#b91c1c] transition-all duration-300 font-semibold tracking-wide uppercase text-sm shadow-lg"
             >
               Start Your Journey
             </Link>
@@ -486,7 +486,7 @@ export default function Home() {
                 <p className="text-gray-500 mb-6">Check back soon for new training program announcements!</p>
                 <Link
                   href="/courses"
-                  className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
+                  className="bg-[#dc2626] text-white px-6 py-2 rounded-lg hover:bg-[#b91c1c] transition-colors shadow-lg"
                 >
                   View All Training Programs
                 </Link>
@@ -499,7 +499,7 @@ export default function Home() {
             <div className="text-center mt-12">
               <Link
                 href="/courses"
-                className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
+                className="inline-flex items-center bg-[#dc2626] text-white px-8 py-3 rounded-lg hover:bg-[#b91c1c] transition-colors font-semibold shadow-lg"
               >
                 <i className="fas fa-arrow-right mr-2"></i>
                 View All Training Programs
@@ -540,7 +540,7 @@ export default function Home() {
                 <p className="text-gray-500 mb-6">Check back soon for new webinar announcements!</p>
                 <Link
                   href="/webinars"
-                  className="bg-[#024985] text-white px-6 py-2 rounded-lg hover:bg-[#dc2626] transition-colors"
+                  className="bg-[#dc2626] text-white px-6 py-2 rounded-lg hover:bg-[#b91c1c] transition-colors shadow-lg"
                 >
                   View All Webinars
                 </Link>
@@ -553,7 +553,7 @@ export default function Home() {
             <div className="text-center mt-12">
               <Link
                 href="/webinars"
-                className="inline-flex items-center bg-[#024985] text-white px-8 py-3 rounded-lg hover:bg-[#dc2626] transition-colors font-semibold"
+                className="inline-flex items-center bg-[#dc2626] text-white px-8 py-3 rounded-lg hover:bg-[#b91c1c] transition-colors font-semibold shadow-lg"
               >
                 <i className="fas fa-arrow-right mr-2"></i>
                 View All Webinars
@@ -624,7 +624,7 @@ export default function Home() {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-[#13558D] text-white py-3 rounded-full font-semibold hover:bg-[#0e406b] transition-colors tracking-wide uppercase text-sm"
+                  className="w-full bg-[#dc2626] text-white py-3 rounded-full font-semibold hover:bg-[#b91c1c] transition-colors tracking-wide uppercase text-sm shadow-lg"
                 >
                   Send Message
                 </button>

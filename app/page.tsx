@@ -80,10 +80,10 @@ interface TrainingProgramsResponse {
 
 // Reusable components for better optimization
 const CourseCard = ({ image, icon, title, description, features, price, color = 'primary', enrollLink = '/details' }: CourseCardProps) => {
-  // Helper function to check if image URL is valid for Cloudinary
+  // Helper to check for valid Cloudinary image
   const isValidCloudinaryImage = (imageUrl: string) => {
     if (!imageUrl || imageUrl.trim() === '') return false;
-    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return false;
+    if (imageUrl.startsWith('http')) return false;
     return true;
   };
 
@@ -205,18 +205,34 @@ const EventCard = ({ image, category, date, title, description, price, registerL
   );
 };
 
+// Import Testimonial Card
+import TestimonialCard from '@/components/TestimonialCard'
+
+interface Testimonial {
+  id: string
+  name: string
+  role?: string
+  company?: string
+  content?: string
+  imageUrl?: string
+  videoUrl?: string
+}
+
 export default function Home() {
-  // State for webinars and training programs
+  // State for webinars, training programs, and testimonials
   const [webinars, setWebinars] = useState<Webinar[]>([]);
   const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loadingWebinars, setLoadingWebinars] = useState(true);
   const [loadingTrainingPrograms, setLoadingTrainingPrograms] = useState(true);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
 
   // Fetch recent webinars and training programs
   useEffect(() => {
     const fetchWebinars = async () => {
       try {
-        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=date&order=asc&upcoming=true');
+        // Updated sorting: created date desc (recent first)
+        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=createdAt&order=desc&upcoming=true');
         if (response.ok) {
           const data: EventsResponse = await response.json();
           setWebinars(data.events);
@@ -232,7 +248,8 @@ export default function Home() {
 
     const fetchTrainingPrograms = async () => {
       try {
-        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=date&order=asc&upcoming=true');
+        // Updated sorting: created date desc (recent first)
+        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=createdAt&order=desc&upcoming=true');
         if (response.ok) {
           const data: TrainingProgramsResponse = await response.json();
           setTrainingPrograms(data.events);
@@ -246,8 +263,23 @@ export default function Home() {
       }
     };
 
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch('/api/testimonials?isActive=true&limit=10');
+        if (response.ok) {
+          const data = await response.json();
+          setTestimonials(data);
+        }
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+      } finally {
+        setLoadingTestimonials(false);
+      }
+    }
+
     fetchWebinars();
     fetchTrainingPrograms();
+    fetchTestimonials();
   }, []);
 
   // Helper function to format date
@@ -331,8 +363,8 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-9rem)]">
-            <div className="text-white">
-              <div className="mb-6">
+            <div className="text-white pt-8 sm:pt-12 lg:pt-0">
+              <div className="mb-6 mt-4">
                 <div className="inline-block bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-white mb-4">
                   🌟 Internationally Recognized Programs
                 </div>
@@ -563,6 +595,66 @@ export default function Home() {
         </div>
       </section>
 
+
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="text-center mb-16 max-w-4xl mx-auto px-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
+            What Our Community Says
+          </h2>
+          <p className="text-lg text-gray-600 leading-relaxed font-light">
+            Hear from professionals who have transformed their careers with AAA Academy.
+          </p>
+        </div>
+
+        {loadingTestimonials ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#024985]"></div>
+            <span className="ml-3 text-gray-600">Loading testimonials...</span>
+          </div>
+        ) : testimonials.length > 0 ? (
+          <div className="relative w-full">
+            {/* Gradient Overlays for smooth fade effect */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none hidden md:block"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none hidden md:block"></div>
+
+            {/* Marquee Container */}
+            <div className="flex overflow-hidden group">
+              {/* 
+                  We need two sets of children for seamless looping. 
+                  The animation moves the container to the left by 50% (width of one set).
+               */}
+              <div className="flex animate-marquee hover:[animation-play-state:paused] py-10">
+                {/* First Set */}
+                {testimonials.map((item, i) => (
+                  <TestimonialCard
+                    key={`t1-${item.id}`}
+                    name={item.name}
+                    role={item.role}
+                    company={item.company}
+                    content={item.content}
+                    imageUrl={item.imageUrl}
+                    videoUrl={item.videoUrl}
+                  />
+                ))}
+                {/* Second Set (Duplicate) */}
+                {testimonials.map((item, i) => (
+                  <TestimonialCard
+                    key={`t2-${item.id}`}
+                    name={item.name}
+                    role={item.role}
+                    company={item.company}
+                    content={item.content}
+                    imageUrl={item.imageUrl}
+                    videoUrl={item.videoUrl}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </section>
 
       {/* Contact Section */}
       <section className="py-20 bg-white">

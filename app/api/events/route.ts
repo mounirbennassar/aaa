@@ -110,8 +110,10 @@ export async function POST(request: NextRequest) {
       certificateImageUrl,
       certificateUrl,
       calendlyUrl,
+      calendlyUrl,
       isVirtual = false,
-      isActive = true
+      isActive = true,
+      slug
     } = body
 
     // Validate required fields
@@ -121,6 +123,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Generate slug from title if not provided
+    const generatedSlug = slug || title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
 
     const event = await prisma.event.create({
       data: {

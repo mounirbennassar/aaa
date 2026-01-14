@@ -110,7 +110,6 @@ export async function POST(request: NextRequest) {
       certificateImageUrl,
       certificateUrl,
       calendlyUrl,
-      calendlyUrl,
       isVirtual = false,
       isActive = true,
       slug

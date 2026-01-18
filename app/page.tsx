@@ -598,7 +598,7 @@ export default function Home() {
 
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-white overflow-hidden">
+      <section id="testimonials" className="py-24 bg-white overflow-hidden">
         <div className="text-center mb-16 max-w-4xl mx-auto px-4">
           <h2 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
             What Our Community Says

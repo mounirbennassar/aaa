@@ -207,11 +207,11 @@ export default function Header() {
                 Webinars
               </a>
               <a
-                href="/certificate"
+                href="/#testimonials"
                 className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 rounded-md transition-colors"
               >
-                <i className="fas fa-certificate mr-2" />
-                Certificate
+                <i className="fas fa-quote-right mr-2" />
+                Testimonials
               </a>
               <a
                 href="/speakers"
@@ -355,12 +355,12 @@ export default function Header() {
                   Webinars
                 </a>
                 <a
-                  href="/certificate"
+                  href="/#testimonials"
                   onClick={closeMobileMenu}
                   className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <i className="fas fa-certificate mr-3 text-blue-600" />
-                  Certificate
+                  <i className="fas fa-quote-right mr-3 text-blue-600" />
+                  Testimonials
                 </a>
                 <a
                   href="/speakers"

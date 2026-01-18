@@ -465,21 +465,15 @@ export default function Home() {
                     <div className="absolute inset-0 bg-[#13558D]/85" />
 
                     {/* Content */}
-                    <div className="relative h-full flex flex-col justify-between p-8 text-white">
-                      <div className="pt-4">
-                        <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
-                          {item.subtitle}
-                        </span>
-                      </div>
-
-                      <div>
-                        <h3 className="text-3xl font-bold mb-3 font-['Playfair_Display']">{item.title}</h3>
-                        <p className="text-white/90 leading-relaxed font-light text-sm mb-4">{item.content}</p>
-
-                        <div className="flex items-center text-white/70 text-sm">
-                          <span className="mr-2">Hover to explore</span>
-                          <i className="fas fa-arrow-right animate-pulse" />
-                        </div>
+                    <div className="relative h-full flex flex-col justify-end p-8 text-white">
+                      <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 w-fit">
+                        {item.subtitle}
+                      </span>
+                      <h3 className="text-3xl font-bold mb-3 font-['Playfair_Display']">{item.title}</h3>
+                      <p className="text-white/90 leading-relaxed font-light text-sm mb-4">{item.content}</p>
+                      <div className="flex items-center text-white/70 text-sm">
+                        <span className="mr-2">Hover to explore</span>
+                        <i className="fas fa-arrow-right animate-pulse" />
                       </div>
                     </div>
                   </div>

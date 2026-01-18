@@ -361,7 +361,7 @@ export default function Home() {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black opacity-75" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="mx-auto px-5 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-9rem)]">
             <div className="text-white pt-8 sm:pt-12 lg:pt-0">
               <div className="mb-6 mt-4">
@@ -401,7 +401,7 @@ export default function Home() {
       {/* Development Model Section */}
       {/* Value Framework Section */}
       <section className="py-24 bg-[#FAFAFA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-5">
           <div className="text-center mb-20 max-w-4xl mx-auto">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
               AAA Academy Value Framework
@@ -494,13 +494,13 @@ export default function Home() {
                         <h3 className="text-2xl font-bold text-[#13558D] font-['Playfair_Display']">{item.title}</h3>
                       </div>
 
-                      <ul className="space-y-4 flex-grow">
+                      <ul className="space-y-3 flex-grow">
                         {item.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start group/item">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#13558D]/10 flex items-center justify-center mr-4 mt-0.5">
-                              <i className="fas fa-check text-[#13558D] text-sm" />
+                          <li key={featureIndex} className="flex items-start">
+                            <div className="flex-shrink-0 w-6 h-6 rounded-md bg-[#13558D]/10 flex items-center justify-center mr-3">
+                              <i className="fas fa-check text-[#13558D] text-xs" />
                             </div>
-                            <span className="text-gray-700 font-medium pt-1">{feature}</span>
+                            <span className="text-gray-600 text-sm leading-relaxed">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -536,7 +536,7 @@ export default function Home() {
 
       {/* Featured Training Programs Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-5">
           <div className="text-center mb-16 max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
               Featured Training Programs
@@ -591,7 +591,7 @@ export default function Home() {
 
       {/* Events Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-5">
           <div className="text-center mb-16 max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
               Upcoming Events & Workshops
@@ -706,7 +706,7 @@ export default function Home() {
 
       {/* Contact Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-5">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
               <h2 className="text-4xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">Get in Touch</h2>

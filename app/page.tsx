@@ -417,7 +417,7 @@ export default function Home() {
               {
                 title: 'Knowledge Hub',
                 subtitle: 'ACADEMIC & PROFESSIONAL CAPACITY BUILDING',
-                icon: 'fa-book-open',
+                image: '/knowledge-hub.jpg',
                 content: 'Structured learning programs designed to build institutional and professional competence in accreditation systems aligned with international standards.',
                 features: [
                   'Standards-based professional training',
@@ -429,7 +429,7 @@ export default function Home() {
               {
                 title: 'Official Certification',
                 subtitle: 'INTERNATIONAL RECOGNITION & COMPLIANCE',
-                icon: 'fa-certificate',
+                image: '/certification.jpg',
                 content: 'Formal certification validating technical competence, professional integrity, and compliance with international accreditation and ISO frameworks.',
                 features: [
                   'Official AAA-issued certification',
@@ -441,7 +441,7 @@ export default function Home() {
               {
                 title: 'Career Development',
                 subtitle: 'PROFESSIONAL PATHWAYS & LEADERSHIP',
-                icon: 'fa-chart-line',
+                image: '/career-dev.jpg',
                 content: 'Career advancement through structured engagement with the global accreditation community and professional development pathways.',
                 features: [
                   'Access to international projects and opportunities',
@@ -451,25 +451,72 @@ export default function Home() {
                 ]
               }
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-10 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col items-center text-center h-full">
-                <div className="mb-6">
-                  <i className={`fas ${item.icon} text-4xl text-[#13558D] opacity-80`} />
+              <div key={index} className="group perspective-1000 h-[420px]">
+                <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
+                  {/* Front Face */}
+                  <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-xl">
+                    {/* Background Image with Overlay */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{
+                        backgroundImage: `url('https://images.unsplash.com/photo-${index === 0 ? '1522202176988-66273c2fd55f' : index === 1 ? '1434030216411-0b793f4b4173' : '1552664730-d307ca884978'}?w=600&q=80')`,
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-[#13558D]/85" />
+
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-end p-8 text-white">
+                      <div className="mb-auto pt-6">
+                        <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                          {item.subtitle}
+                        </span>
+                      </div>
+
+                      <div>
+                        <h3 className="text-3xl font-bold mb-4 font-['Playfair_Display']">{item.title}</h3>
+                        <p className="text-white/90 leading-relaxed font-light text-sm mb-6">{item.content}</p>
+
+                        <div className="flex items-center text-white/70 text-sm">
+                          <span className="mr-2">Hover to explore</span>
+                          <i className="fas fa-arrow-right animate-pulse" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Back Face */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl overflow-hidden shadow-xl bg-white">
+                    <div className="h-full flex flex-col p-8">
+                      <div className="mb-6">
+                        <span className="inline-block bg-[#13558D]/10 text-[#13558D] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                          What You&apos;ll Get
+                        </span>
+                        <h3 className="text-2xl font-bold text-[#13558D] font-['Playfair_Display']">{item.title}</h3>
+                      </div>
+
+                      <ul className="space-y-4 flex-grow">
+                        {item.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-start group/item">
+                            <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#13558D]/10 flex items-center justify-center mr-4 mt-0.5">
+                              <i className="fas fa-check text-[#13558D] text-sm" />
+                            </div>
+                            <span className="text-gray-700 font-medium pt-1">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="pt-6 border-t border-gray-100">
+                        <Link
+                          href="/courses"
+                          className="inline-flex items-center text-[#dc2626] font-bold hover:text-[#b91c1c] transition-colors"
+                        >
+                          Learn More
+                          <i className="fas fa-arrow-right ml-2" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-[#13558D] mb-3 font-['Playfair_Display']">{item.title}</h3>
-                <h4 className="text-xs font-bold text-gray-400 tracking-widest uppercase mb-6">{item.subtitle}</h4>
-
-                <div className="w-16 h-[1px] bg-gray-200 mb-6"></div>
-
-                <p className="text-gray-600 mb-8 leading-relaxed font-light text-sm">{item.content}</p>
-
-                <ul className="space-y-4 text-left w-full mt-auto">
-                  {item.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start text-sm text-gray-600 font-light">
-                      <span className="mr-3 text-[#13558D] text-xs mt-1.5">•</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
@@ -485,6 +532,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Featured Training Programs Section */}
       <section className="py-20 bg-white">

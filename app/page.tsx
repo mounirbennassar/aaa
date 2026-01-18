@@ -451,7 +451,7 @@ export default function Home() {
                 ]
               }
             ].map((item, index) => (
-              <div key={index} className="group perspective-1000 h-[420px]">
+              <div key={index} className="group perspective-1000 h-[380px]">
                 <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
                   {/* Front Face */}
                   <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-xl">
@@ -465,7 +465,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-[#13558D]/85" />
 
                     {/* Content */}
-                    <div className="relative h-full flex flex-col justify-end p-8 text-white">
+                    <div className="relative h-full flex flex-col justify-center p-8 text-white">
                       <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 w-fit">
                         {item.subtitle}
                       </span>

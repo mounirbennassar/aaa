@@ -317,9 +317,9 @@ export default function Home() {
         ? program.description.substring(0, 100) + '...'
         : program.description,
       features: [
+        `Date: ${formatDate(program.date)}`,
         `Duration: ${program.duration}`,
-        `Location: ${program.location}`,
-        program.isVirtual ? 'Virtual Training' : 'In-Person Training'
+        `Location: ${program.location}`
       ],
       price: program.price === 0 ? 'Free' : `$${program.price}`,
       enrollLink: `/details/${program.slug || program.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`

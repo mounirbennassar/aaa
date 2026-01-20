@@ -12,7 +12,7 @@ export default function Footer() {
                 alt="AAA Logo"
                 width={64}
                 height={64}
-                className="h-14 w-auto mb-4 filter brightness-0 invert"
+                className="h-14 w-auto mb-4"
               />
               <h3 className="text-xl font-bold mb-4">AAA Academy</h3>
               <p className="text-blue-200 mb-4">

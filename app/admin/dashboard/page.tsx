@@ -78,6 +78,16 @@ interface Testimonial {
   isActive: boolean
 }
 
+interface SpeakerItem {
+  id: string
+  name: string
+  title?: string
+  description?: string
+  imageUrl?: string
+  isActive: boolean
+  order: number
+}
+
 export default function AdminDashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -93,7 +103,7 @@ export default function AdminDashboard() {
     monthlyRevenue: 0
   })
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'training-programs' | 'webinars' | 'analytics' | 'testimonials'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'training-programs' | 'webinars' | 'analytics' | 'testimonials' | 'speakers'>('dashboard')
   const [showModal, setShowModal] = useState(false)
 
   // Testimonial State
@@ -107,6 +117,17 @@ export default function AdminDashboard() {
     content: '',
     imageUrl: '',
     videoUrl: ''
+  })
+
+  // Speakers State
+  const [speakersList, setSpeakersList] = useState<SpeakerItem[]>([])
+  const [showSpeakerModal, setShowSpeakerModal] = useState(false)
+  const [speakerFormData, setSpeakerFormData] = useState({
+    name: '',
+    title: '',
+    description: '',
+    imageUrl: '',
+    order: 0
   })
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [modalType, setModalType] = useState<'course' | 'webinar'>('course')
@@ -201,6 +222,48 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error fetching testimonials:', error)
+    }
+  }
+
+  const fetchSpeakers = async () => {
+    try {
+      const response = await fetch('/api/speakers')
+      if (response.ok) {
+        const data = await response.json()
+        setSpeakersList(data.speakers || [])
+      }
+    } catch (error) {
+      console.error('Error fetching speakers:', error)
+    }
+  }
+
+  const handleSpeakerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('/api/speakers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(speakerFormData)
+      })
+      if (response.ok) {
+        setShowSpeakerModal(false)
+        setSpeakerFormData({ name: '', title: '', description: '', imageUrl: '', order: 0 })
+        fetchSpeakers()
+      }
+    } catch (error) {
+      console.error('Error creating speaker:', error)
+    }
+  }
+
+  const handleDeleteSpeaker = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this speaker?')) return
+    try {
+      const response = await fetch(`/api/speakers/${id}`, { method: 'DELETE' })
+      if (response.ok) {
+        fetchSpeakers()
+      }
+    } catch (error) {
+      console.error('Error deleting speaker:', error)
     }
   }
 
@@ -533,6 +596,17 @@ export default function AdminDashboard() {
               >
                 <i className="fas fa-quote-right mr-3"></i>
                 Testimonials
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('speakers'); fetchSpeakers(); }}
+                className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${activeTab === 'speakers'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+              >
+                <i className="fas fa-chalkboard-teacher mr-3"></i>
+                Speakers
               </button>
             </nav>
           </div>
@@ -1099,603 +1173,713 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
-          </div>
-        </div>
-      </div>
 
-      {/* Modal for Add/Edit Event */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {editingEvent ? 'Edit' : 'Add New'} {modalType === 'course' ? 'Course' : 'Webinar'}
-                </h3>
-                <button
-                  onClick={() => {
-                    setShowModal(false)
-                    setEditingEvent(null)
-                    resetForm()
-                  }}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <i className="fas fa-times text-xl"></i>
-                </button>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Basic Information</h4>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                    <input
-                      type="text"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="COURSE">Course</option>
-                      <option value="WEBINAR">Webinar</option>
-                    </select>
-                  </div>
+            {/* Speakers Tab */}
+            {activeTab === 'speakers' && (
+              <div className="space-y-6">
+                {/* Add Speaker Button */}
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800">Manage Speakers</h2>
+                  <button
+                    onClick={() => setShowSpeakerModal(true)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
+                  >
+                    <i className="fas fa-plus mr-2"></i>
+                    Add Speaker
+                  </button>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
-                    <input
-                      type="text"
-                      value={formData.duration}
-                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                      placeholder="e.g., 3 Days, 2 Hours"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
-                    <input
-                      type="number"
-                      value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      min="0"
-                      step="0.01"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
-                    <select
-                      value={formData.currency}
-                      onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                      <option value="GBP">GBP</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Date & Time</label>
-                    <input
-                      type="datetime-local"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                    <input
-                      type="text"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      placeholder="e.g., Dubai, UAE or Online"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
-                    <input
-                      type="text"
-                      value={formData.language}
-                      onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Max Participants</label>
-                    <input
-                      type="number"
-                      value={formData.maxParticipants}
-                      onChange={(e) => setFormData({ ...formData, maxParticipants: e.target.value })}
-                      min="1"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.isVirtual}
-                      onChange={(e) => setFormData({ ...formData, isVirtual: e.target.checked })}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Virtual Event</span>
-                  </label>
-
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.isActive}
-                      onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="mr-2"
-                    />
-                    <span className="text-sm text-gray-700">Active</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Image Upload */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Images</h4>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Main Image</label>
-                  <div className="flex items-center space-x-4">
-                    {formData.imageUrl && (
-                      <CldImage
-                        src={formData.imageUrl}
-                        alt="Main image"
-                        width={100}
-                        height={100}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0]
-                        if (file) {
-                          const publicId = await uploadToCloudinary(file, 'mainImage')
-                          if (publicId) {
-                            setFormData(prev => ({ ...prev, imageUrl: publicId }))
-                          }
-                        }
-                      }}
-                      className="hidden"
-                      id="main-image-upload"
-                    />
-                    <label
-                      htmlFor="main-image-upload"
-                      className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${uploading.mainImage ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                    >
-                      {uploading.mainImage ? 'Uploading...' : 'Upload Main Image'}
-                    </label>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Gallery Images</label>
-                  <div className="flex items-center space-x-4 mb-2">
-                    {formData.galleryImages.map((imageId, index) => (
-                      <div key={index} className="relative">
-                        <CldImage
-                          src={imageId}
-                          alt={`Gallery image ${index + 1}`}
-                          width={80}
-                          height={80}
-                          className="w-16 h-16 object-cover rounded-lg"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFormData({
-                              ...formData,
-                              galleryImages: formData.galleryImages.filter((_, i) => i !== index)
-                            })
-                          }}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-                        >
-                          ×
+                {/* Speaker Modal */}
+                {showSpeakerModal && (
+                  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                      <div className="p-6 border-b flex justify-between items-center">
+                        <h3 className="text-xl font-bold text-gray-800">Add New Speaker</h3>
+                        <button onClick={() => setShowSpeakerModal(false)} className="text-gray-500 hover:text-gray-700">
+                          <i className="fas fa-times text-xl"></i>
                         </button>
                       </div>
-                    ))}
+                      <div className="p-6">
+                        <form onSubmit={handleSpeakerSubmit} className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                              <input required type="text" className="w-full px-4 py-2 border rounded-lg"
+                                value={speakerFormData.name}
+                                onChange={e => setSpeakerFormData({ ...speakerFormData, name: e.target.value })}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                              <input type="text" className="w-full px-4 py-2 border rounded-lg"
+                                value={speakerFormData.title}
+                                onChange={e => setSpeakerFormData({ ...speakerFormData, title: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                            <input type="text" className="w-full px-4 py-2 border rounded-lg" placeholder="Cloudinary public ID or URL"
+                              value={speakerFormData.imageUrl}
+                              onChange={e => setSpeakerFormData({ ...speakerFormData, imageUrl: e.target.value })}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea rows={3} className="w-full px-4 py-2 border rounded-lg"
+                              value={speakerFormData.description}
+                              onChange={e => setSpeakerFormData({ ...speakerFormData, description: e.target.value })}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+                            <input type="number" className="w-full px-4 py-2 border rounded-lg"
+                              value={speakerFormData.order}
+                              onChange={e => setSpeakerFormData({ ...speakerFormData, order: parseInt(e.target.value) || 0 })}
+                            />
+                          </div>
+                          <div className="flex justify-end pt-4">
+                            <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-bold">
+                              Save Speaker
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0]
-                      if (file) {
-                        const publicId = await uploadToCloudinary(file, `galleryImage-${formData.galleryImages.length}`)
-                        if (publicId) {
-                          setFormData(prev => ({
-                            ...prev,
-                            galleryImages: [...prev.galleryImages, publicId]
-                          }))
-                        }
-                      }
+                )}
+
+                {/* Speakers Grid */}
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {speakersList.map(speaker => (
+                      <div key={speaker.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group">
+                        <div className="h-48 bg-gray-100 flex items-center justify-center relative">
+                          {speaker.imageUrl ? (
+                            <img src={speaker.imageUrl} alt={speaker.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <i className="fas fa-user-tie text-5xl text-gray-300"></i>
+                          )}
+                          {/* Delete Button */}
+                          <button
+                            onClick={() => handleDeleteSpeaker(speaker.id)}
+                            className="absolute top-2 right-2 bg-red-600 text-white w-8 h-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            <i className="fas fa-trash text-sm"></i>
+                          </button>
+                        </div>
+                        <div className="p-4">
+                          <h4 className="font-bold text-gray-800">{speaker.name}</h4>
+                          {speaker.title && <p className="text-xs text-gray-500 mb-2">{speaker.title}</p>}
+                          {speaker.description && <p className="text-sm text-gray-600 line-clamp-2">{speaker.description}</p>}
+                        </div>
+                      </div>
+                    ))}
+                    {speakersList.length === 0 && (
+                      <div className="col-span-full py-12 text-center text-gray-500">
+                        No speakers found. Click &quot;Add Speaker&quot; to create one.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Modal for Add/Edit Event */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {editingEvent ? 'Edit' : 'Add New'} {modalType === 'course' ? 'Course' : 'Webinar'}
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setShowModal(false)
+                      setEditingEvent(null)
+                      resetForm()
                     }}
-                    className="hidden"
-                    id="gallery-image-upload"
-                  />
-                  <label
-                    htmlFor="gallery-image-upload"
-                    className={`bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer ${uploading[`galleryImage-${formData.galleryImages.length}`] ? 'opacity-50 cursor-not-allowed' : ''
-                      }`}
+                    className="text-gray-400 hover:text-gray-600"
                   >
-                    {uploading[`galleryImage-${formData.galleryImages.length}`] ? 'Uploading...' : 'Add Gallery Image'}
-                  </label>
+                    <i className="fas fa-times text-xl"></i>
+                  </button>
                 </div>
               </div>
 
-              {/* Key Learning Outcomes */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Key Learning Outcomes</h4>
-                {formData.keyLearningOutcomes.map((outcome, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={outcome}
-                      onChange={(e) => updateArrayItem('keyLearningOutcomes', index, e.target.value)}
-                      placeholder="Enter learning outcome"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('keyLearningOutcomes', index)}
-                      className="text-red-600 hover:text-red-800 p-2"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('keyLearningOutcomes')}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  + Add Learning Outcome
-                </button>
-              </div>
+              <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Basic Information</h4>
 
-              {/* Speakers */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Speakers</h4>
-                {formData.speakers.map((speaker, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h5 className="font-medium text-gray-900">Speaker {index + 1}</h5>
-                      <button
-                        type="button"
-                        onClick={() => removeSpeaker(index)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                        <input
-                          type="text"
-                          value={speaker.name}
-                          onChange={(e) => updateSpeaker(index, 'name', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                        <input
-                          type="text"
-                          value={speaker.title}
-                          onChange={(e) => updateSpeaker(index, 'title', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                      <textarea
-                        value={speaker.description}
-                        onChange={(e) => updateSpeaker(index, 'description', e.target.value)}
-                        rows={3}
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="COURSE">Course</option>
+                        <option value="WEBINAR">Webinar</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      rows={4}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                      <input
+                        type="text"
+                        value={formData.duration}
+                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                        placeholder="e.g., 3 Days, 2 Hours"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                      <input
+                        type="number"
+                        value={formData.price}
+                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                        min="0"
+                        step="0.01"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+                      <select
+                        value={formData.currency}
+                        onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Date & Time</label>
+                      <input
+                        type="datetime-local"
+                        value={formData.date}
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                      <input
+                        type="text"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        placeholder="e.g., Dubai, UAE or Online"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                      <input
+                        type="text"
+                        value={formData.language}
+                        onChange={(e) => setFormData({ ...formData, language: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Speaker Image</label>
-                      <div className="flex items-center space-x-4">
-                        {speaker.imageUrl && (
-                          <CldImage
-                            src={speaker.imageUrl}
-                            alt={speaker.name}
-                            width={60}
-                            height={60}
-                            className="w-12 h-12 object-cover rounded-full"
-                          />
-                        )}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0]
-                            if (file) {
-                              const publicId = await uploadToCloudinary(file, `speakerImage-${index}`)
-                              if (publicId) {
-                                updateSpeaker(index, 'imageUrl', publicId)
-                              }
-                            }
-                          }}
-                          className="hidden"
-                          id={`speaker-image-upload-${index}`}
-                        />
-                        <label
-                          htmlFor={`speaker-image-upload-${index}`}
-                          className={`bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors cursor-pointer ${uploading[`speakerImage-${index}`] ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
-                        >
-                          {uploading[`speakerImage-${index}`] ? 'Uploading...' : 'Upload Image'}
-                        </label>
-                      </div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Max Participants</label>
+                      <input
+                        type="number"
+                        value={formData.maxParticipants}
+                        onChange={(e) => setFormData({ ...formData, maxParticipants: e.target.value })}
+                        min="1"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
                     </div>
                   </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={addSpeaker}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  + Add Speaker
-                </button>
-              </div>
 
-              {/* Course Highlights */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Course Highlights</h4>
-                {formData.courseHighlights.map((highlight, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={highlight}
-                      onChange={(e) => updateArrayItem('courseHighlights', index, e.target.value)}
-                      placeholder="Enter course highlight"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('courseHighlights', index)}
-                      className="text-red-600 hover:text-red-800 p-2"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.isVirtual}
+                        onChange={(e) => setFormData({ ...formData, isVirtual: e.target.checked })}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Virtual Event</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                        className="mr-2"
+                      />
+                      <span className="text-sm text-gray-700">Active</span>
+                    </label>
                   </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('courseHighlights')}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  + Add Highlight
-                </button>
-              </div>
-
-              {/* Prerequisites */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Prerequisites</h4>
-                {formData.prerequisites.map((prerequisite, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={prerequisite}
-                      onChange={(e) => updateArrayItem('prerequisites', index, e.target.value)}
-                      placeholder="Enter prerequisite"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('prerequisites', index)}
-                      className="text-red-600 hover:text-red-800 p-2"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('prerequisites')}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  + Add Prerequisite
-                </button>
-              </div>
-
-              {/* Why Choose */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Why Choose This Course</h4>
-                {formData.whyChoose.map((reason, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={reason}
-                      onChange={(e) => updateArrayItem('whyChoose', index, e.target.value)}
-                      placeholder="Enter reason"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('whyChoose', index)}
-                      className="text-red-600 hover:text-red-800 p-2"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => addArrayItem('whyChoose')}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  + Add Reason
-                </button>
-              </div>
-
-              {/* Certificate Information */}
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Certificate Information</h4>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Description</label>
-                  <textarea
-                    value={formData.certificateDescription}
-                    onChange={(e) => setFormData({ ...formData, certificateDescription: e.target.value })}
-                    rows={3}
-                    placeholder="Describe the certificate participants will receive"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Image</label>
-                  <div className="flex items-center space-x-4">
-                    {formData.certificateImageUrl && (
-                      <CldImage
-                        src={formData.certificateImageUrl}
-                        alt="Certificate"
-                        width={100}
-                        height={100}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                    )}
+                {/* Image Upload */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Images</h4>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Main Image</label>
                     <div className="flex items-center space-x-4">
+                      {formData.imageUrl && (
+                        <CldImage
+                          src={formData.imageUrl}
+                          alt="Main image"
+                          width={100}
+                          height={100}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
                       <input
                         type="file"
                         accept="image/*"
                         onChange={async (e) => {
                           const file = e.target.files?.[0]
                           if (file) {
-                            const publicId = await uploadToCloudinary(file, 'certificateImage')
+                            const publicId = await uploadToCloudinary(file, 'mainImage')
                             if (publicId) {
-                              setFormData(prev => ({ ...prev, certificateImageUrl: publicId }))
+                              setFormData(prev => ({ ...prev, imageUrl: publicId }))
                             }
                           }
                         }}
                         className="hidden"
-                        id="certificate-image-upload"
+                        id="main-image-upload"
                       />
                       <label
-                        htmlFor="certificate-image-upload"
-                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${uploading.certificateImage ? 'opacity-50 cursor-not-allowed' : ''
+                        htmlFor="main-image-upload"
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${uploading.mainImage ? 'opacity-50 cursor-not-allowed' : ''
                           }`}
                       >
-                        {uploading.certificateImage ? 'Uploading...' : 'Upload Certificate Image'}
+                        {uploading.mainImage ? 'Uploading...' : 'Upload Main Image'}
                       </label>
                     </div>
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Gallery Images</label>
+                    <div className="flex items-center space-x-4 mb-2">
+                      {formData.galleryImages.map((imageId, index) => (
+                        <div key={index} className="relative">
+                          <CldImage
+                            src={imageId}
+                            alt={`Gallery image ${index + 1}`}
+                            width={80}
+                            height={80}
+                            className="w-16 h-16 object-cover rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData({
+                                ...formData,
+                                galleryImages: formData.galleryImages.filter((_, i) => i !== index)
+                              })
+                            }}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          const publicId = await uploadToCloudinary(file, `galleryImage-${formData.galleryImages.length}`)
+                          if (publicId) {
+                            setFormData(prev => ({
+                              ...prev,
+                              galleryImages: [...prev.galleryImages, publicId]
+                            }))
+                          }
+                        }
+                      }}
+                      className="hidden"
+                      id="gallery-image-upload"
+                    />
+                    <label
+                      htmlFor="gallery-image-upload"
+                      className={`bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer ${uploading[`galleryImage-${formData.galleryImages.length}`] ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    >
+                      {uploading[`galleryImage-${formData.galleryImages.length}`] ? 'Uploading...' : 'Add Gallery Image'}
+                    </label>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Certificate URL</label>
-                  <input
-                    type="url"
-                    value={formData.certificateUrl}
-                    onChange={(e) => setFormData({ ...formData, certificateUrl: e.target.value })}
-                    placeholder="https://www.example.com/certificate"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                {/* Key Learning Outcomes */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Key Learning Outcomes</h4>
+                  {formData.keyLearningOutcomes.map((outcome, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={outcome}
+                        onChange={(e) => updateArrayItem('keyLearningOutcomes', index, e.target.value)}
+                        placeholder="Enter learning outcome"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('keyLearningOutcomes', index)}
+                        className="text-red-600 hover:text-red-800 p-2"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addArrayItem('keyLearningOutcomes')}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Learning Outcome
+                  </button>
                 </div>
 
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <i className="fas fa-calendar-alt mr-2 text-blue-600"></i>
-                    Calendly Meeting Link
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.calendlyUrl}
-                    onChange={(e) => setFormData({ ...formData, calendlyUrl: e.target.value })}
-                    placeholder="https://calendly.com/your-link"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    <i className="fas fa-info-circle mr-1"></i>
-                    Users will be redirected to this Calendly link after successful payment
-                  </p>
-                </div>
-              </div>
+                {/* Speakers */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Speakers</h4>
+                  {formData.speakers.map((speaker, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-medium text-gray-900">Speaker {index + 1}</h5>
+                        <button
+                          type="button"
+                          onClick={() => removeSpeaker(index)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
 
-              {/* Form Actions */}
-              <div className="flex items-center justify-end space-x-4 pt-6 border-t">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowModal(false)
-                    setEditingEvent(null)
-                    resetForm()
-                  }}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  {editingEvent ? 'Update' : 'Create'} {modalType === 'course' ? 'Course' : 'Webinar'}
-                </button>
-              </div>
-            </form>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                          <input
+                            type="text"
+                            value={speaker.name}
+                            onChange={(e) => updateSpeaker(index, 'name', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                          <input
+                            type="text"
+                            value={speaker.title}
+                            onChange={(e) => updateSpeaker(index, 'title', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea
+                          value={speaker.description}
+                          onChange={(e) => updateSpeaker(index, 'description', e.target.value)}
+                          rows={3}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Speaker Image</label>
+                        <div className="flex items-center space-x-4">
+                          {speaker.imageUrl && (
+                            <CldImage
+                              src={speaker.imageUrl}
+                              alt={speaker.name}
+                              width={60}
+                              height={60}
+                              className="w-12 h-12 object-cover rounded-full"
+                            />
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0]
+                              if (file) {
+                                const publicId = await uploadToCloudinary(file, `speakerImage-${index}`)
+                                if (publicId) {
+                                  updateSpeaker(index, 'imageUrl', publicId)
+                                }
+                              }
+                            }}
+                            className="hidden"
+                            id={`speaker-image-upload-${index}`}
+                          />
+                          <label
+                            htmlFor={`speaker-image-upload-${index}`}
+                            className={`bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors cursor-pointer ${uploading[`speakerImage-${index}`] ? 'opacity-50 cursor-not-allowed' : ''
+                              }`}
+                          >
+                            {uploading[`speakerImage-${index}`] ? 'Uploading...' : 'Upload Image'}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addSpeaker}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Speaker
+                  </button>
+                </div>
+
+                {/* Course Highlights */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Course Highlights</h4>
+                  {formData.courseHighlights.map((highlight, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={highlight}
+                        onChange={(e) => updateArrayItem('courseHighlights', index, e.target.value)}
+                        placeholder="Enter course highlight"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('courseHighlights', index)}
+                        className="text-red-600 hover:text-red-800 p-2"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addArrayItem('courseHighlights')}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Highlight
+                  </button>
+                </div>
+
+                {/* Prerequisites */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Prerequisites</h4>
+                  {formData.prerequisites.map((prerequisite, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={prerequisite}
+                        onChange={(e) => updateArrayItem('prerequisites', index, e.target.value)}
+                        placeholder="Enter prerequisite"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('prerequisites', index)}
+                        className="text-red-600 hover:text-red-800 p-2"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addArrayItem('prerequisites')}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Prerequisite
+                  </button>
+                </div>
+
+                {/* Why Choose */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Why Choose This Course</h4>
+                  {formData.whyChoose.map((reason, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={reason}
+                        onChange={(e) => updateArrayItem('whyChoose', index, e.target.value)}
+                        placeholder="Enter reason"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('whyChoose', index)}
+                        className="text-red-600 hover:text-red-800 p-2"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => addArrayItem('whyChoose')}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    + Add Reason
+                  </button>
+                </div>
+
+                {/* Certificate Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-gray-900">Certificate Information</h4>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Description</label>
+                    <textarea
+                      value={formData.certificateDescription}
+                      onChange={(e) => setFormData({ ...formData, certificateDescription: e.target.value })}
+                      rows={3}
+                      placeholder="Describe the certificate participants will receive"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Image</label>
+                    <div className="flex items-center space-x-4">
+                      {formData.certificateImageUrl && (
+                        <CldImage
+                          src={formData.certificateImageUrl}
+                          alt="Certificate"
+                          width={100}
+                          height={100}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="flex items-center space-x-4">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0]
+                            if (file) {
+                              const publicId = await uploadToCloudinary(file, 'certificateImage')
+                              if (publicId) {
+                                setFormData(prev => ({ ...prev, certificateImageUrl: publicId }))
+                              }
+                            }
+                          }}
+                          className="hidden"
+                          id="certificate-image-upload"
+                        />
+                        <label
+                          htmlFor="certificate-image-upload"
+                          className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer ${uploading.certificateImage ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                        >
+                          {uploading.certificateImage ? 'Uploading...' : 'Upload Certificate Image'}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Certificate URL</label>
+                    <input
+                      type="url"
+                      value={formData.certificateUrl}
+                      onChange={(e) => setFormData({ ...formData, certificateUrl: e.target.value })}
+                      placeholder="https://www.example.com/certificate"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <i className="fas fa-calendar-alt mr-2 text-blue-600"></i>
+                      Calendly Meeting Link
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.calendlyUrl}
+                      onChange={(e) => setFormData({ ...formData, calendlyUrl: e.target.value })}
+                      placeholder="https://calendly.com/your-link"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      <i className="fas fa-info-circle mr-1"></i>
+                      Users will be redirected to this Calendly link after successful payment
+                    </p>
+                  </div>
+                </div>
+
+                {/* Form Actions */}
+                <div className="flex items-center justify-end space-x-4 pt-6 border-t">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowModal(false)
+                      setEditingEvent(null)
+                      resetForm()
+                    }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    {editingEvent ? 'Update' : 'Create'} {modalType === 'course' ? 'Course' : 'Webinar'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  )
+        )}
+      </div>
+      )
 } 

@@ -4,15 +4,13 @@ import { useState, useEffect } from 'react';
 import { CldImage } from 'next-cloudinary';
 
 interface Speaker {
-    name: string;
-    title: string;
-    description: string;
-    imageUrl?: string;
-}
-
-interface Course {
     id: string;
-    speakers?: Speaker[];
+    name: string;
+    title?: string;
+    description?: string;
+    imageUrl?: string;
+    isActive: boolean;
+    order: number;
 }
 
 export default function SpeakersPage() {
@@ -25,27 +23,10 @@ export default function SpeakersPage() {
 
     const fetchSpeakers = async () => {
         try {
-            const response = await fetch('/api/events?category=COURSE&limit=100');
+            const response = await fetch('/api/speakers?isActive=true');
             if (response.ok) {
                 const data = await response.json();
-                const courses: Course[] = data.events || [];
-
-                // Extract all speakers from courses and deduplicate by name
-                const allSpeakers: Speaker[] = [];
-                const seenNames = new Set<string>();
-
-                courses.forEach((course) => {
-                    if (course.speakers && Array.isArray(course.speakers)) {
-                        course.speakers.forEach((speaker) => {
-                            if (speaker.name && !seenNames.has(speaker.name)) {
-                                seenNames.add(speaker.name);
-                                allSpeakers.push(speaker);
-                            }
-                        });
-                    }
-                });
-
-                setSpeakers(allSpeakers);
+                setSpeakers(data.speakers || []);
             }
         } catch (error) {
             console.error('Error fetching speakers:', error);
@@ -101,26 +82,34 @@ export default function SpeakersPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                        {speakers.map((speaker, index) => (
+                        {speakers.map((speaker) => (
                             <div
-                                key={index}
+                                key={speaker.id}
                                 className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col group"
                             >
                                 {/* Speaker Image */}
                                 <div className="relative overflow-hidden h-72 bg-gray-100">
-                                    {speaker.imageUrl && isValidCloudinaryImage(speaker.imageUrl) ? (
-                                        <CldImage
-                                            src={speaker.imageUrl}
-                                            alt={speaker.name}
-                                            width={400}
-                                            height={400}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            crop={{
-                                                type: 'fill',
-                                                source: true,
-                                                gravity: 'face'
-                                            }}
-                                        />
+                                    {speaker.imageUrl ? (
+                                        isValidCloudinaryImage(speaker.imageUrl) ? (
+                                            <CldImage
+                                                src={speaker.imageUrl}
+                                                alt={speaker.name}
+                                                width={400}
+                                                height={400}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                crop={{
+                                                    type: 'fill',
+                                                    source: true,
+                                                    gravity: 'face'
+                                                }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={speaker.imageUrl}
+                                                alt={speaker.name}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        )
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
                                             <i className="fas fa-user-tie text-6xl text-[#13558D]/30" />
@@ -134,9 +123,11 @@ export default function SpeakersPage() {
                                         {speaker.name}
                                     </h3>
 
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                                        {speaker.title}
-                                    </p>
+                                    {speaker.title && (
+                                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                                            {speaker.title}
+                                        </p>
+                                    )}
 
                                     {speaker.description && (
                                         <p className="text-gray-600 text-sm leading-relaxed font-light line-clamp-4">

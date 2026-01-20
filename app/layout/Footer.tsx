@@ -8,11 +8,11 @@ export default function Footer() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
               <Image
-                src="https://aaa-accreditation.org/wp-content/uploads/2020/04/AAA-Logo.png"
+                src="/aaa.png"
                 alt="AAA Logo"
-                width={48}
-                height={48}
-                className="h-12 w-auto mb-4 filter brightness-0 invert"
+                width={64}
+                height={64}
+                className="h-14 w-auto mb-4 filter brightness-0 invert"
               />
               <h3 className="text-xl font-bold mb-4">AAA Academy</h3>
               <p className="text-blue-200 mb-4">

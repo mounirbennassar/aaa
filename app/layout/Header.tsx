@@ -31,11 +31,11 @@ export default function Header() {
         <div className="flex items-center justify-center h-16 relative">
           <div className="absolute left-0 flex items-center">
             <Image
-              src="https://aaa-accreditation.org/wp-content/uploads/2020/04/AAA-Logo.png"
+              src="/aaa.png"
               alt="AAA Logo"
-              width={56}
-              height={56}
-              className="h-14 w-auto"
+              width={72}
+              height={72}
+              className="h-16 w-auto"
             />
           </div>
 

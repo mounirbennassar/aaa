@@ -39,6 +39,20 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     const isYoutube = videoUrl?.includes('youtube') || videoUrl?.includes('youtu.be')
     const isVimeo = videoUrl?.includes('vimeo')
 
+    // Get video thumbnail URL
+    const getVideoThumbnail = () => {
+        if (!videoId) return null
+        if (isYoutube) {
+            return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+        }
+        if (isVimeo) {
+            return `https://vumbnail.com/${videoId}.jpg`
+        }
+        return null
+    }
+
+    const videoThumbnail = getVideoThumbnail()
+
     // Helper to check for valid Cloudinary image
     const isValidCloudinaryImage = (url: string) => {
         if (!url || url.trim() === '') return false;
@@ -46,15 +60,18 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         return true;
     }
 
+    // Determine which thumbnail to show (priority: imageUrl > video thumbnail > fallback)
+    const thumbnailUrl = imageUrl || videoThumbnail
+
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex-shrink-0 w-[400px] mx-4 h-full flex flex-col">
             {videoUrl && videoId ? (
                 <div className="relative aspect-video bg-gray-900 group">
                     {!isPlaying ? (
                         <>
-                            {/* Thumbnail (if available or fallback) */}
-                            {imageUrl ? (
-                                isValidCloudinaryImage(imageUrl) ? (
+                            {/* Thumbnail - use video platform thumbnail if no imageUrl */}
+                            {thumbnailUrl ? (
+                                imageUrl && isValidCloudinaryImage(imageUrl) ? (
                                     <CldImage
                                         src={imageUrl}
                                         width={400}
@@ -64,7 +81,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                                     />
                                 ) : (
                                     <img
-                                        src={imageUrl}
+                                        src={thumbnailUrl}
                                         alt={name}
                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
                                     />

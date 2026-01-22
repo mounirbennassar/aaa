@@ -459,7 +459,7 @@ export default function Home() {
                     <div
                       className="absolute inset-0 bg-cover bg-center"
                       style={{
-                        backgroundImage: `url('https://images.unsplash.com/photo-${index === 0 ? '1522202176988-66273c2fd55f' : index === 1 ? '1434030216411-0b793f4b4173' : '1552664730-d307ca884978'}?w=600&q=80')`,
+                        backgroundImage: `url('${index === 0 ? '/back1.jpeg' : index === 1 ? '/back2.jpeg' : '/back3.jpeg'}')`,
                       }}
                     />
                     <div className="absolute inset-0 bg-[#13558D]/85" />

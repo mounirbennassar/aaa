@@ -1218,11 +1218,45 @@ export default function AdminDashboard() {
                             </div>
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                            <input type="text" className="w-full px-4 py-2 border rounded-lg" placeholder="Cloudinary public ID or URL"
-                              value={speakerFormData.imageUrl}
-                              onChange={e => setSpeakerFormData({ ...speakerFormData, imageUrl: e.target.value })}
-                            />
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Speaker Image</label>
+                            <div className="flex items-center gap-4">
+                              <div className="flex-1">
+                                <input type="text" className="w-full px-4 py-2 border rounded-lg" placeholder="Cloudinary public ID or URL"
+                                  value={speakerFormData.imageUrl}
+                                  onChange={e => setSpeakerFormData({ ...speakerFormData, imageUrl: e.target.value })}
+                                />
+                              </div>
+                              <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg border flex items-center gap-2 transition-colors">
+                                <i className="fas fa-upload text-gray-600"></i>
+                                <span className="text-sm font-medium text-gray-700">Upload</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={async (e) => {
+                                    const file = e.target.files?.[0]
+                                    if (file) {
+                                      const publicId = await uploadToCloudinary(file, 'speakerImage')
+                                      if (publicId) {
+                                        setSpeakerFormData({ ...speakerFormData, imageUrl: publicId })
+                                      }
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </div>
+                            {uploading['speakerImage'] && (
+                              <p className="text-sm text-blue-600 mt-1"><i className="fas fa-spinner fa-spin mr-1"></i>Uploading...</p>
+                            )}
+                            {speakerFormData.imageUrl && (
+                              <div className="mt-2">
+                                <img
+                                  src={speakerFormData.imageUrl.startsWith('http') ? speakerFormData.imageUrl : `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${speakerFormData.imageUrl}`}
+                                  alt="Preview"
+                                  className="w-20 h-20 object-cover rounded-lg border"
+                                />
+                              </div>
+                            )}
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

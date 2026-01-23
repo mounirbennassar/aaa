@@ -122,6 +122,7 @@ export default function AdminDashboard() {
   // Speakers State
   const [speakersList, setSpeakersList] = useState<SpeakerItem[]>([])
   const [showSpeakerModal, setShowSpeakerModal] = useState(false)
+  const [editingSpeaker, setEditingSpeaker] = useState<SpeakerItem | null>(null)
   const [speakerFormData, setSpeakerFormData] = useState({
     name: '',
     title: '',
@@ -240,19 +241,47 @@ export default function AdminDashboard() {
   const handleSpeakerSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch('/api/speakers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(speakerFormData)
-      })
-      if (response.ok) {
-        setShowSpeakerModal(false)
-        setSpeakerFormData({ name: '', title: '', description: '', imageUrl: '', order: 0 })
-        fetchSpeakers()
+      if (editingSpeaker) {
+        // Update existing speaker
+        const response = await fetch(`/api/speakers/${editingSpeaker.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(speakerFormData)
+        })
+        if (response.ok) {
+          setShowSpeakerModal(false)
+          setEditingSpeaker(null)
+          setSpeakerFormData({ name: '', title: '', description: '', imageUrl: '', order: 0 })
+          fetchSpeakers()
+        }
+      } else {
+        // Create new speaker
+        const response = await fetch('/api/speakers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(speakerFormData)
+        })
+        if (response.ok) {
+          setShowSpeakerModal(false)
+          setSpeakerFormData({ name: '', title: '', description: '', imageUrl: '', order: 0 })
+          fetchSpeakers()
+        }
       }
     } catch (error) {
-      console.error('Error creating speaker:', error)
+      console.error('Error saving speaker:', error)
     }
+  }
+
+  const handleEditSpeaker = (speaker: SpeakerItem) => {
+    setEditingSpeaker(speaker)
+    setSpeakerFormData({
+      name: speaker.name,
+      title: speaker.title || '',
+      description: speaker.description || '',
+      imageUrl: speaker.imageUrl || '',
+      order: speaker.order || 0
+    })
+    setShowSpeakerModal(true)
   }
 
   const handleDeleteSpeaker = async (id: string) => {
@@ -1194,8 +1223,12 @@ export default function AdminDashboard() {
                   <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                       <div className="p-6 border-b flex justify-between items-center">
-                        <h3 className="text-xl font-bold text-gray-800">Add New Speaker</h3>
-                        <button onClick={() => setShowSpeakerModal(false)} className="text-gray-500 hover:text-gray-700">
+                        <h3 className="text-xl font-bold text-gray-800">{editingSpeaker ? 'Edit Speaker' : 'Add New Speaker'}</h3>
+                        <button onClick={() => {
+                          setShowSpeakerModal(false)
+                          setEditingSpeaker(null)
+                          setSpeakerFormData({ name: '', title: '', description: '', imageUrl: '', order: 0 })
+                        }} className="text-gray-500 hover:text-gray-700">
                           <i className="fas fa-times text-xl"></i>
                         </button>
                       </div>
@@ -1294,6 +1327,13 @@ export default function AdminDashboard() {
                           ) : (
                             <i className="fas fa-user-tie text-5xl text-gray-300"></i>
                           )}
+                          {/* Edit Button */}
+                          <button
+                            onClick={() => handleEditSpeaker(speaker)}
+                            className="absolute top-2 right-12 bg-blue-600 text-white w-8 h-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            <i className="fas fa-edit text-sm"></i>
+                          </button>
                           {/* Delete Button */}
                           <button
                             onClick={() => handleDeleteSpeaker(speaker.id)}

@@ -1323,7 +1323,11 @@ export default function AdminDashboard() {
                       <div key={speaker.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group">
                         <div className="h-48 bg-gray-100 flex items-center justify-center relative">
                           {speaker.imageUrl ? (
-                            <img src={speaker.imageUrl} alt={speaker.name} className="w-full h-full object-cover" />
+                            <img
+                              src={speaker.imageUrl.startsWith('http') ? speaker.imageUrl : `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${speaker.imageUrl}`}
+                              alt={speaker.name}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
                             <i className="fas fa-user-tie text-5xl text-gray-300"></i>
                           )}

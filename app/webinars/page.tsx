@@ -210,7 +210,7 @@ export default function WebinarsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-48 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16 max-w-4xl mx-auto">
           <h1 className="text-4xl lg:text-5xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">
@@ -361,13 +361,14 @@ export default function WebinarsPage() {
                           {webinar.description}
                         </p>
 
-                        <div className="space-y-2 mb-6 pt-4 border-t border-gray-50">
-                          <div className="flex items-center text-xs text-gray-500 font-medium">
-                            <i className="fas fa-globe w-5 text-[#13558D]" />
+                        {/* Meta Info */}
+                        <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-50 text-xs text-gray-500 font-medium">
+                          <div className="flex items-center">
+                            <i className="fas fa-globe text-[#13558D] mr-1.5" />
                             {webinar.language}
                           </div>
-                          <div className="flex items-center text-xs text-gray-500 font-medium">
-                            <i className="fas fa-clock w-5 text-[#13558D]" />
+                          <div className="flex items-center">
+                            <i className="fas fa-clock text-[#13558D] mr-1.5" />
                             {formatTime(webinar.date)} (1 Hour)
                           </div>
                         </div>

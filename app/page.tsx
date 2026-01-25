@@ -823,7 +823,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={contactLoading}
-                    className="w-full bg-[#dc2626] text-white py-4 rounded-full font-bold hover:bg-[#b91c1c] transition-all tracking-wide uppercase text-sm shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-to-r from-[#dc2626] to-[#b91c1c] text-white py-4 rounded-full font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all tracking-wide uppercase text-sm shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {contactLoading ? (
                       <><i className="fas fa-spinner fa-spin mr-2"></i>Sending...</>

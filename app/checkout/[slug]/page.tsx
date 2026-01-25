@@ -121,8 +121,8 @@ function CheckoutForm({
                     type="submit"
                     disabled={!stripe || isProcessing}
                     className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center ${isProcessing || !stripe
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-[#dc2626] to-[#b91c1c] text-white hover:shadow-xl hover:-translate-y-0.5'
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-[#dc2626] to-[#b91c1c] text-white hover:shadow-xl hover:-translate-y-0.5'
                         }`}
                 >
                     {isProcessing ? (
@@ -400,8 +400,8 @@ export default function CheckoutPage() {
                                         onClick={handleContinueToPayment}
                                         disabled={!validateForm() || loading}
                                         className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center ${validateForm() && !loading
-                                                ? 'bg-gradient-to-r from-[#13558D] to-[#1e7bc9] text-white hover:shadow-xl hover:-translate-y-0.5'
-                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                            ? 'bg-gradient-to-r from-[#dc2626] to-[#b91c1c] text-white hover:shadow-xl hover:-translate-y-0.5'
+                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                             }`}
                                     >
                                         {loading ? (

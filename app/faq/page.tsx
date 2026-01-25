@@ -38,7 +38,7 @@ export default function FAQPage() {
                                 </span>
                             </summary>
                             <p className="text-gray-600 mt-3 group-open:animate-fadeIn">
-                                Due to the immediate digital nature of our content, all sales are final and non-refundable. Please refer to our <a href="/refund-policy" className="text-blue-600 hover:underline">Refund Policy</a> for more details.
+                                Due to the immediate digital nature of our content, all sales are final and non-refundable. Please refer to our <a href="/terms" className="text-blue-600 hover:underline">Terms & Conditions</a> for more details.
                             </p>
                         </details>
                     </div>

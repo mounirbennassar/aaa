@@ -37,7 +37,7 @@ export default function Footer() {
               <h4 className="text-lg font-semibold mb-6 border-b border-blue-800 pb-2 inline-block">Contact Us</h4>
               <ul className="space-y-4 text-blue-200 text-sm">
                 <li className="flex items-start">
-                  <i className="fas fa-map-marker-alt mt-1 mr-3 text-yellow-400 flex-shrink-0" />
+                  <i className="fas fa-map-marker-alt mt-1 mr-3 text-red-500 flex-shrink-0" />
                   <span>
                     <strong>Headquarters:</strong><br />
                     8609 Westwood Center Drive<br />
@@ -45,14 +45,14 @@ export default function Footer() {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <i className="fas fa-phone-alt mt-1 mr-3 text-yellow-400 flex-shrink-0" />
+                  <i className="fas fa-phone-alt mt-1 mr-3 text-red-500 flex-shrink-0" />
                   <span>
                     <strong>T:</strong> +1 (571) 601 2616<br />
                     <strong>Fax:</strong> +1 (571) 376 6582
                   </span>
                 </li>
                 <li className="flex items-center">
-                  <i className="fas fa-envelope mr-3 text-yellow-400 flex-shrink-0" />
+                  <i className="fas fa-envelope mr-3 text-red-500 flex-shrink-0" />
                   <a href="mailto:info@aaa-accreditation.org" className="hover:text-white transition-colors">
                     info@aaa-accreditation.org
                   </a>
@@ -71,12 +71,12 @@ export default function Footer() {
             <div>
               <h4 className="text-lg font-semibold mb-6 border-b border-blue-800 pb-2 inline-block">Our Menu</h4>
               <ul className="space-y-3 text-blue-200 text-sm">
-                <li><a href="https://aaa-accreditation.org" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Home</a></li>
-                <li><a href="https://aaa-accreditation.org/about-aaa/" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />About Us</a></li>
-                <li><a href="https://aaa-accreditation.org/role-of-accreditation-in-healthcare-system-bodies/" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accreditation Programs</a></li>
-                <li><a href="https://aaa-accreditation.org/individual-membership/" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Membership</a></li>
-                <li><a href="https://aaa-accreditation.org/accredited-organizations/" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accredited Organizations</a></li>
-                <li><a href="/adcp" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accredited Personnel</a></li>
+                <li><a href="https://aaa-accreditation.org" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Home</a></li>
+                <li><a href="https://aaa-accreditation.org/about-aaa/" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />About Us</a></li>
+                <li><a href="https://aaa-accreditation.org/role-of-accreditation-in-healthcare-system-bodies/" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accreditation Programs</a></li>
+                <li><a href="https://aaa-accreditation.org/individual-membership/" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Membership</a></li>
+                <li><a href="https://aaa-accreditation.org/accredited-organizations/" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accredited Organizations</a></li>
+                <li><a href="/adcp" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Accredited Personnel</a></li>
               </ul>
             </div>
 
@@ -84,11 +84,11 @@ export default function Footer() {
             <div>
               <h4 className="text-lg font-semibold mb-6 border-b border-blue-800 pb-2 inline-block">Resources</h4>
               <ul className="space-y-3 text-blue-200 text-sm">
-                <li><Link href="/courses" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Training Programs</Link></li>
-                <li><Link href="/webinars" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Webinars</Link></li>
-                <li><Link href="/faq" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />FAQs</Link></li>
-                <li><Link href="/sitemap" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Sitemap</Link></li>
-                <li><Link href="/contact" className="hover:text-yellow-300 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Contact Support</Link></li>
+                <li><Link href="/courses" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Training Programs</Link></li>
+                <li><Link href="/webinars" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Webinars</Link></li>
+                <li><Link href="/faq" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />FAQs</Link></li>
+                <li><Link href="/sitemap" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Sitemap</Link></li>
+                <li><Link href="/contact" className="hover:text-red-400 transition-colors flex items-center"><i className="fas fa-angle-right mr-2 text-xs" />Contact Support</Link></li>
               </ul>
             </div>
           </div>
@@ -102,7 +102,6 @@ export default function Footer() {
               <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
               <Link href="/accessibility" className="hover:text-white transition-colors">Accessibility</Link>
-              <Link href="/refund-policy" className="hover:text-white transition-colors font-semibold text-yellow-400">Refund Policy</Link>
             </div>
           </div>
         </div>

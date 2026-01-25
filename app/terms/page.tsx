@@ -32,10 +32,26 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Payment & Refunds</h2>
-                        <p className="mb-4">
-                            All fees are payable in advance. As stated in our Refund Policy, all sales are final and non-refundable
-                            once access is granted or registration is confirmed.
-                        </p>
+                        <div className="space-y-4">
+                            <p>
+                                All fees are payable in advance. By completing a purchase, you agree to our strict <strong>No Refund Policy</strong>.
+                            </p>
+                            <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-sm">
+                                <p className="font-bold text-yellow-800 mb-1">No Refunds on Digital Content & Webinars</p>
+                                <p>
+                                    Due to the immediate access nature of our digital training materials and live webinar reservations,
+                                    <strong> AAA Academy does not offer refunds</strong> once a purchase is completed. All sales are final.
+                                </p>
+                            </div>
+                            <p>
+                                <strong>Stripe Payments:</strong> All transactions are processed securely via Stripe. By completing a payment, you agree to this
+                                no-refund policy and authorize the transaction. Chargebacks filed without cause will be contested with evidence of this agreement.
+                            </p>
+                            <p>
+                                <strong>Course Cancellation:</strong> In the unlikely event that AAA Academy cancels a course or webinar, enrolled participants
+                                will receive a full credit towards a future event or a full refund at our discretion.
+                            </p>
+                        </div>
                     </section>
 
                     <section>

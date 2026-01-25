@@ -20,7 +20,7 @@ export default function SitemapPage() {
                             <ul className="space-y-2 text-blue-600">
                                 <li><a href="/privacy-policy" className="hover:underline">Privacy Policy</a></li>
                                 <li><a href="/terms" className="hover:underline">Terms & Conditions</a></li>
-                                <li><a href="/refund-policy" className="hover:underline">Refund Policy</a></li>
+
                                 <li><a href="/accessibility" className="hover:underline">Accessibility</a></li>
                                 <li><a href="/faq" className="hover:underline">FAQ</a></li>
                             </ul>

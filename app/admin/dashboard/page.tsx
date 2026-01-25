@@ -88,6 +88,17 @@ interface SpeakerItem {
   order: number
 }
 
+interface ContactSubmission {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  subject?: string
+  message: string
+  isRead: boolean
+  createdAt: string
+}
+
 export default function AdminDashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -103,7 +114,7 @@ export default function AdminDashboard() {
     monthlyRevenue: 0
   })
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'training-programs' | 'webinars' | 'analytics' | 'testimonials' | 'speakers'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'training-programs' | 'webinars' | 'analytics' | 'testimonials' | 'speakers' | 'messages'>('dashboard')
   const [showModal, setShowModal] = useState(false)
 
   // Testimonial State
@@ -130,6 +141,21 @@ export default function AdminDashboard() {
     imageUrl: '',
     order: 0
   })
+
+  // Messages State
+  const [messagesList, setMessagesList] = useState<ContactSubmission[]>([])
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch('/api/contact')
+      if (response.ok) {
+        const data = await response.json()
+        setMessagesList(data)
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error)
+    }
+  }
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [modalType, setModalType] = useState<'course' | 'webinar'>('course')
   const [searchTerm, setSearchTerm] = useState('')
@@ -636,6 +662,17 @@ export default function AdminDashboard() {
               >
                 <i className="fas fa-chalkboard-teacher mr-3"></i>
                 Speakers
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('messages'); fetchMessages(); }}
+                className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${activeTab === 'messages'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+              >
+                <i className="fas fa-envelope mr-3"></i>
+                Messages
               </button>
             </nav>
           </div>
@@ -1359,6 +1396,41 @@ export default function AdminDashboard() {
                       </div>
                     )}
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Messages Tab */}
+            {activeTab === 'messages' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800">Contact Messages</h2>
+                  <span className="text-sm text-gray-500">{messagesList.filter(m => !m.isRead).length} unread</span>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                  {messagesList.length === 0 ? (
+                    <div className="py-12 text-center text-gray-500">
+                      <i className="fas fa-inbox text-4xl mb-4 text-gray-300"></i>
+                      <p>No messages yet.</p>
+                    </div>
+                  ) : (
+                    <div className="divide-y">
+                      {messagesList.map(msg => (
+                        <div key={msg.id} className={`p-6 ${!msg.isRead ? 'bg-blue-50/50' : ''}`}>
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <h4 className="font-bold text-gray-800">{msg.name}</h4>
+                              <p className="text-sm text-gray-500">{msg.email} {msg.phone && `• ${msg.phone}`}</p>
+                            </div>
+                            <span className="text-xs text-gray-400">{new Date(msg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                          </div>
+                          {msg.subject && <p className="text-sm font-medium text-gray-700 mb-1">{msg.subject}</p>}
+                          <p className="text-gray-600 text-sm whitespace-pre-wrap">{msg.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

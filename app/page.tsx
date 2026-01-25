@@ -227,6 +227,46 @@ export default function Home() {
   const [loadingTrainingPrograms, setLoadingTrainingPrograms] = useState(true);
   const [loadingTestimonials, setLoadingTestimonials] = useState(true);
 
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState('');
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactLoading(true);
+    setContactError('');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${contactForm.firstName} ${contactForm.lastName}`.trim(),
+          email: contactForm.email,
+          phone: contactForm.phone,
+          message: contactForm.message
+        })
+      });
+      if (response.ok) {
+        setContactSuccess(true);
+        setContactForm({ firstName: '', lastName: '', email: '', phone: '', message: '' });
+      } else {
+        setContactError('Failed to send message. Please try again.');
+      }
+    } catch {
+      setContactError('An error occurred. Please try again.');
+    } finally {
+      setContactLoading(false);
+    }
+  };
+
   // Fetch recent webinars and training programs
   useEffect(() => {
     const fetchWebinars = async () => {
@@ -728,41 +768,71 @@ export default function Home() {
             </div>
             <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 border border-gray-100">
               <h3 className="text-2xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">Send us a Message</h3>
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
-                  />
+              {contactSuccess ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i className="fas fa-check text-green-600 text-2xl"></i>
+                  </div>
+                  <h4 className="text-xl font-bold text-green-600 mb-2">Message Sent!</h4>
+                  <p className="text-gray-600">Thank you! We will get back to you soon.</p>
                 </div>
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#024985] focus:border-transparent"
-                />
-                <textarea
-                  rows={4}
-                  placeholder="Your Message"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-[#dc2626] text-white py-3 rounded-full font-semibold hover:bg-[#b91c1c] transition-colors tracking-wide uppercase text-sm shadow-lg"
-                >
-                  Send Message
-                </button>
-              </form>
+              ) : (
+                <form onSubmit={handleContactSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <input
+                      type="text"
+                      placeholder="First Name"
+                      required
+                      value={contactForm.firstName}
+                      onChange={(e) => setContactForm({ ...contactForm, firstName: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Last Name"
+                      required
+                      value={contactForm.lastName}
+                      onChange={(e) => setContactForm({ ...contactForm, lastName: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
+                    />
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    required
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={contactForm.phone}
+                    onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
+                  />
+                  <textarea
+                    rows={4}
+                    placeholder="Your Message"
+                    required
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13558D] focus:border-[#13558D] bg-gray-50/50"
+                  />
+                  {contactError && <p className="text-red-600 text-sm">{contactError}</p>}
+                  <button
+                    type="submit"
+                    disabled={contactLoading}
+                    className="w-full bg-[#dc2626] text-white py-4 rounded-full font-bold hover:bg-[#b91c1c] transition-all tracking-wide uppercase text-sm shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {contactLoading ? (
+                      <><i className="fas fa-spinner fa-spin mr-2"></i>Sending...</>
+                    ) : (
+                      <><i className="fas fa-paper-plane mr-2"></i>Send Message</>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

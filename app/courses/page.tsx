@@ -196,7 +196,7 @@ export default function TrainingProgramsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] pt-48 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Enhanced Header */}
         <div className="text-center mb-20 max-w-4xl mx-auto relative">
           <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-[#13558D]/10 rounded-full blur-3xl"></div>
@@ -401,23 +401,17 @@ export default function TrainingProgramsPage() {
                         </p>
 
                         {/* Meta Info */}
-                        <div className="space-y-2.5 mb-6 pt-4 border-t border-gray-100">
-                          <div className="flex items-center text-sm text-gray-500">
-                            <div className="w-8 h-8 rounded-lg bg-[#13558D]/10 flex items-center justify-center mr-3">
-                              <i className="fas fa-globe text-[#13558D] text-xs"></i>
-                            </div>
+                        <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-100 text-xs text-gray-500">
+                          <div className="flex items-center">
+                            <i className="fas fa-globe text-[#13558D] mr-1.5"></i>
                             <span className="font-medium">{course.language}</span>
                           </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <div className="w-8 h-8 rounded-lg bg-[#13558D]/10 flex items-center justify-center mr-3">
-                              <i className="fas fa-map-marker-alt text-[#13558D] text-xs"></i>
-                            </div>
+                          <div className="flex items-center">
+                            <i className="fas fa-map-marker-alt text-[#13558D] mr-1.5"></i>
                             <span className="font-medium">{course.location}</span>
                           </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <div className="w-8 h-8 rounded-lg bg-[#13558D]/10 flex items-center justify-center mr-3">
-                              <i className="fas fa-clock text-[#13558D] text-xs"></i>
-                            </div>
+                          <div className="flex items-center">
+                            <i className="fas fa-clock text-[#13558D] mr-1.5"></i>
                             <span className="font-medium">{course.duration}</span>
                           </div>
                         </div>

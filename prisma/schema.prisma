@@ -116,3 +116,27 @@ model ContactSubmission {
 
   @@map("contact_submissions")
 }
+
+model Order {
+  id              String      @id @default(cuid())
+  courseId        String
+  courseName      String
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  amount          Float
+  currency        String      @default("USD")
+  stripePaymentId String?     @unique
+  status          OrderStatus @default(PENDING)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}

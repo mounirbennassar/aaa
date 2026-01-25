@@ -133,8 +133,8 @@ export default function CourseDetailPage() {
           <div className="p-8">
             <div className="flex items-center justify-between mb-6">
               <div className={`px-4 py-2 rounded-full text-sm font-semibold ${item.category === 'COURSE'
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'bg-green-100 text-green-600'
+                ? 'bg-blue-100 text-blue-600'
+                : 'bg-green-100 text-green-600'
                 }`}>
                 {item.category === 'COURSE' ? 'Course' : 'Webinar'}
               </div>
@@ -180,9 +180,13 @@ export default function CourseDetailPage() {
                   Join Webinar
                 </a>
               ) : (
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mr-4">
-                  Inquire Now
-                </button>
+                <Link
+                  href={`/checkout/${item.slug}`}
+                  className="bg-[#dc2626] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#b91c1c] transition-colors mr-4 inline-block"
+                >
+                  <i className="fas fa-shopping-cart mr-2"></i>
+                  Enroll Now - $480
+                </Link>
               )}
               <Link
                 href={item.category === 'COURSE' ? '/courses' : '/webinars'}
@@ -383,10 +387,10 @@ export default function CourseDetailPage() {
                 Join this {item.category.toLowerCase()} and advance your career with internationally recognized training.
               </p>
               <Link
-                href={`/enroll/${item.slug}`}
+                href={`/checkout/${item.slug}`}
                 className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
               >
-                Register Now
+                Register Now - $480
               </Link>
             </div>
           </div>

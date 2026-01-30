@@ -102,7 +102,7 @@ export default function AdminTestimonialsPage() {
     }
 
     return (
-        <div className="admin-container min-h-screen p-8">
+        <div className="admin-container min-h-screen p-8 pt-32">
             <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <div>

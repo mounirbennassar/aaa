@@ -76,24 +76,20 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
                 {description && (
                     <div className="mt-auto">
                         <p className="text-gray-600 text-sm leading-relaxed font-light">
-                            {displayDescription}
+                            {isExpanded ? description : description.slice(0, MAX_LENGTH)}
+                            {shouldTruncate && (
+                                <button
+                                    onClick={() => setIsExpanded(!isExpanded)}
+                                    className="inline-flex items-center ml-1 text-[#dc2626] hover:text-[#b91c1c] transition-colors focus:outline-none"
+                                >
+                                    {isExpanded ? (
+                                        <i className="fas fa-chevron-up text-xs ml-1"></i>
+                                    ) : (
+                                        <>... <i className="fas fa-chevron-down text-xs ml-1"></i></>
+                                    )}
+                                </button>
+                            )}
                         </p>
-                        {shouldTruncate && (
-                            <button
-                                onClick={() => setIsExpanded(!isExpanded)}
-                                className="mt-3 flex items-center text-[#dc2626] text-sm font-semibold hover:text-[#b91c1c] transition-colors focus:outline-none"
-                            >
-                                {isExpanded ? (
-                                    <>
-                                        Show Less <i className="fas fa-chevron-up ml-2 text-xs"></i>
-                                    </>
-                                ) : (
-                                    <>
-                                        Read More <i className="fas fa-chevron-right ml-2 text-xs"></i>
-                                    </>
-                                )}
-                            </button>
-                        )}
                     </div>
                 )}
             </div>

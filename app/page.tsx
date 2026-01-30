@@ -742,9 +742,9 @@ export default function Home() {
               </p>
               <div className="space-y-8">
                 {[
-                  { icon: 'fa-envelope', title: 'Email Us', info: 'info@aaaacademy.com' },
-                  { icon: 'fa-phone', title: 'Call Us', info: '+1 (555) 123-4567' },
-                  { icon: 'fa-map-marker-alt', title: 'Visit Us', info: '123 Professional Drive\nExcellence City, EX 12345' }
+                  { icon: 'fa-envelope', title: 'Email Us', info: 'info@aaa-accreditation.org' },
+                  { icon: 'fa-phone', title: 'Call Us', info: '+1 (571) 601 2616\n+44 (748) 755 0737' },
+                  { icon: 'fa-map-marker-alt', title: 'Visit Us', info: '8609 Westwood Center Drive\nTysons Corner, VA 22182, USA' }
                 ].map((contact, index) => (
                   <div key={index} className="flex items-start">
                     <div className="bg-white w-12 h-12 rounded-full shadow-[0_4px_20px_rgb(0,0,0,0.05)] flex items-center justify-center mr-6 border border-gray-100 flex-shrink-0">

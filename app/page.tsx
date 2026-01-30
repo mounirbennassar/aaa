@@ -539,15 +539,7 @@ export default function Home() {
                         ))}
                       </ul>
 
-                      <div className="pt-6 border-t border-gray-100">
-                        <Link
-                          href="/courses"
-                          className="inline-flex items-center text-[#dc2626] font-bold hover:text-[#b91c1c] transition-colors"
-                        >
-                          Learn More
-                          <i className="fas fa-arrow-right ml-2" />
-                        </Link>
-                      </div>
+
                     </div>
                   </div>
                 </div>

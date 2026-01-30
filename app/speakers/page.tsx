@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { CldImage } from 'next-cloudinary';
+import SpeakerCard from '@/components/SpeakerCard';
 
 interface Speaker {
     id: string;
@@ -83,59 +84,13 @@ export default function SpeakersPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         {speakers.map((speaker) => (
-                            <div
+                            <SpeakerCard
                                 key={speaker.id}
-                                className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col group"
-                            >
-                                {/* Speaker Image */}
-                                <div className="relative overflow-hidden h-72 bg-gray-100">
-                                    {speaker.imageUrl ? (
-                                        isValidCloudinaryImage(speaker.imageUrl) ? (
-                                            <CldImage
-                                                src={speaker.imageUrl}
-                                                alt={speaker.name}
-                                                width={400}
-                                                height={400}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                crop={{
-                                                    type: 'fill',
-                                                    source: true,
-                                                    gravity: 'face'
-                                                }}
-                                            />
-                                        ) : (
-                                            <img
-                                                src={speaker.imageUrl}
-                                                alt={speaker.name}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            />
-                                        )
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
-                                            <i className="fas fa-user-tie text-6xl text-[#13558D]/30" />
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Speaker Info */}
-                                <div className="p-6 flex flex-col flex-grow">
-                                    <h3 className="text-xl font-bold text-[#13558D] mb-2 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
-                                        {speaker.name}
-                                    </h3>
-
-                                    {speaker.title && (
-                                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                                            {speaker.title}
-                                        </p>
-                                    )}
-
-                                    {speaker.description && (
-                                        <p className="text-gray-600 text-sm leading-relaxed font-light line-clamp-4">
-                                            {speaker.description}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
+                                name={speaker.name}
+                                title={speaker.title}
+                                description={speaker.description}
+                                imageUrl={speaker.imageUrl}
+                            />
                         ))}
                     </div>
                 )}

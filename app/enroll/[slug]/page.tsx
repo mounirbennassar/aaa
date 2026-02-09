@@ -28,12 +28,12 @@ interface EnrollmentForm {
   phone: string;
   company: string;
   jobTitle: string;
-  
+
   // Additional Information
   experience: string;
   motivation: string;
   specialNeeds: string;
-  
+
   // Emergency Contact
   emergencyName: string;
   emergencyPhone: string;
@@ -157,9 +157,9 @@ export default function EnrollmentPage() {
 
   const handleSubmit = async () => {
     if (!validateStep2()) return;
-    
+
     setIsSubmitting(true);
-    
+
     // Mock payment processing
     setTimeout(() => {
       setIsSubmitting(false);
@@ -235,7 +235,7 @@ export default function EnrollmentPage() {
               <i className="fas fa-times text-xl"></i>
             </Link>
           </div>
-          
+
           {/* Progress Steps */}
           <div className="mt-6">
             <div className="flex items-center">
@@ -260,7 +260,7 @@ export default function EnrollmentPage() {
             {currentStep === 1 && (
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h2 className="text-xl font-bold text-blue-900 mb-6">Personal Information</h2>
-                
+
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* First Name */}
                   <div>
@@ -443,11 +443,10 @@ export default function EnrollmentPage() {
                   <button
                     onClick={handleNextStep}
                     disabled={!validateStep1()}
-                    className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
-                      validateStep1()
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    className={`px-8 py-3 rounded-lg font-semibold transition-colors ${validateStep1()
+                        ? 'bg-[#dc2626] text-white hover:bg-[#b91c1c]'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
+                      }`}
                   >
                     Continue to Payment
                     <i className="fas fa-arrow-right ml-2"></i>
@@ -459,7 +458,7 @@ export default function EnrollmentPage() {
             {currentStep === 2 && (
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h2 className="text-xl font-bold text-blue-900 mb-6">Payment Information</h2>
-                
+
                 {/* Payment Method */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-4">
@@ -623,15 +622,14 @@ export default function EnrollmentPage() {
                     <i className="fas fa-arrow-left mr-2"></i>
                     Back
                   </button>
-                  
+
                   <button
                     onClick={handleSubmit}
                     disabled={!validateStep2() || isSubmitting}
-                    className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
-                      validateStep2() && !isSubmitting
+                    className={`px-8 py-3 rounded-lg font-semibold transition-colors ${validateStep2() && !isSubmitting
                         ? 'bg-green-600 text-white hover:bg-green-700'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
+                      }`}
                   >
                     {isSubmitting ? (
                       <>
@@ -654,7 +652,7 @@ export default function EnrollmentPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
               <h3 className="text-lg font-bold text-blue-900 mb-4">Course Summary</h3>
-              
+
               {item.imageUrl && (
                 <CldImage
                   src={item.imageUrl}
@@ -668,9 +666,9 @@ export default function EnrollmentPage() {
                   }}
                 />
               )}
-              
+
               <h4 className="font-semibold text-gray-900 mb-2">{item.title}</h4>
-              
+
               <div className="space-y-3 text-sm text-gray-600 mb-6">
                 <div className="flex items-center">
                   <i className="fas fa-calendar mr-2 text-blue-500"></i>

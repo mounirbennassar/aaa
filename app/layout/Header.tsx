@@ -26,162 +26,169 @@ export default function Header() {
   };
 
   return (
-    <nav className="fixed w-full z-50" style={{ backgroundColor: '#024985' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center h-16 relative">
-          <div className="absolute left-0 flex items-center">
-            <Image
-              src="/aaa.png"
-              alt="AAA Logo"
-              width={72}
-              height={72}
-              className="h-16 w-auto"
-            />
-          </div>
+    <header className="fixed w-full z-50">
+      {/* Topbar - Solid background */}
+      <nav style={{ backgroundColor: '#024985' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center h-12 relative">
 
-          <div className="hidden md:flex space-x-1">
-            {/* Home */}
-            <div>
-              <a
-                href="https://aaa-accreditation.org"
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
-              >
-                Home
-              </a>
-            </div>
+            <div className="hidden md:flex space-x-1">
+              {/* Home */}
+              <div>
+                <a
+                  href="https://aaa-accreditation.org"
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  Home
+                </a>
+              </div>
 
-            {/* About Us */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown('about')}
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
-              >
-                About Us
-                <i className="fas fa-chevron-down ml-1 text-xs" />
-              </button>
-              {activeDropdown === 'about' && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10">
-                  <div className="py-2">
-                    <a href="https://aaa-accreditation.org/about-aaa/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      About AAA
-                    </a>
-                    <a href="https://aaa-accreditation.org/index.php/news/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      AAA News
-                    </a>
-                    <a href="https://aaa-accreditation.org/?page_id=6381" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Advisory Technical Committees
-                    </a>
-                    <a href="https://aaa-accreditation.org/about-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      About Accreditation
-                    </a>
-                    <a href="https://aaa-accreditation.org/national-international-partnership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      National & International Partnership
-                    </a>
+              {/* About Us */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleDropdown('about')}
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  About Us
+                  <i className="fas fa-chevron-down ml-1 text-xs" />
+                </button>
+                {activeDropdown === 'about' && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10">
+                    <div className="py-2">
+                      <a href="https://aaa-accreditation.org/about-aaa/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        About AAA
+                      </a>
+                      <a href="https://aaa-accreditation.org/index.php/news/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        AAA News
+                      </a>
+                      <a href="https://aaa-accreditation.org/?page_id=6381" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Advisory Technical Committees
+                      </a>
+                      <a href="https://aaa-accreditation.org/about-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        About Accreditation
+                      </a>
+                      <a href="https://aaa-accreditation.org/national-international-partnership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        National & International Partnership
+                      </a>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Accreditation Programs */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown('programs')}
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
-              >
-                Accreditation Programs
-                <i className="fas fa-chevron-down ml-1 text-xs" />
-              </button>
-              {activeDropdown === 'programs' && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-10">
-                  <div className="py-2">
-                    <a href="https://aaa-accreditation.org/role-of-accreditation-in-healthcare-system-bodies/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Healthcare Accreditation
-                    </a>
-                    <a href="https://aaa-accreditation.org/conformity-assessment-bodies-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Conformity Assessment Bodies Accreditation
-                    </a>
-                    <a href="https://aaa-accreditation.org/training-education-providers-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Training & Education Providers Accreditation
-                    </a>
+              {/* Accreditation Programs */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleDropdown('programs')}
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  Accreditation Programs
+                  <i className="fas fa-chevron-down ml-1 text-xs" />
+                </button>
+                {activeDropdown === 'programs' && (
+                  <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-10">
+                    <div className="py-2">
+                      <a href="https://aaa-accreditation.org/role-of-accreditation-in-healthcare-system-bodies/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Healthcare Accreditation
+                      </a>
+                      <a href="https://aaa-accreditation.org/conformity-assessment-bodies-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Conformity Assessment Bodies Accreditation
+                      </a>
+                      <a href="https://aaa-accreditation.org/training-education-providers-accreditation/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Training & Education Providers Accreditation
+                      </a>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Membership */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown('membership')}
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
-              >
-                Membership
-                <i className="fas fa-chevron-down ml-1 text-xs" />
-              </button>
-              {activeDropdown === 'membership' && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-md shadow-lg z-10">
-                  <div className="py-2">
-                    <a href="https://aaa-accreditation.org/individual-membership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Individual Membership
-                    </a>
-                    <a href="https://aaa-accreditation.org/organizational-membership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Organizational Membership
-                    </a>
+              {/* Membership */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleDropdown('membership')}
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  Membership
+                  <i className="fas fa-chevron-down ml-1 text-xs" />
+                </button>
+                {activeDropdown === 'membership' && (
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-md shadow-lg z-10">
+                    <div className="py-2">
+                      <a href="https://aaa-accreditation.org/individual-membership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Individual Membership
+                      </a>
+                      <a href="https://aaa-accreditation.org/organizational-membership/" onClick={closeDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Organizational Membership
+                      </a>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
+              {/* Accredited Organizations */}
+              <div>
+                <a
+                  href="https://aaa-accreditation.org/accredited-organizations/"
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  Accredited Organizations
+                </a>
+              </div>
+
+              {/* Accredited Personnel */}
+              <div>
+                <a
+                  href="/adcp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+                >
+                  Accredited Personnel
+                </a>
+              </div>
             </div>
 
-            {/* Accredited Organizations */}
-            <div>
-              <a
-                href="https://aaa-accreditation.org/accredited-organizations/"
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
+            <div className="absolute right-0 flex items-center space-x-4">
+              <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                Apply Now
+              </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMobileMenu}
+                className="md:hidden text-white hover:text-yellow-300 p-2"
               >
-                Accredited Organizations
-              </a>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
             </div>
-
-            {/* Accredited Personnel */}
-            <div>
-              <a
-                href="/adcp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-yellow-300 font-medium text-sm px-3 py-2 flex items-center"
-              >
-                Accredited Personnel
-              </a>
-            </div>
-          </div>
-
-          <div className="absolute right-0 flex items-center space-x-4">
-            <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors">
-              Apply Now
-            </button>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="md:hidden text-white hover:text-yellow-300 p-2"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </div>
+
+        {/* Backdrop to close dropdown when clicking outside */}
+        {activeDropdown && (
+          <div
+            className="fixed inset-0 z-0"
+            onClick={closeDropdown}
+          />
+        )}
+      </nav>
+
+      {/* Centered Logo Section - Transparent overlay on hero */}
+      <div className="flex justify-center py-4 bg-transparent">
+        <Link href="/">
+          <Image
+            src="/aaa.png"
+            alt="AAA Logo"
+            width={120}
+            height={120}
+            className="h-24 w-auto drop-shadow-lg"
+          />
+        </Link>
       </div>
 
-      {/* Backdrop to close dropdown when clicking outside */}
-      {activeDropdown && (
-        <div
-          className="fixed inset-0 z-0"
-          onClick={closeDropdown}
-        />
-      )}
-
-      {/* Academy Secondary Navigation */}
-      <div className="hidden md:block shadow-sm" style={{ marginTop: '14px', backgroundColor: '#013866' }}>
+      {/* Academy Secondary Navigation - Transparent overlay on hero */}
+      <div className="hidden md:block bg-[#013866]/90 backdrop-blur-sm shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center items-center h-10">
             <div className="flex space-x-6">
@@ -467,6 +474,6 @@ export default function Header() {
           animation-play-state: paused;
         }
       `}</style>
-    </nav >
+    </header>
   );
-} 
+}

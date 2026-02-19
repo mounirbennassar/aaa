@@ -194,9 +194,8 @@ export default function Header() {
             {/* Contact CTA */}
             <a
               href="/faq"
-              className="text-white hover:text-yellow-300 text-sm font-medium flex items-center transition-colors"
+              className="text-white hover:text-yellow-300 text-sm font-medium transition-colors"
             >
-              <i className="fas fa-question-circle mr-1.5" />
               FAQ
             </a>
           </div>

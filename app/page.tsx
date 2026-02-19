@@ -425,6 +425,7 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-6 mb-12">
                 <button
+                  onClick={() => document.getElementById('training-programs')?.scrollIntoView({ behavior: 'smooth' })}
                   className="hero-start-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg border-0 outline-none relative z-20"
                 >
                   <i className="fas fa-rocket mr-2"></i>
@@ -561,7 +562,7 @@ export default function Home() {
 
 
       {/* Featured Training Programs Section */}
-      <section className="py-20 bg-white">
+      <section id="training-programs" className="py-20 bg-white">
         <div className="mx-auto px-5">
           <div className="text-center mb-16 max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">

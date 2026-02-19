@@ -373,7 +373,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section id="home" className="pt-12 pb-20 relative overflow-hidden min-h-[calc(100vh-3rem)]">
+      <section id="home" className="pb-20 relative overflow-hidden min-h-[80vh]">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
           {/* Desktop Video */}

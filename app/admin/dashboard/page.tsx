@@ -32,6 +32,7 @@ interface Event {
   slug: string
   isVirtual: boolean
   isActive: boolean
+  order?: number
   createdAt: string
   creator: {
     name: string | null
@@ -215,7 +216,8 @@ export default function AdminDashboard() {
     certificateDescription: '',
     certificateImageUrl: '',
     certificateUrl: '',
-    calendlyUrl: ''
+    calendlyUrl: '',
+    order: 0
   })
 
   useEffect(() => {
@@ -473,7 +475,8 @@ export default function AdminDashboard() {
       certificateDescription: '',
       certificateImageUrl: '',
       certificateUrl: '',
-      calendlyUrl: ''
+      calendlyUrl: '',
+      order: 0
     })
   }
 
@@ -503,7 +506,8 @@ export default function AdminDashboard() {
       certificateDescription: event.certificateDescription || '',
       certificateImageUrl: event.certificateImageUrl || '',
       certificateUrl: event.certificateUrl || '',
-      calendlyUrl: event.calendlyUrl || ''
+      calendlyUrl: event.calendlyUrl || '',
+      order: event.order || 0
     })
     setShowModal(true)
   }
@@ -1608,6 +1612,20 @@ export default function AdminDashboard() {
                       />
                       <span className="text-sm text-gray-700">Active</span>
                     </label>
+                  </div>
+
+                  {/* Display Order */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+                    <input
+                      type="number"
+                      value={formData.order}
+                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                      min="0"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="0 = no priority"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Higher numbers appear first. 0 = default (sorted by date).</p>
                   </div>
                 </div>
 

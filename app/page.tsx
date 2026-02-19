@@ -425,11 +425,11 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-6 mb-12">
                 <button
-                  onClick={() => document.getElementById('training-programs')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => document.getElementById('get-in-touch')?.scrollIntoView({ behavior: 'smooth' })}
                   className="hero-start-button text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg border-0 outline-none relative z-20"
                 >
-                  <i className="fas fa-rocket mr-2"></i>
-                  Start Your Journey
+                  <i className="fas fa-envelope mr-2"></i>
+                  Contact Us
                 </button>
               </div>
 
@@ -732,7 +732,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-white">
+      <section id="get-in-touch" className="py-20 bg-white">
         <div className="mx-auto px-5">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>

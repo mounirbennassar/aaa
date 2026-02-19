@@ -56,7 +56,7 @@ export default function TrainingProgramsPage() {
   const fetchPrograms = async () => {
     try {
       // Sort by createdAt descending (recent first) to match home page
-      const response = await fetch('/api/events?category=COURSE&sortBy=createdAt&order=desc&limit=100');
+      const response = await fetch('/api/events?category=COURSE&sortBy=orderThenDate&limit=100');
       if (response.ok) {
         const data = await response.json();
         setAllPrograms(data.events || []);

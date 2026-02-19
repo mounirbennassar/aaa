@@ -16,6 +16,7 @@ interface Event {
   imageUrl?: string
   isVirtual: boolean
   isActive: boolean
+  order?: number
 }
 
 interface EventFormProps {
@@ -37,7 +38,8 @@ export default function EventForm({ event, onSave, onCancel }: EventFormProps) {
     maxParticipants: '',
     imageUrl: '',
     isVirtual: false,
-    isActive: true
+    isActive: true,
+    order: 0
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -56,7 +58,8 @@ export default function EventForm({ event, onSave, onCancel }: EventFormProps) {
         maxParticipants: event.maxParticipants?.toString() || '',
         imageUrl: event.imageUrl || '',
         isVirtual: event.isVirtual,
-        isActive: event.isActive
+        isActive: event.isActive,
+        order: event.order || 0
       })
     }
   }, [event])
@@ -311,6 +314,24 @@ export default function EventForm({ event, onSave, onCancel }: EventFormProps) {
               </div>
             </div>
 
+            {/* Display Order */}
+            <div>
+              <label htmlFor="order" className="block text-sm font-medium text-gray-700 mb-2">
+                Display Order
+              </label>
+              <input
+                type="number"
+                id="order"
+                name="order"
+                value={formData.order}
+                onChange={handleInputChange}
+                min="0"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="0 = no priority"
+              />
+              <p className="text-xs text-gray-500 mt-1">Higher numbers appear first. 0 = default (sorted by date).</p>
+            </div>
+
             {/* Checkboxes */}
             <div className="flex flex-col sm:flex-row gap-6">
               <div className="flex items-center">
@@ -371,7 +392,7 @@ export default function EventForm({ event, onSave, onCancel }: EventFormProps) {
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 } 

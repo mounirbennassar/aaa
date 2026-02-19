@@ -36,16 +36,21 @@ export async function GET(request: NextRequest) {
     }
 
     // Determine sort field and order
-    const validSortFields = ['date', 'createdAt', 'title', 'price']
+    const validSortFields = ['date', 'createdAt', 'title', 'price', 'order']
     const sortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt'
     const sortOrder = order === 'asc' ? 'asc' : 'desc'
+
+    // Support orderThenDate: events with order > 0 come first (ascending), then by createdAt desc
+    const orderByClause = sortBy === 'orderThenDate'
+      ? [{ order: 'desc' as const }, { createdAt: 'desc' as const }]
+      : { [sortField]: sortOrder }
 
     const [events, total] = await Promise.all([
       prisma.event.findMany({
         where,
         skip,
         take: limit,
-        orderBy: { [sortField]: sortOrder },
+        orderBy: orderByClause,
         include: {
           creator: {
             select: {
@@ -112,7 +117,8 @@ export async function POST(request: NextRequest) {
       calendlyUrl,
       isVirtual = false,
       isActive = true,
-      slug
+      slug,
+      order = 0
     } = body
 
     // Validate required fields
@@ -153,6 +159,7 @@ export async function POST(request: NextRequest) {
         calendlyUrl,
         isVirtual,
         isActive,
+        order: parseInt(order) || 0,
         createdBy: session.user.id
       },
       include: {

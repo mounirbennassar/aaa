@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    
+
     // Try to find by slug first
     let event = await prisma.event.findUnique({
       where: { slug },
@@ -61,7 +61,7 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -71,7 +71,7 @@ export async function PUT(
 
     const { slug } = await params
     const body = await request.json()
-    
+
     const {
       title,
       description,
@@ -95,7 +95,8 @@ export async function PUT(
       certificateUrl,
       calendlyUrl,
       isVirtual = false,
-      isActive = true
+      isActive = true,
+      order
     } = body
 
     // Validate required fields
@@ -143,7 +144,8 @@ export async function PUT(
         certificateUrl,
         calendlyUrl,
         isVirtual,
-        isActive
+        isActive,
+        ...(order !== undefined && { order: parseInt(order) || 0 })
       },
       include: {
         creator: {
@@ -171,7 +173,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },

@@ -272,7 +272,7 @@ export default function Home() {
     const fetchWebinars = async () => {
       try {
         // Updated sorting: created date desc (recent first)
-        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=createdAt&order=desc&upcoming=true');
+        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=orderThenDate&upcoming=true');
         if (response.ok) {
           const data: EventsResponse = await response.json();
           setWebinars(data.events);
@@ -289,7 +289,7 @@ export default function Home() {
     const fetchTrainingPrograms = async () => {
       try {
         // Updated sorting: created date desc (recent first)
-        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=createdAt&order=desc&upcoming=true');
+        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=orderThenDate&upcoming=true');
         if (response.ok) {
           const data: TrainingProgramsResponse = await response.json();
           setTrainingPrograms(data.events);

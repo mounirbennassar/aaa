@@ -272,7 +272,7 @@ export default function Home() {
     const fetchWebinars = async () => {
       try {
         // Updated sorting: created date desc (recent first)
-        const response = await fetch('/api/events?category=WEBINAR&limit=3&sortBy=orderThenDate');
+        const response = await fetch('/api/events?category=WEBINAR&limit=4&sortBy=orderThenDate');
         if (response.ok) {
           const data: EventsResponse = await response.json();
           setWebinars(data.events);
@@ -289,7 +289,7 @@ export default function Home() {
     const fetchTrainingPrograms = async () => {
       try {
         // Updated sorting: created date desc (recent first)
-        const response = await fetch('/api/events?category=COURSE&limit=3&sortBy=orderThenDate');
+        const response = await fetch('/api/events?category=COURSE&limit=4&sortBy=orderThenDate');
         if (response.ok) {
           const data: TrainingProgramsResponse = await response.json();
           setTrainingPrograms(data.events);
@@ -453,7 +453,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 title: 'Knowledge Hub',
@@ -580,7 +580,7 @@ export default function Home() {
               <span className="ml-3 text-gray-600">Loading training programs...</span>
             </div>
           ) : featuredTrainingPrograms.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredTrainingPrograms.map((course, index) => (
                 <CourseCard key={index} {...course} />
               ))}
@@ -634,7 +634,7 @@ export default function Home() {
               <span className="ml-3 text-gray-600">Loading upcoming webinars...</span>
             </div>
           ) : eventCards.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {eventCards.map((event, index) => (
                 <EventCard key={index} {...event} />
               ))}

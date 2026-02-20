@@ -24,6 +24,7 @@ interface EventCardProps {
   description: string;
   price: string;
   registerLink: string;
+  zoomLink?: string;
 }
 
 interface Webinar {
@@ -40,6 +41,7 @@ interface Webinar {
   slug: string;
   isActive: boolean;
   isVirtual: boolean;
+  calendlyUrl?: string;
 }
 
 interface TrainingProgram {
@@ -144,7 +146,7 @@ const CourseCard = ({ image, icon, title, description, features, price, color = 
   );
 };
 
-const EventCard = ({ image, category, date, title, description, price, registerLink }: EventCardProps) => {
+const EventCard = ({ image, category, date, title, description, price, registerLink, zoomLink }: EventCardProps) => {
   // Helper function to check if image URL is valid for Cloudinary
   const isValidCloudinaryImage = (imageUrl: string) => {
     if (!imageUrl || imageUrl.trim() === '') return false;
@@ -189,16 +191,33 @@ const EventCard = ({ image, category, date, title, description, price, registerL
           <i className="fas fa-calendar mr-2" />
           {date}
         </div>
-        <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">{title}</h3>
+        <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
+          {zoomLink ? (
+            <a href={zoomLink} target="_blank" rel="noopener noreferrer">{title}</a>
+          ) : (
+            <Link href={registerLink}>{title}</Link>
+          )}
+        </h3>
         <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">{description}</p>
         <div className="flex justify-between items-center pt-4 border-t border-gray-50">
           <span className="text-lg font-extrabold text-[#13558D] tracking-tight">{price}</span>
-          <Link
-            href={registerLink}
-            className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
-          >
-            {price === 'Free' ? 'Register Now' : 'View Details'}
-          </Link>
+          {zoomLink ? (
+            <a
+              href={zoomLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
+            >
+              Register Now
+            </a>
+          ) : (
+            <Link
+              href={registerLink}
+              className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
+            >
+              View Details
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -342,7 +361,8 @@ export default function Home() {
       ? webinar.description.substring(0, 120) + '...'
       : webinar.description,
     price: webinar.price === 0 ? 'Free' : `$${webinar.price}`,
-    registerLink: `/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
+    registerLink: `/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
+    zoomLink: webinar.calendlyUrl || undefined
   });
 
   // Helper function to convert training program to course card props

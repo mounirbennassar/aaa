@@ -51,7 +51,7 @@ export default function TrainingProgramsPage() {
     priceRange: 'all',
     location: 'all',
     duration: 'all',
-    showExpired: true
+    showInactive: false
   });
 
   const fetchPrograms = async () => {
@@ -116,8 +116,8 @@ export default function TrainingProgramsPage() {
       });
     }
 
-    if (!filters.showExpired) {
-      filtered = filtered.filter(course => !isExpired(course.date));
+    if (!filters.showInactive) {
+      filtered = filtered.filter(course => course.isActive !== false);
     }
 
     setFilteredPrograms(filtered);
@@ -270,11 +270,11 @@ export default function TrainingProgramsPage() {
                 <label className="flex items-center cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={filters.showExpired}
-                    onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
+                    checked={filters.showInactive}
+                    onChange={(e) => setFilters({ ...filters, showInactive: e.target.checked })}
                     className="mr-3 w-5 h-5 text-[#13558D] focus:ring-[#13558D] rounded border-gray-300 cursor-pointer"
                   />
-                  <span className="text-sm text-gray-600 group-hover:text-[#13558D] transition-colors">Show expired programs</span>
+                  <span className="text-sm text-gray-600 group-hover:text-[#13558D] transition-colors">Show inactive programs</span>
                 </label>
               </div>
 
@@ -310,11 +310,11 @@ export default function TrainingProgramsPage() {
               <>
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
                   {filteredPrograms.slice(0, visibleCount).map((course) => {
-                    const expired = isExpired(course.date);
+                    const inactive = course.isActive === false;
                     return (
                       <div
                         key={course.id}
-                        className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] transition-all duration-500 border border-white/50 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : 'hover:-translate-y-2'}`}
+                        className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] transition-all duration-500 border border-white/50 flex flex-col h-full group ${inactive ? 'opacity-60 grayscale' : 'hover:-translate-y-2'}`}
                       >
                         <div className="relative overflow-hidden h-52 bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
                           {course.imageUrl ? (
@@ -341,9 +341,9 @@ export default function TrainingProgramsPage() {
                               {course.isVirtual ? (<><i className="fas fa-video mr-1.5"></i>Virtual</>) : (<><i className="fas fa-building mr-1.5"></i>In-Person</>)}
                             </span>
                           </div>
-                          {expired && (
+                          {inactive && (
                             <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
-                              <i className="fas fa-clock mr-1.5"></i>Expired
+                              <i className="fas fa-ban mr-1.5"></i>Inactive
                             </div>
                           )}
                         </div>

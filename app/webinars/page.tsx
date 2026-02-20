@@ -51,7 +51,7 @@ export default function WebinarsPage() {
     priceRange: 'all',
     location: 'all',
     duration: 'all',
-    showExpired: true
+    showInactive: false
   });
 
   const fetchWebinars = async () => {
@@ -116,8 +116,8 @@ export default function WebinarsPage() {
       });
     }
 
-    if (!filters.showExpired) {
-      filtered = filtered.filter(webinar => !isExpired(webinar.date));
+    if (!filters.showInactive) {
+      filtered = filtered.filter(webinar => webinar.isActive !== false);
     }
 
     setFilteredWebinars(filtered);
@@ -242,11 +242,11 @@ export default function WebinarsPage() {
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={filters.showExpired}
-                    onChange={(e) => setFilters({ ...filters, showExpired: e.target.checked })}
+                    checked={filters.showInactive}
+                    onChange={(e) => setFilters({ ...filters, showInactive: e.target.checked })}
                     className="mr-3 text-[#13558D] focus:ring-[#13558D] rounded"
                   />
-                  <span className="text-sm text-gray-600">Show expired webinars</span>
+                  <span className="text-sm text-gray-600">Show inactive webinars</span>
                 </label>
               </div>
 
@@ -281,9 +281,9 @@ export default function WebinarsPage() {
               <>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredWebinars.slice(0, visibleCount).map((webinar) => {
-                    const expired = isExpired(webinar.date);
+                    const inactive = webinar.isActive === false;
                     return (
-                      <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
+                      <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${inactive ? 'opacity-60 grayscale' : ''}`}>
                         <div className="relative overflow-hidden h-48 bg-gray-100">
                           {webinar.imageUrl ? (
                             isValidCloudinaryImage(webinar.imageUrl) ? (
@@ -314,7 +314,7 @@ export default function WebinarsPage() {
                               <i className="fas fa-calendar mr-2" />
                               {formatDate(webinar.date)}
                             </div>
-                            {expired && <span className="text-red-500 font-bold">Expired</span>}
+                            {inactive && <span className="text-red-500 font-bold">Inactive</span>}
                           </div>
 
                           <Link

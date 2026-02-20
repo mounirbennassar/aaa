@@ -51,7 +51,7 @@ export default function WebinarsPage() {
     priceRange: 'all',
     location: 'all',
     duration: 'all',
-    showExpired: false
+    showExpired: true
   });
 
   const fetchWebinars = async () => {

@@ -51,7 +51,7 @@ export default function TrainingProgramsPage() {
     priceRange: 'all',
     location: 'all',
     duration: 'all',
-    showExpired: false
+    showExpired: true
   });
 
   const fetchPrograms = async () => {

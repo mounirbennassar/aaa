@@ -43,6 +43,7 @@ export default function WebinarsPage() {
   const [filteredWebinars, setFilteredWebinars] = useState<Webinar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -55,17 +56,11 @@ export default function WebinarsPage() {
 
   const fetchWebinars = async () => {
     try {
-      console.log('Fetching webinars...');
       const response = await fetch('/api/events?category=WEBINAR&sortBy=orderThenDate&limit=100');
-      console.log('Response status:', response.status);
       if (response.ok) {
         const data = await response.json();
-        console.log('Fetched data:', data);
-        console.log('Events array:', data.events);
-        console.log('Events length:', data.events?.length);
         setAllWebinars(data.events || []);
       } else {
-        console.error('Failed to fetch webinars:', response.statusText);
         setError('Failed to fetch webinars');
       }
     } catch (err) {
@@ -77,10 +72,8 @@ export default function WebinarsPage() {
   };
 
   const applyFilters = useCallback(() => {
-    console.log('Applying filters to webinars:', allWebinars.length);
     let filtered = [...allWebinars];
 
-    // Search filter
     if (filters.search) {
       filtered = filtered.filter(webinar =>
         webinar.title.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -88,25 +81,18 @@ export default function WebinarsPage() {
       );
     }
 
-    // Price filter
     if (filters.priceRange !== 'all') {
       filtered = filtered.filter(webinar => {
         switch (filters.priceRange) {
-          case 'free':
-            return webinar.price === 0;
-          case 'under50':
-            return webinar.price > 0 && webinar.price < 50;
-          case 'under100':
-            return webinar.price >= 50 && webinar.price < 100;
-          case 'over100':
-            return webinar.price >= 100;
-          default:
-            return true;
+          case 'free': return webinar.price === 0;
+          case 'under50': return webinar.price > 0 && webinar.price < 50;
+          case 'under100': return webinar.price >= 50 && webinar.price < 100;
+          case 'over100': return webinar.price >= 100;
+          default: return true;
         }
       });
     }
 
-    // Location filter (webinars are typically online)
     if (filters.location !== 'all') {
       filtered = filtered.filter(webinar => {
         if (filters.location === 'online') {
@@ -118,30 +104,24 @@ export default function WebinarsPage() {
       });
     }
 
-    // Duration filter
     if (filters.duration !== 'all') {
       filtered = filtered.filter(webinar => {
         const duration = webinar.duration.toLowerCase();
         switch (filters.duration) {
-          case 'short':
-            return duration.includes('hour') || duration.includes('1 hour');
-          case 'medium':
-            return duration.includes('1.5 hour') || duration.includes('2 hour');
-          case 'long':
-            return duration.includes('3 hour') || duration.includes('day');
-          default:
-            return true;
+          case 'short': return duration.includes('hour') || duration.includes('1 hour');
+          case 'medium': return duration.includes('1.5 hour') || duration.includes('2 hour');
+          case 'long': return duration.includes('3 hour') || duration.includes('day');
+          default: return true;
         }
       });
     }
 
-    // Expired filter
     if (!filters.showExpired) {
       filtered = filtered.filter(webinar => !isExpired(webinar.date));
     }
 
-    console.log('Filtered webinars:', filtered.length);
     setFilteredWebinars(filtered);
+    setVisibleCount(9);
   }, [allWebinars, filters]);
 
   useEffect(() => {
@@ -229,7 +209,6 @@ export default function WebinarsPage() {
             <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 sticky top-24 border border-gray-100">
               <h3 className="text-xl font-bold text-[#13558D] mb-6 font-['Playfair_Display']">Filter Webinars</h3>
 
-              {/* Search */}
               <div className="mb-6">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Search</label>
                 <div className="relative">
@@ -244,7 +223,6 @@ export default function WebinarsPage() {
                 </div>
               </div>
 
-              {/* Duration */}
               <div className="mb-6">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Duration</label>
                 <select
@@ -260,7 +238,6 @@ export default function WebinarsPage() {
                 </select>
               </div>
 
-              {/* Show Expired */}
               <div className="mb-6 pt-4 border-t border-gray-100">
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -273,9 +250,8 @@ export default function WebinarsPage() {
                 </label>
               </div>
 
-              {/* Results Count */}
               <div className="text-xs text-gray-400 text-center uppercase tracking-widest">
-                Showing {filteredWebinars.length} of {allWebinars.length} webinars
+                Showing {Math.min(visibleCount, filteredWebinars.length)} of {filteredWebinars.length} webinars
               </div>
             </div>
           </div>
@@ -302,108 +278,112 @@ export default function WebinarsPage() {
                 </Link>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredWebinars.map((webinar) => {
-                  const expired = isExpired(webinar.date);
-                  return (
-                    <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
-                      {/* Webinar Image */}
-                      <div className="relative overflow-hidden h-48 bg-gray-100">
-                        {webinar.imageUrl ? (
-                          isValidCloudinaryImage(webinar.imageUrl) ? (
-                            <CldImage
-                              src={webinar.imageUrl}
-                              alt={webinar.title}
-                              width={400}
-                              height={192}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                              crop={{
-                                type: 'fill',
-                                source: true
-                              }}
-                            />
+              <>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredWebinars.slice(0, visibleCount).map((webinar) => {
+                    const expired = isExpired(webinar.date);
+                    return (
+                      <div key={webinar.id} className={`bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : ''}`}>
+                        <div className="relative overflow-hidden h-48 bg-gray-100">
+                          {webinar.imageUrl ? (
+                            isValidCloudinaryImage(webinar.imageUrl) ? (
+                              <CldImage
+                                src={webinar.imageUrl}
+                                alt={webinar.title}
+                                width={400}
+                                height={192}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                crop={{ type: 'fill', source: true }}
+                              />
+                            ) : (
+                              <img src={webinar.imageUrl} alt={webinar.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                            )
                           ) : (
-                            <img
-                              src={webinar.imageUrl}
-                              alt={webinar.title}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                          )
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
-                            <i className="fas fa-video text-5xl text-[#13558D]/30" />
-                          </div>
-                        )}
-                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
-                          {webinar.isVirtual ? 'Online' : 'In-Person'}
-                        </div>
-                      </div>
-
-                      <div className="p-6 flex flex-col flex-grow">
-                        <div className="flex items-center justify-between mb-3 text-xs uppercase tracking-wider text-gray-500">
-                          <div className="flex items-center">
-                            <i className="fas fa-calendar mr-2" />
-                            {formatDate(webinar.date)}
-                          </div>
-                          {expired && <span className="text-red-500 font-bold">Expired</span>}
-                        </div>
-
-                        <Link
-                          href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                          className="block group"
-                        >
-                          <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
-                            {webinar.title}
-                          </h3>
-                        </Link>
-
-                        <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
-                          {webinar.description}
-                        </p>
-
-                        {/* Meta Info */}
-                        <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-50 text-xs text-gray-500 font-medium">
-                          <div className="flex items-center">
-                            <i className="fas fa-globe text-[#13558D] mr-1.5" />
-                            {webinar.language}
-                          </div>
-                          <div className="flex items-center">
-                            <i className="fas fa-clock text-[#13558D] mr-1.5" />
-                            {formatTime(webinar.date)} (1 Hour)
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between mt-auto">
-                          <div className="text-lg font-extrabold text-[#13558D] tracking-tight">
-                            Free
-                          </div>
-                          {webinar.calendlyUrl ? (
-                            <a
-                              href={webinar.calendlyUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
-                            >
-                              Join Webinar
-                            </a>
-                          ) : (
-                            <Link
-                              href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                              className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
-                            >
-                              View Details
-                            </Link>
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
+                              <i className="fas fa-video text-5xl text-[#13558D]/30" />
+                            </div>
                           )}
+                          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#13558D] shadow-sm">
+                            {webinar.isVirtual ? 'Online' : 'In-Person'}
+                          </div>
+                        </div>
+
+                        <div className="p-6 flex flex-col flex-grow">
+                          <div className="flex items-center justify-between mb-3 text-xs uppercase tracking-wider text-gray-500">
+                            <div className="flex items-center">
+                              <i className="fas fa-calendar mr-2" />
+                              {formatDate(webinar.date)}
+                            </div>
+                            {expired && <span className="text-red-500 font-bold">Expired</span>}
+                          </div>
+
+                          <Link
+                            href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                            className="block group"
+                          >
+                            <h3 className="text-lg font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors">
+                              {webinar.title}
+                            </h3>
+                          </Link>
+
+                          <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
+                            {webinar.description}
+                          </p>
+
+                          <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-50 text-xs text-gray-500 font-medium">
+                            <div className="flex items-center">
+                              <i className="fas fa-globe text-[#13558D] mr-1.5" />
+                              {webinar.language}
+                            </div>
+                            <div className="flex items-center">
+                              <i className="fas fa-clock text-[#13558D] mr-1.5" />
+                              {formatTime(webinar.date)} (1 Hour)
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between mt-auto">
+                            <div className="text-lg font-extrabold text-[#13558D] tracking-tight">
+                              Free
+                            </div>
+                            {webinar.calendlyUrl ? (
+                              <a
+                                href={webinar.calendlyUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
+                              >
+                                Join Webinar
+                              </a>
+                            ) : (
+                              <Link
+                                href={`/details/${webinar.slug || webinar.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                                className="bg-[#dc2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#b91c1c] transition-colors shadow-lg"
+                              >
+                                View Details
+                              </Link>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+                {visibleCount < filteredWebinars.length && (
+                  <div className="text-center mt-12">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + 9)}
+                      className="bg-[#13558D] text-white px-10 py-3 rounded-full font-semibold hover:bg-[#0e4070] transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center"
+                    >
+                      <i className="fas fa-plus mr-2"></i>
+                      Load More ({filteredWebinars.length - visibleCount} remaining)
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

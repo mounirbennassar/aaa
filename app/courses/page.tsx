@@ -43,6 +43,7 @@ export default function TrainingProgramsPage() {
   const [filteredPrograms, setFilteredPrograms] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -55,7 +56,6 @@ export default function TrainingProgramsPage() {
 
   const fetchPrograms = async () => {
     try {
-      // Sort by createdAt descending (recent first) to match home page
       const response = await fetch('/api/events?category=COURSE&sortBy=orderThenDate&limit=100');
       if (response.ok) {
         const data = await response.json();
@@ -74,7 +74,6 @@ export default function TrainingProgramsPage() {
   const applyFilters = useCallback(() => {
     let filtered = [...allPrograms];
 
-    // Search filter
     if (filters.search) {
       filtered = filtered.filter(course =>
         course.title.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -82,25 +81,18 @@ export default function TrainingProgramsPage() {
       );
     }
 
-    // Price filter
     if (filters.priceRange !== 'all') {
       filtered = filtered.filter(course => {
         switch (filters.priceRange) {
-          case 'free':
-            return course.price === 0;
-          case 'under500':
-            return course.price > 0 && course.price < 500;
-          case 'under1000':
-            return course.price >= 500 && course.price < 1000;
-          case 'over1000':
-            return course.price >= 1000;
-          default:
-            return true;
+          case 'free': return course.price === 0;
+          case 'under500': return course.price > 0 && course.price < 500;
+          case 'under1000': return course.price >= 500 && course.price < 1000;
+          case 'over1000': return course.price >= 1000;
+          default: return true;
         }
       });
     }
 
-    // Location filter
     if (filters.location !== 'all') {
       filtered = filtered.filter(course => {
         if (filters.location === 'online') {
@@ -112,29 +104,24 @@ export default function TrainingProgramsPage() {
       });
     }
 
-    // Duration filter
     if (filters.duration !== 'all') {
       filtered = filtered.filter(course => {
         const duration = course.duration.toLowerCase();
         switch (filters.duration) {
-          case 'short':
-            return duration.includes('hour') || duration.includes('1 day');
-          case 'medium':
-            return duration.includes('2 day') || duration.includes('3 day');
-          case 'long':
-            return duration.includes('4 day') || duration.includes('5 day') || duration.includes('week');
-          default:
-            return true;
+          case 'short': return duration.includes('hour') || duration.includes('1 day');
+          case 'medium': return duration.includes('2 day') || duration.includes('3 day');
+          case 'long': return duration.includes('4 day') || duration.includes('5 day') || duration.includes('week');
+          default: return true;
         }
       });
     }
 
-    // Expired filter
     if (!filters.showExpired) {
       filtered = filtered.filter(course => !isExpired(course.date));
     }
 
     setFilteredPrograms(filtered);
+    setVisibleCount(9);
   }, [allPrograms, filters]);
 
   useEffect(() => {
@@ -223,7 +210,6 @@ export default function TrainingProgramsPage() {
                 Filter Programs
               </h3>
 
-              {/* Search */}
               <div className="mb-8">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Search</label>
                 <div className="relative">
@@ -238,7 +224,6 @@ export default function TrainingProgramsPage() {
                 </div>
               </div>
 
-              {/* Price Range */}
               <div className="mb-8">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Price Range</label>
                 <select
@@ -254,7 +239,6 @@ export default function TrainingProgramsPage() {
                 </select>
               </div>
 
-              {/* Location */}
               <div className="mb-8">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Location</label>
                 <select
@@ -268,7 +252,6 @@ export default function TrainingProgramsPage() {
                 </select>
               </div>
 
-              {/* Duration */}
               <div className="mb-8">
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Duration</label>
                 <select
@@ -283,7 +266,6 @@ export default function TrainingProgramsPage() {
                 </select>
               </div>
 
-              {/* Show Expired */}
               <div className="mb-8 pt-6 border-t border-gray-100">
                 <label className="flex items-center cursor-pointer group">
                   <input
@@ -296,7 +278,6 @@ export default function TrainingProgramsPage() {
                 </label>
               </div>
 
-              {/* Results Count */}
               <div className="bg-[#13558D]/5 rounded-xl p-4 text-center">
                 <span className="text-2xl font-bold text-[#13558D]">{filteredPrograms.length}</span>
                 <span className="text-xs text-gray-500 block mt-1">of {allPrograms.length} programs</span>
@@ -326,118 +307,104 @@ export default function TrainingProgramsPage() {
                 </Link>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {filteredPrograms.map((course) => {
-                  const expired = isExpired(course.date);
-                  return (
-                    <div
-                      key={course.id}
-                      className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] transition-all duration-500 border border-white/50 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : 'hover:-translate-y-2'}`}
-                    >
-                      {/* Course Image */}
-                      <div className="relative overflow-hidden h-52 bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
-                        {course.imageUrl ? (
-                          isValidCloudinaryImage(course.imageUrl) ? (
-                            <CldImage
-                              src={course.imageUrl}
-                              alt={course.title}
-                              width={400}
-                              height={208}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                              crop={{
-                                type: 'fill',
-                                source: true
-                              }}
-                            />
+              <>
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {filteredPrograms.slice(0, visibleCount).map((course) => {
+                    const expired = isExpired(course.date);
+                    return (
+                      <div
+                        key={course.id}
+                        className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_20px_50px_rgb(0,0,0,0.12)] transition-all duration-500 border border-white/50 flex flex-col h-full group ${expired ? 'opacity-60 grayscale' : 'hover:-translate-y-2'}`}
+                      >
+                        <div className="relative overflow-hidden h-52 bg-gradient-to-br from-[#13558D]/10 to-[#13558D]/5">
+                          {course.imageUrl ? (
+                            isValidCloudinaryImage(course.imageUrl) ? (
+                              <CldImage
+                                src={course.imageUrl}
+                                alt={course.title}
+                                width={400}
+                                height={208}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                crop={{ type: 'fill', source: true }}
+                              />
+                            ) : (
+                              <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                            )
                           ) : (
-                            <img
-                              src={course.imageUrl}
-                              alt={course.title}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                          )
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <i className="fas fa-book text-6xl text-[#13558D]/20" />
+                            <div className="w-full h-full flex items-center justify-center">
+                              <i className="fas fa-book text-6xl text-[#13558D]/20" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute top-4 left-4 flex gap-2">
+                            <span className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-[#13558D] shadow-lg">
+                              {course.isVirtual ? (<><i className="fas fa-video mr-1.5"></i>Virtual</>) : (<><i className="fas fa-building mr-1.5"></i>In-Person</>)}
+                            </span>
                           </div>
-                        )}
-
-                        {/* Overlay gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                        {/* Badges */}
-                        <div className="absolute top-4 left-4 flex gap-2">
-                          <span className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-[#13558D] shadow-lg">
-                            {course.isVirtual ? (
-                              <><i className="fas fa-video mr-1.5"></i>Virtual</>
-                            ) : (
-                              <><i className="fas fa-building mr-1.5"></i>In-Person</>
-                            )}
-                          </span>
+                          {expired && (
+                            <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
+                              <i className="fas fa-clock mr-1.5"></i>Expired
+                            </div>
+                          )}
                         </div>
-
-                        {expired && (
-                          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
-                            <i className="fas fa-clock mr-1.5"></i>Expired
+                        <div className="p-6 flex flex-col flex-grow">
+                          <div className="flex items-center text-xs font-medium text-[#dc2626] mb-3">
+                            <i className="fas fa-calendar-alt mr-2"></i>
+                            {formatDate(course.date)}
                           </div>
-                        )}
-                      </div>
-
-                      <div className="p-6 flex flex-col flex-grow">
-                        {/* Date */}
-                        <div className="flex items-center text-xs font-medium text-[#dc2626] mb-3">
-                          <i className="fas fa-calendar-alt mr-2"></i>
-                          {formatDate(course.date)}
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-xl font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors leading-tight">
-                          {course.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
-                          {course.description}
-                        </p>
-
-                        {/* Meta Info */}
-                        <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-100 text-xs text-gray-500">
-                          <div className="flex items-center">
-                            <i className="fas fa-globe text-[#13558D] mr-1.5"></i>
-                            <span className="font-medium">{course.language}</span>
+                          <h3 className="text-xl font-bold text-[#13558D] mb-3 font-['Playfair_Display'] group-hover:text-[#1e7bc9] transition-colors leading-tight">
+                            {course.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-grow line-clamp-3 font-light">
+                            {course.description}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-4 mb-6 pt-4 border-t border-gray-100 text-xs text-gray-500">
+                            <div className="flex items-center">
+                              <i className="fas fa-globe text-[#13558D] mr-1.5"></i>
+                              <span className="font-medium">{course.language}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <i className="fas fa-map-marker-alt text-[#13558D] mr-1.5"></i>
+                              <span className="font-medium">{course.location}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <i className="fas fa-clock text-[#13558D] mr-1.5"></i>
+                              <span className="font-medium">{course.duration}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center">
-                            <i className="fas fa-map-marker-alt text-[#13558D] mr-1.5"></i>
-                            <span className="font-medium">{course.location}</span>
+                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                            <div>
+                              {course.price === 0 ? (
+                                <span className="text-2xl font-extrabold text-green-600">Free</span>
+                              ) : (
+                                <span className="text-2xl font-extrabold text-[#13558D]">${course.price}</span>
+                              )}
+                            </div>
+                            <Link
+                              href={`/details/${course.slug || course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                              className="bg-[#dc2626] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-[#b91c1c] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center"
+                            >
+                              View Details
+                              <i className="fas fa-arrow-right ml-2 text-xs"></i>
+                            </Link>
                           </div>
-                          <div className="flex items-center">
-                            <i className="fas fa-clock text-[#13558D] mr-1.5"></i>
-                            <span className="font-medium">{course.duration}</span>
-                          </div>
-                        </div>
-
-                        {/* Price and CTA */}
-                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                          <div>
-                            {course.price === 0 ? (
-                              <span className="text-2xl font-extrabold text-green-600">Free</span>
-                            ) : (
-                              <span className="text-2xl font-extrabold text-[#13558D]">${course.price}</span>
-                            )}
-                          </div>
-                          <Link
-                            href={`/details/${course.slug || course.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                            className="bg-[#dc2626] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-[#b91c1c] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center"
-                          >
-                            View Details
-                            <i className="fas fa-arrow-right ml-2 text-xs"></i>
-                          </Link>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+                {visibleCount < filteredPrograms.length && (
+                  <div className="text-center mt-12">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + 9)}
+                      className="bg-[#13558D] text-white px-10 py-3 rounded-full font-semibold hover:bg-[#0e4070] transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center"
+                    >
+                      <i className="fas fa-plus mr-2"></i>
+                      Load More ({filteredPrograms.length - visibleCount} remaining)
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

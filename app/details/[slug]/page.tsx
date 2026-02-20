@@ -384,14 +384,35 @@ export default function CourseDetailPage() {
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 text-white">
               <h3 className="text-xl font-bold mb-4">Ready to Register?</h3>
               <p className="mb-6">
-                Join this {item.category.toLowerCase()} and advance your career with internationally recognized training.
+                {item.category === 'WEBINAR'
+                  ? 'Join this free webinar and advance your career with internationally recognized training.'
+                  : `Join this ${item.category.toLowerCase()} and advance your career with internationally recognized training.`
+                }
               </p>
-              <Link
-                href={`/checkout/${item.slug}`}
-                className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
-              >
-                Register Now - $480
-              </Link>
+              {item.category === 'WEBINAR' ? (
+                item.calendlyUrl ? (
+                  <a
+                    href={item.calendlyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
+                  >
+                    <i className="fas fa-video mr-2"></i>
+                    Register Now — Free
+                  </a>
+                ) : (
+                  <span className="block w-full bg-white/20 text-white px-6 py-3 rounded-lg font-semibold text-center cursor-default">
+                    Registration Link Coming Soon
+                  </span>
+                )
+              ) : (
+                <Link
+                  href={`/checkout/${item.slug}`}
+                  className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
+                >
+                  Register Now {item.price > 0 ? `- $${item.price}` : '— Free'}
+                </Link>
+              )}
             </div>
           </div>
         </div>

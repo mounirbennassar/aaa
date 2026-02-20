@@ -90,7 +90,7 @@ const CourseCard = ({ image, icon, title, description, features, price, color = 
   return (
     <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group">
       {/* Course Image */}
-      <div className="relative overflow-hidden h-48 bg-gray-100 w-full">
+      <div className="relative overflow-hidden h-52 bg-gray-50 w-full">
         {image ? (
           isValidCloudinaryImage(image) ? (
             <CldImage
@@ -98,7 +98,7 @@ const CourseCard = ({ image, icon, title, description, features, price, color = 
               alt={title}
               width={400}
               height={192}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               crop={{
                 type: 'fill',
                 source: true
@@ -108,7 +108,7 @@ const CourseCard = ({ image, icon, title, description, features, price, color = 
             <img
               src={image}
               alt={title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
           )
         ) : (
@@ -154,7 +154,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
 
   return (
     <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full group">
-      <div className="relative overflow-hidden h-48 bg-gray-100">
+      <div className="relative overflow-hidden h-52 bg-gray-50">
         {image ? (
           isValidCloudinaryImage(image) ? (
             <CldImage
@@ -162,7 +162,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
               alt={title}
               width={400}
               height={192}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               crop={{
                 type: 'fill',
                 source: true
@@ -172,7 +172,7 @@ const EventCard = ({ image, category, date, title, description, price, registerL
             <img
               src={image}
               alt={title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
           )
         ) : (

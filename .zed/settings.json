@@ -1,0 +1,24 @@
+{
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/node_modules",
+    "**/.next",
+    "**/.vercel",
+    "**/dist",
+    "**/build",
+    "**/coverage",
+    "**/.DS_Store",
+    "**/*.tsbuildinfo"
+  ],
+  "lsp": {
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "tsserver": {
+            "maxTsServerMemory": 3072
+          }
+        }
+      }
+    }
+  }
+}

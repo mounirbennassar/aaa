@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
+import { rateLimit, getClientIp } from './rate-limit'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -11,9 +12,16 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
-          console.log('Missing credentials')
+          return null
+        }
+
+        // Throttle login attempts per IP+email to slow brute-force attacks.
+        const ip = getClientIp((req?.headers ?? {}) as Record<string, string | undefined>)
+        const attempt = rateLimit(`login:${ip}:${credentials.email}`, 8, 5 * 60_000)
+        if (!attempt.ok) {
+          console.warn('Login rate limit exceeded')
           return null
         }
 
@@ -25,7 +33,6 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (!user) {
-            console.log('User not found:', credentials.email)
             return null
           }
 
@@ -35,11 +42,9 @@ export const authOptions: NextAuthOptions = {
           )
 
           if (!isPasswordValid) {
-            console.log('Invalid password for user:', credentials.email)
             return null
           }
 
-          console.log('User authenticated successfully:', user.email)
           return {
             id: user.id,
             email: user.email,
@@ -47,7 +52,7 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
           }
         } catch (error) {
-          console.error('Authentication error:', error)
+          console.error('Authentication error')
           return null
         }
       }
@@ -61,7 +66,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role
-        console.log('JWT created for user:', user.email)
       }
       return token
     },
@@ -69,7 +73,6 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.sub || ''
         session.user.role = token.role as string
-        console.log('Session created for user:', session.user.email)
       }
       return session
     }

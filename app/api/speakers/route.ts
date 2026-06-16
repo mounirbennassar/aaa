@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getStaffSession } from '@/lib/auth-helpers'
 
 // GET - fetch all speakers
 export async function GET(request: NextRequest) {
@@ -24,9 +25,14 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// POST - create new speaker
+// POST - create new speaker (staff only)
 export async function POST(request: NextRequest) {
     try {
+        const session = await getStaffSession()
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const body = await request.json()
         const { name, title, description, imageUrl, order } = body
 

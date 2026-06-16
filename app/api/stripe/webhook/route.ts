@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { escapeHtml } from '@/lib/escape-html';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -52,20 +53,30 @@ export async function POST(request: Request) {
   const headersList = await headers();
   const signature = headersList.get('stripe-signature');
 
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  // Signature verification is mandatory. Without it, anyone could POST a forged
+  // "payment succeeded" event and mark orders as paid. For local testing use
+  // the Stripe CLI (`stripe listen`) which provides a signing secret.
+  if (!webhookSecret) {
+    console.error('STRIPE_WEBHOOK_SECRET is not set; rejecting webhook.');
+    return NextResponse.json(
+      { error: 'Webhook not configured' },
+      { status: 500 }
+    );
+  }
+
+  if (!signature) {
+    return NextResponse.json(
+      { error: 'Missing stripe-signature header' },
+      { status: 400 }
+    );
+  }
+
   let event: Stripe.Event;
 
   try {
-    // If webhook secret is set, verify signature
-    if (process.env.STRIPE_WEBHOOK_SECRET) {
-      event = stripe.webhooks.constructEvent(
-        body,
-        signature!,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } else {
-      // For development without webhook secret
-      event = JSON.parse(body);
-    }
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err);
     return NextResponse.json(
@@ -82,13 +93,26 @@ export async function POST(request: Request) {
 
       console.log('💰 Payment succeeded for order:', orderId);
 
-      // Update order status
-      if (orderId) {
-        await prisma.order.update({
-          where: { id: orderId },
-          data: { status: 'COMPLETED' },
-        });
+      if (!orderId) break;
+
+      // Idempotency: Stripe can deliver the same event more than once. Only
+      // process an order that exists and is not already completed.
+      const existingOrder = await prisma.order.findUnique({ where: { id: orderId } });
+      if (!existingOrder || existingOrder.status === 'COMPLETED') {
+        break;
       }
+
+      await prisma.order.update({
+        where: { id: orderId },
+        data: { status: 'COMPLETED' },
+      });
+
+      // Escape user-supplied values before embedding them into HTML emails.
+      const safeName = escapeHtml(customerName);
+      const safeCourse = escapeHtml(courseName);
+      const safeEmail = escapeHtml(customerEmail);
+      const safeOrderId = escapeHtml(orderId);
+      const safePaymentId = escapeHtml(paymentIntent.id);
 
       // Send confirmation email to customer
       await sendEmail(
@@ -100,15 +124,15 @@ export async function POST(request: Request) {
             <h1 style="color: white; margin: 0;">Thank You!</h1>
           </div>
           <div style="padding: 40px; background: #f8f9fa;">
-            <h2 style="color: #13558D;">Dear ${customerName},</h2>
+            <h2 style="color: #13558D;">Dear ${safeName},</h2>
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
-              Thank you for enrolling in <strong>${courseName}</strong> at AAA Academy!
+              Thank you for enrolling in <strong>${safeCourse}</strong> at AAA Academy!
             </p>
             <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #13558D; margin-top: 0;">Order Details</h3>
-              <p><strong>Course:</strong> ${courseName}</p>
+              <p><strong>Course:</strong> ${safeCourse}</p>
               <p><strong>Amount Paid:</strong> $480.00 USD</p>
-              <p><strong>Order ID:</strong> ${orderId}</p>
+              <p><strong>Order ID:</strong> ${safeOrderId}</p>
             </div>
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
               Our team will contact you shortly with further instructions and course access details.
@@ -130,7 +154,7 @@ export async function POST(request: Request) {
       const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@aaaacademy.com';
       await sendEmail(
         adminEmail,
-        `New Course Purchase: ${courseName}`,
+        `New Course Purchase: ${safeCourse}`,
         `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #dc2626; padding: 20px; text-align: center;">
@@ -139,12 +163,12 @@ export async function POST(request: Request) {
           <div style="padding: 30px; background: #f8f9fa;">
             <h2 style="color: #333;">New Course Enrollment</h2>
             <div style="background: white; padding: 20px; border-radius: 8px;">
-              <p><strong>Customer Name:</strong> ${customerName}</p>
-              <p><strong>Email:</strong> ${customerEmail}</p>
-              <p><strong>Course:</strong> ${courseName}</p>
+              <p><strong>Customer Name:</strong> ${safeName}</p>
+              <p><strong>Email:</strong> ${safeEmail}</p>
+              <p><strong>Course:</strong> ${safeCourse}</p>
               <p><strong>Amount:</strong> $480.00 USD</p>
-              <p><strong>Order ID:</strong> ${orderId}</p>
-              <p><strong>Payment ID:</strong> ${paymentIntent.id}</p>
+              <p><strong>Order ID:</strong> ${safeOrderId}</p>
+              <p><strong>Payment ID:</strong> ${safePaymentId}</p>
               <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
             </div>
           </div>

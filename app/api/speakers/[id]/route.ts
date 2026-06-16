@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getStaffSession } from '@/lib/auth-helpers'
 
-// DELETE - delete a speaker
+// DELETE - delete a speaker (staff only)
 export async function DELETE(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const session = await getStaffSession()
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const { id } = await params
 
         await prisma.speaker.delete({
@@ -20,12 +26,17 @@ export async function DELETE(
     }
 }
 
-// PUT - update a speaker
+// PUT - update a speaker (staff only)
 export async function PUT(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const session = await getStaffSession()
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const { id } = await params
         const body = await request.json()
         const { name, title, description, imageUrl, isActive, order } = body

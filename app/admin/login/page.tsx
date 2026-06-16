@@ -135,12 +135,6 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Default credentials: admin@aaaacademy.com / admin123
-          </p>
-        </div>
-
         <div className="mt-8 pt-6 border-t border-gray-200 text-center">
           <p className="text-xs text-gray-500">
             © 2024 AAA Academy. All rights reserved.

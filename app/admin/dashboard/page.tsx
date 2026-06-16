@@ -528,6 +528,26 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleToggleActive = async (event: Event) => {
+    const newStatus = !event.isActive
+    try {
+      const response = await fetch(`/api/events/${event.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isActive: newStatus })
+      })
+      if (response.ok) {
+        setEvents(prev => prev.map(e => (e.id === event.id ? { ...e, isActive: newStatus } : e)))
+        await calculateAnalytics()
+      } else {
+        alert('Failed to update status. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error toggling status:', error)
+      alert('Error updating status.')
+    }
+  }
+
   const addArrayItem = (field: string) => {
     setFormData(prev => ({
       ...prev,
@@ -941,10 +961,13 @@ export default function AdminDashboard() {
                               ${event.price}
                             </td>
                             <td className="py-3 px-4">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${event.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                }`}>
+                              <button
+                                onClick={() => handleToggleActive(event)}
+                                title="Click to change status"
+                                className={`px-2 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${event.isActive ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}
+                              >
                                 {event.isActive ? 'Active' : 'Inactive'}
-                              </span>
+                              </button>
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-2">
@@ -1032,10 +1055,13 @@ export default function AdminDashboard() {
                               {event.price === 0 ? 'Free' : `$${event.price}`}
                             </td>
                             <td className="py-3 px-4">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${event.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                }`}>
+                              <button
+                                onClick={() => handleToggleActive(event)}
+                                title="Click to change status"
+                                className={`px-2 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${event.isActive ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}
+                              >
                                 {event.isActive ? 'Active' : 'Inactive'}
-                              </span>
+                              </button>
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-2">

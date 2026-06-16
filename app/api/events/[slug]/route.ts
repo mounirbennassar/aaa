@@ -206,4 +206,55 @@ export async function DELETE(
       { status: 500 }
     )
   }
+}
+
+// PATCH - toggle a single field (currently just isActive). Staff only.
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const session = await getStaffSession()
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const { slug } = await params
+    const body = await request.json()
+
+    if (typeof body.isActive !== 'boolean') {
+      return NextResponse.json(
+        { error: 'isActive (boolean) is required' },
+        { status: 400 }
+      )
+    }
+
+    const existingEvent = await prisma.event.findUnique({
+      where: { id: slug }
+    })
+
+    if (!existingEvent) {
+      return NextResponse.json(
+        { error: 'Event not found' },
+        { status: 404 }
+      )
+    }
+
+    const updatedEvent = await prisma.event.update({
+      where: { id: existingEvent.id },
+      data: { isActive: body.isActive }
+    })
+
+    return NextResponse.json(updatedEvent)
+  } catch (error) {
+    console.error('Error updating event status:', error)
+    return NextResponse.json(
+      { error: 'Failed to update status' },
+      { status: 500 }
+    )
+  }
 } 

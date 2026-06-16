@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 
@@ -46,6 +47,12 @@ export default function WebinarsPage() {
   const [visibleCount, setVisibleCount] = useState(9);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  // Admin controls: only logged-in staff see the active/inactive toggle.
+  const { data: session } = useSession();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const isAdmin = role === 'ADMIN' || role === 'MANAGER';
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
   // Filter states
   const [filters, setFilters] = useState({
     search: '',
@@ -69,6 +76,30 @@ export default function WebinarsPage() {
       setError('An error occurred while fetching webinars');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Flip a webinar's active status via the staff-only PATCH endpoint.
+  const toggleActive = async (webinar: Webinar) => {
+    const newStatus = webinar.isActive === false; // currently inactive -> activate
+    setTogglingId(webinar.id);
+    try {
+      const res = await fetch(`/api/events/${webinar.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isActive: newStatus }),
+      });
+      if (res.ok) {
+        setAllWebinars(prev =>
+          prev.map(w => (w.id === webinar.id ? { ...w, isActive: newStatus } : w))
+        );
+      } else {
+        alert('Could not update status. Make sure you are signed in as an admin.');
+      }
+    } catch {
+      alert('Error updating status. Please try again.');
+    } finally {
+      setTogglingId(null);
     }
   };
 
@@ -117,13 +148,15 @@ export default function WebinarsPage() {
       });
     }
 
-    if (!filters.showInactive) {
+    // Admins always see inactive webinars (so they can re-activate them);
+    // regular visitors only see them when the filter is toggled on.
+    if (!filters.showInactive && !isAdmin) {
       filtered = filtered.filter(webinar => webinar.isActive !== false);
     }
 
     setFilteredWebinars(filtered);
     setVisibleCount(9);
-  }, [allWebinars, filters]);
+  }, [allWebinars, filters, isAdmin]);
 
   useEffect(() => {
     fetchWebinars();
@@ -335,7 +368,22 @@ export default function WebinarsPage() {
                               <i className="fas fa-calendar mr-2" />
                               {formatDate(webinar.date)}
                             </div>
-                            {inactive && <span className="text-red-500 font-bold">Inactive</span>}
+                            {isAdmin ? (
+                              <button
+                                onClick={() => toggleActive(webinar)}
+                                disabled={togglingId === webinar.id}
+                                title="Click to change active status"
+                                className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-normal normal-case transition-colors disabled:opacity-50 ${inactive ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-green-100 text-green-700 hover:bg-green-200'}`}
+                              >
+                                {togglingId === webinar.id
+                                  ? 'Saving…'
+                                  : inactive
+                                    ? 'Inactive · Activate'
+                                    : 'Active · Deactivate'}
+                              </button>
+                            ) : (
+                              inactive && <span className="text-red-500 font-bold">Inactive</span>
+                            )}
                           </div>
 
                           <Link

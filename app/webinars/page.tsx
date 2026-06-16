@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 
@@ -44,6 +44,7 @@ export default function WebinarsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(9);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -131,6 +132,26 @@ export default function WebinarsPage() {
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
+
+  // Infinite scroll: reveal 9 more webinars whenever the sentinel near the
+  // bottom of the list scrolls into view (starts ~300px early for smoothness).
+  useEffect(() => {
+    if (visibleCount >= filteredWebinars.length) return;
+    const el = loaderRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + 9, filteredWebinars.length));
+        }
+      },
+      { rootMargin: '300px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [visibleCount, filteredWebinars.length]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -369,14 +390,9 @@ export default function WebinarsPage() {
                   })}
                 </div>
                 {visibleCount < filteredWebinars.length && (
-                  <div className="text-center mt-12">
-                    <button
-                      onClick={() => setVisibleCount(prev => prev + 9)}
-                      className="bg-[#13558D] text-white px-10 py-3 rounded-full font-semibold hover:bg-[#0e4070] transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center"
-                    >
-                      <i className="fas fa-plus mr-2"></i>
-                      Load More ({filteredWebinars.length - visibleCount} remaining)
-                    </button>
+                  <div ref={loaderRef} className="flex flex-col items-center justify-center mt-12 py-8 gap-3">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#13558D]"></div>
+                    <span className="text-xs text-gray-400 uppercase tracking-widest">Loading more webinars…</span>
                   </div>
                 )}
               </>
